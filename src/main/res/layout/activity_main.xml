@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_constraint"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:isScrollContainer="false"
+    tools:context=".activity.MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout_title"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@color/colorTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView_title"
+            android:layout_width="142dp"
+            android:layout_height="47dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="1dp"
+            android:text="MyNote"
+            android:textColor="@color/colorTextWhite"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button_popupMenu"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="5dp"
+            android:background="#00BBBABA"
+            android:onClick="clickPopupMenu"
+            android:text="⋮"
+            android:textColor="#FFFFFF"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TabHost
+        android:id="@+id/tab_menu"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout_title">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="#F3FFFFFF"
+                android:gravity="center"
+                android:textAlignment="center" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:focusable="auto">
+
+                        <Button
+                            android:id="@+id/buttonAdd"
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/button_add"
+                            android:focusableInTouchMode="false"
+                            android:gravity="center"
+                            android:onClick="addNote"
+                            android:text="+"
+                            android:textColor="#CECFCF"
+                            android:textSize="45sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+                        <ScrollView
+                            android:id="@+id/ScrollView_note"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="1.0">
+
+                            <LinearLayout
+                                android:id="@+id/LinearLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center|start"
+                                android:orientation="vertical" />
+                        </ScrollView>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="10dp">
+
+                        <Button
+                            android:id="@+id/buttonAddMinute"
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/button_add"
+                            android:onClick="addMinute"
+                            android:text="+"
+                            android:textColor="#CECFCF"
+                            android:textSize="45sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+                        <ScrollView
+                            android:id="@+id/ScrollView_minute"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <LinearLayout
+                                android:id="@+id/LinearLayout_minute"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical" />
+                        </ScrollView>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

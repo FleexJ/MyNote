@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MyNote</string>
+    <string-array name="repeat_array">
+        <item>Нет</item>
+        <item>Час</item>
+        <item>День</item>
+        <item>Неделя</item>
+        <item>Месяц</item>
+        <item>Год</item>
+    </string-array>
+</resources>

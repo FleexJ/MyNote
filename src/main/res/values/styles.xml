@@ -1,0 +1,83 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorMain</item>
+        <item name="colorPrimaryDark">@color/colorMain</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="BDout_layout">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">#E5E7E6</item>
+    </style>
+    <style name="BDout_name">
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:background">#A6E5E7E6</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="BDout_name_note">
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:background">#A6E5E7E6</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="BDout_line">
+        <item name="android:background">#8D025377</item>
+        <item name="android:layout_height">5dp</item>
+        <item name="android:layout_width">match_parent</item>
+<!--        <item name="android:textSize">0dp</item>-->
+    </style>
+    <style name="BDout_desc">
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:background">#A6E5E7E6</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">10sp</item>
+    </style>
+    <style name="BDout_delay">
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:background">#CDCBCB</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">10sp</item>
+    </style>
+    <style name="BDout_null">
+        <item name="android:textColor">#565658</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:background">#A6E5E7E6</item>
+        <item name="android:textSize">21sp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">40dp</item>
+    </style>
+    <style name="BDout_minute">
+        <item name="android:textColor">#6D6A6A</item>
+        <item name="android:background">#A6E5E7E6</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+    <style name="BDout_seekBar" parent="android:Widget.DeviceDefault.SeekBar">
+        <item name="android:paddingBottom">20dp</item>
+    </style>
+    <style name="BDout_checkbox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@android:color/holo_green_light</item>
+        <item name="colorControlActivated">@android:color/holo_orange_dark</item>
+    </style>
+</resources>

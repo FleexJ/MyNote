@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/edit_note"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fon"
+    tools:context=".activity.EditActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout_title"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:background="#2D4D8F"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/editText_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:ems="10"
+            android:hint="Заголовок"
+            android:inputType="textPersonName"
+            android:paddingRight="20dp"
+            android:textColor="#D8FFFFFF"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/editText_desc"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="200dp"
+        android:background="#D7E4E2E2"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Описание"
+        android:inputType="textMultiLine"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_title" />
+
+    <Button
+        android:id="@+id/button_apply"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/button_apply"
+        android:text="✓"
+        android:textAlignment="center"
+        android:textColor="@color/colorMain"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout_delay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:onClick="initDate"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_desc">
+
+        <TextView
+            android:id="@+id/textView_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Установленное время"
+            android:textColor="#F3F5F5F5"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView_delay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="5dp"
+            android:textColor="#DAE7E1E1"
+            android:textSize="15sp"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinner_repeat"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:entries="@array/repeat_array"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_desc" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
