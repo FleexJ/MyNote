@@ -13,4 +13,10 @@
 - BroadcastReceiver для выполнения плановых задач
 - Java SDK
   
+#### Экран главной активности приложения, все записи:  
+![Иллюстрация](https://github.com/kreslojerry/resource/blob/main/MyNote/mynote.PNG)   
+
+#### Экран главной активности приложения, таймеры:
+![](https://github.com/kreslojerry/resource/blob/main/MyNote/mynoteTimer.PNG)
+ 
 Это мое первое приложение под Android, потому могут быть огрехи.
