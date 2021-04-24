@@ -14,9 +14,9 @@
 - Java SDK
   
 #### Экран главной активности приложения, все записи:  
-<img src="https://github.com/kreslojerry/resource/blob/main/MyNote/mynote.PNG" width="350px"/>   
+<img src="https://github.com/FleexJ/resource/blob/main/MyNote/mynote.PNG" width="350px"/>   
 
 #### Экран главной активности приложения, таймеры:
-<img src="https://github.com/kreslojerry/resource/blob/main/MyNote/mynoteTimer.PNG" width="350px"/>  
+<img src="https://github.com/FleexJ/resource/blob/main/MyNote/mynoteTimer.PNG" width="350px"/>  
  
 Это мое первое приложение под Android, потому могут быть огрехи.
