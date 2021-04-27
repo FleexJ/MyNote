@@ -11,7 +11,7 @@
         android:id="@+id/label_prompt_minute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Введите новое название: "
+        android:text="@string/dialogueTitleEditTimer"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText

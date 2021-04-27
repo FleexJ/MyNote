@@ -10,24 +10,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.mynote.R;
 import com.example.mynote.activity.MainActivity;
-import com.example.mynote.activity.NotifActivity;
 import com.example.mynote.dao.TimersDAO;
-import com.example.mynote.entity.Timers;
+import com.example.mynote.entity.Timer;
 
 import java.util.Calendar;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class MyReceiverRepeatingMinute extends BroadcastReceiver {
-    TimersDAO timersDAO;
-    SQLiteDatabase DB;
+
+    private TimersDAO timersDAO;
+    private SQLiteDatabase DB;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -35,11 +34,11 @@ public class MyReceiverRepeatingMinute extends BroadcastReceiver {
         timersDAO = new TimersDAO(DB);
 
         int id = intent.getIntExtra("id",0);
-        Timers timers = timersDAO.getTimersById(id);
+        Timer timer = timersDAO.getTimersById(id);
         //Если время не вышло, то убавляем его и создаем новый аларм
-        if((timers.getMinute() - 1) >= 1) {
-            timers.setMinute(timers.getMinute() - 1);
-            timersDAO.editTimers(timers);
+        if((timer.getMinute() - 1) >= 1) {
+            timer.setMinute(timer.getMinute() - 1);
+            timersDAO.editTimers(timer);
 
             Intent intent_alarm = new Intent(context.getApplicationContext(), MyReceiverRepeatingMinute.class);
             intent_alarm.putExtra("id", id);
@@ -51,12 +50,12 @@ public class MyReceiverRepeatingMinute extends BroadcastReceiver {
             Calendar delay_minute = Calendar.getInstance();
             delay_minute.add(Calendar.MINUTE, 1);
             am.setExact(AlarmManager.RTC_WAKEUP, delay_minute.getTimeInMillis(), pendingIntent);
-            startNotifProgress(context, timers);
+            startNotifProgress(context, timer);
         }
         //Если время вышло, то создаем аларм на уведомление
         else {
-            timers.setMinute(1);
-            timersDAO.editTimers(timers);
+            timer.setMinute(1);
+            timersDAO.editTimers(timer);
             //Отправляем аларм на текущий момент, чтобы вызвать уведомление
             Intent intent_alarm = new Intent(context.getApplicationContext(), MyReceiverMinute.class);
             intent_alarm.putExtra("id", id);
@@ -70,9 +69,9 @@ public class MyReceiverRepeatingMinute extends BroadcastReceiver {
         DB.close();
     }
 
-    private void startNotifProgress(Context context, Timers timers) {
+    private void startNotifProgress(Context context, Timer timer) {
         Intent intent_new = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), timers.getId() , intent_new, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), timer.getId() , intent_new, PendingIntent.FLAG_CANCEL_CURRENT);
 
         if(Build.VERSION.SDK_INT >= 26 ){
             NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -84,22 +83,30 @@ public class MyReceiverRepeatingMinute extends BroadcastReceiver {
 
             builder.setContentIntent(pendingIntent)
                     .setSmallIcon(R.drawable.icon_notif)
-                    .setContentTitle("Прогресс таймера: " + timers.getName())
-                    .setContentText(timers.getMinute() + " мин.")
+                    .setContentTitle(
+                            context.getString(R.string.notifTimerWorkTitle, timer.getName())
+                    )
+                    .setContentText(
+                            context.getString(R.string.timerProgress, timer.getMinute())
+                    )
                     .setShowWhen(true)
                     .setOngoing(true)
                     .setAutoCancel(false);
             Notification notification = builder.build();
             nm.createNotificationChannel(notificationChannel);
-            nm.cancel(timers.getId());
-            nm.notify(timers.getId(), notification);
+            nm.cancel(timer.getId());
+            nm.notify(timer.getId(), notification);
         }
         else
         if(Build.VERSION.SDK_INT >= 21 ){
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(context.getApplicationContext(), "channel_id_mynote_progress")
-                            .setContentTitle("Прогресс таймера: " + timers.getName())
-                            .setContentText(timers.getMinute() + " мин.")
+                            .setContentTitle(
+                                    context.getString(R.string.notifTimerWorkTitle, timer.getName())
+                            )
+                            .setContentText(
+                                    context.getString(R.string.timerProgress, timer.getMinute())
+                            )
                             .setContentIntent(pendingIntent)
 //                            .setDefaults(Notification.DEFAULT_SOUND)
                             .setAutoCancel(false)
@@ -108,8 +115,8 @@ public class MyReceiverRepeatingMinute extends BroadcastReceiver {
 
             NotificationManagerCompat notificationManager =
                     NotificationManagerCompat.from(context.getApplicationContext());
-            notificationManager.cancel(timers.getId());
-            notificationManager.notify(timers.getId(), builder.build());
+            notificationManager.cancel(timer.getId());
+            notificationManager.notify(timer.getId(), builder.build());
         }
     }
 }

@@ -1,12 +1,12 @@
 package com.example.mynote.entity;
 
-public class Timers {
+public class Timer {
     private int id;
     private String name;
     private int state;
     private int minute;
 
-    public Timers(int id, String name, int state, int minute) {
+    public Timer(int id, String name, int state, int minute) {
         this.id = id;
         this.name = name;
         this.state = state;

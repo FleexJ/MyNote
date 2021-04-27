@@ -12,15 +12,15 @@ import android.widget.TextView;
 import com.example.mynote.R;
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.dao.TimersDAO;
-import com.example.mynote.entity.Notes;
-import com.example.mynote.entity.Timers;
+import com.example.mynote.entity.Note;
+import com.example.mynote.entity.Timer;
 
 public class NotifActivity extends Activity {
 
-    int id;
-    NotesDAO notesDAO;
-    TimersDAO timersDAO;
-    SQLiteDatabase DB;
+    private int id;
+    private NotesDAO notesDAO;
+    private TimersDAO timersDAO;
+    private SQLiteDatabase DB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,20 +38,24 @@ public class NotifActivity extends Activity {
         id = getIntent().getIntExtra("id", 0);
         int type = getIntent().getIntExtra("type",0);
         if(type == 1) {
-            Notes notes = notesDAO.getNoteById(id);
-             textView_title.setText("Напоминаем вам о задаче!");
-             textView_name.setText(notes.getName());
-             textView_desc.setText(notes.getDescription());
-             if(notes.getDescription().isEmpty())
+            Note note = notesDAO.getNoteById(id);
+             textView_title.setText(
+                     getString(R.string.notifNoteTitle)
+             );
+             textView_name.setText(note.getName());
+             textView_desc.setText(note.getDescription());
+             if(note.getDescription().isEmpty())
                  linearLayout.removeView(textView_desc);
-             if(notes.getName().isEmpty())
+             if(note.getName().isEmpty())
                  linearLayout.removeView(textView_name);
         }
         else
             if(type == 2) {
-                Timers timers = timersDAO.getTimersById(id);
-                textView_title.setText("Cработал таймер!");
-                textView_name.setText(timers.getName());
+                Timer timer = timersDAO.getTimersById(id);
+                textView_title.setText(
+                        getString(R.string.notifTimerWorkedTitle)
+                );
+                textView_name.setText(timer.getName());
                 linearLayout.removeView(textView_desc);
             }
         DB.close();

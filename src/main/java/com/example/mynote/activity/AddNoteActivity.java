@@ -21,7 +21,8 @@ import android.widget.Toast;
 import com.example.mynote.R;
 import com.example.mynote.dao.IdCountDAO;
 import com.example.mynote.dao.NotesDAO;
-import com.example.mynote.entity.Notes;
+import com.example.mynote.entity.Note;
+import com.example.mynote.entity.TypeRepeat;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -30,17 +31,17 @@ import java.util.Locale;
 
 public class AddNoteActivity extends Activity {
 
-    NotesDAO notesDAO;
-    IdCountDAO idCountDAO;
-    SQLiteDatabase DB;
-    EditText editText_desc, editText_name;
-    Button button_apply;
-    TextView textView_delay;
-    Spinner spinner_repeat;
-    Calendar calendar = GregorianCalendar.getInstance();
-    Locale locale = new Locale("ru", "RU");
-    SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy  HH:mm", locale);
-    SimpleDateFormat sdfCal = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", locale);
+    private NotesDAO notesDAO;
+    private IdCountDAO idCountDAO;
+    private SQLiteDatabase DB;
+    private EditText editText_desc, editText_name;
+    private Button button_apply;
+    private TextView textView_delay;
+    private Spinner spinner_repeat;
+    private Calendar calendar = GregorianCalendar.getInstance();
+    private Locale locale = new Locale("ru", "RU");
+    private SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy  HH:mm", locale);
+    private SimpleDateFormat sdfCal = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", locale);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +83,9 @@ public class AddNoteActivity extends Activity {
                     int newId = idCountDAO.getNewId();
                     calendar.set(Calendar.SECOND, 0);
                     calendar.set(Calendar.MILLISECOND, 0);
-                    Notes notes = new Notes(newId, name, desc, 0, calendar.getTimeInMillis() + "", spinner_repeat.getSelectedItem().toString());
-                    notesDAO.insertNote(notes);
+                    TypeRepeat repeat = TypeRepeat.values()[(int) spinner_repeat.getSelectedItemId()];
+                    Note note = new Note(newId, name, desc, 0, calendar.getTimeInMillis() + "", repeat);
+                    notesDAO.insertNote(note);
                     idCountDAO.insertIdCount(newId);
                 }
                 finish();

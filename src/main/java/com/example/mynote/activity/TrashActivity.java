@@ -20,9 +20,10 @@ import com.example.mynote.dao.IdCountDAO;
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.dao.TimersDAO;
 import com.example.mynote.dao.TrashDAO;
-import com.example.mynote.entity.Notes;
-import com.example.mynote.entity.Timers;
+import com.example.mynote.entity.Note;
+import com.example.mynote.entity.Timer;
 import com.example.mynote.entity.TrashNote;
+import com.example.mynote.entity.TypeRepeat;
 import com.example.mynote.swipeListener.TrashSwipeListener;
 
 import java.text.SimpleDateFormat;
@@ -31,14 +32,11 @@ import java.util.Locale;
 
 public class TrashActivity extends Activity {
 
-    Locale locale = new Locale("ru", "RU");
-    SimpleDateFormat sdfCal = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", locale);
-    SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy  HH:mm", locale);
-    TrashDAO trashDAO;
-    NotesDAO notesDAO;
-    TimersDAO timersDAO;
-    IdCountDAO idCountDAO;
-    SQLiteDatabase DB;
+    private TrashDAO trashDAO;
+    private NotesDAO notesDAO;
+    private TimersDAO timersDAO;
+    private IdCountDAO idCountDAO;
+    private SQLiteDatabase DB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,19 +75,26 @@ public class TrashActivity extends Activity {
         List<TrashNote> trashNoteList = trashDAO.getAllTrash();
         AlertDialog.Builder alert_builder = new AlertDialog.Builder(TrashActivity.this);
         if(trashNoteList.size() != 0) {
-            alert_builder.setMessage("Очистить корзину?")
+            alert_builder
+                    .setMessage(
+                            getString(R.string.dialogueClearTrash)
+                    )
                     .setCancelable(true)
-                    .setPositiveButton("Очистить",
+                    .setPositiveButton(
+                            getString(R.string.dialogueClearTrashPositive),
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     trashDAO.deleteAllTrash();
-                                    makeToast("Корзина очищена");
+                                    makeToast(
+                                            getString(R.string.toastClearedTrash)
+                                    );
                                     dialog.cancel();
                                     doSomething();
                                 }
                             })
-                    .setNegativeButton("Отмена",
+                    .setNegativeButton(
+                            getString(R.string.dialogueCancel),
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -98,7 +103,9 @@ public class TrashActivity extends Activity {
                             });
             alert_builder.show();
         }
-        else makeToast("Корзина уже пуста");
+        else makeToast(
+                getString(R.string.emptyTrashYet)
+        );
     }
 
     public void doSomething() {
@@ -111,7 +118,9 @@ public class TrashActivity extends Activity {
 
         if (trash_k == 0) {//Если в таблице нет ни одной записи, то выводим сообщение об этом, путем добавления на слой textView и imageView
             TextView textView_null = new TextView(this, null, 0, R.style.BDout_null);
-            textView_null.setText("Корзина пуста");
+            textView_null.setText(
+                    getString(R.string.emptyTrashYet)
+            );
             linear_trash.addView(textView_null);
             ImageView imageView_null = new ImageView(this, null, 0, R.style.BDout_null);
             imageView_null.setImageResource(R.drawable.icon_null);
@@ -137,13 +146,17 @@ public class TrashActivity extends Activity {
                 textView_delay[i] = new TextView(this , null, 0, R.style.BDout_delay);
 
                 //Внесении данных результата запроса в массивы
-                textView_name[i].setText(trashNoteList.get(final_i).getName() + "");
-                textView_desc[i].setText(trashNoteList.get(final_i).getDescription() + "");
+                textView_name[i].setText(trashNoteList.get(final_i).getName());
+                textView_desc[i].setText(trashNoteList.get(final_i).getDescription());
                 //Выводим задержку в удобном формате
                 if(trashNoteList.get(final_i).getType() == 1)
-                    textView_delay[i].setText(sdfDate.format(trashNoteList.get(final_i).getDelayCalendar().getTime()) + "");
+                    textView_delay[i].setText(
+                            MainActivity.sdfDate.format(trashNoteList.get(final_i).getDelayCalendar().getTime())
+                    );
                 else
-                    textView_delay[i].setText(trashNoteList.get(final_i).getDelay() + " мин.");
+                    textView_delay[i].setText(
+                            getString(R.string.delayTrashTimer,  trashNoteList.get(final_i).getDelay())
+                    );
 
                 //Добавление представлений на экран
                 linear_bd[i] = new LinearLayout(this, null, 0, R.style.BDout_layout);
@@ -164,20 +177,26 @@ public class TrashActivity extends Activity {
                     @Override
                     public boolean onLongClick(View v) {
                         AlertDialog.Builder alert_builder = new AlertDialog.Builder(TrashActivity.this);
-                        alert_builder.setMessage("Удалить запись навсегда?")
+                        alert_builder
+                                .setMessage(
+                                        getString(R.string.dialogueDeleteFromTrash))
                                 .setCancelable(true)
-                                .setPositiveButton("Удалить",
+                                .setPositiveButton(
+                                        getString(R.string.dialogueOk),
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 trashDAO.deleteTrash(trashNoteList.get(final_i));
                                                 idCountDAO.deleteId(trashNoteList.get(final_i).getId());
-                                                makeToast("Удалено");
+                                                makeToast(
+                                                        getString(R.string.toastDeletedFromTrash)
+                                                );
                                                 dialog.cancel();
                                                 doSomething();
                                             }
                                         })
-                                .setNegativeButton("Отмена",
+                                .setNegativeButton(
+                                        getString(R.string.dialogueCancel),
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
@@ -193,37 +212,43 @@ public class TrashActivity extends Activity {
                     @Override
                     public void onClick(View v) {
                         AlertDialog.Builder alert_builder = new AlertDialog.Builder(TrashActivity.this);
-                        alert_builder.setMessage("Вернуть запись из корзины?")
+                        alert_builder.setMessage(
+                                getString(R.string.backNoteFromTrashTitle)
+                        )
                                 .setCancelable(true)
-                                .setPositiveButton("Вернуть",
+                                .setPositiveButton(
+                                        getString(R.string.dialogueOk),
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 trashDAO.deleteTrash(trashNoteList.get(final_i));
                                                 if(trashNoteList.get(final_i).getType() == 1) {
-                                                    notesDAO.insertNote(new Notes(
+                                                    notesDAO.insertNote(new Note(
                                                             trashNoteList.get(final_i).getId(),
                                                             trashNoteList.get(final_i).getName(),
                                                             trashNoteList.get(final_i).getDescription(),
                                                             0,
                                                             trashNoteList.get(final_i).getDelay(),
-                                                            "Нет"
+                                                            TypeRepeat.NO
                                                     ));
                                                 }
                                                 else {
-                                                    timersDAO.insertTimers(new Timers(
+                                                    timersDAO.insertTimers(new Timer(
                                                             trashNoteList.get(final_i).getId(),
                                                             trashNoteList.get(final_i).getName(),
                                                             0,
                                                             Integer.parseInt(trashNoteList.get(final_i).getDelay())
                                                     ));
                                                 }
-                                                makeToast("Возвращено");
+                                                makeToast(
+                                                        getString(R.string.toastBackedNoteFromTrash)
+                                                );
                                                 dialog.cancel();
                                                 doSomething();
                                             }
                                         })
-                                .setNegativeButton("Отмена",
+                                .setNegativeButton(
+                                        getString(R.string.dialogueCancel),
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {

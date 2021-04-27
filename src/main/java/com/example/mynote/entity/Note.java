@@ -2,15 +2,15 @@ package com.example.mynote.entity;
 
 import java.util.Calendar;
 
-public class Notes {
+public class Note {
     private int id;
     private String name;
     private String description;
     private int state;
     private String delay;
-    private String repeat;
+    private TypeRepeat repeat;
 
-    public Notes(int id, String name, String description, int state, String delay, String repeat) {
+    public Note(int id, String name, String description, int state, String delay, TypeRepeat repeat) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -40,7 +40,7 @@ public class Notes {
         return delay;
     }
 
-    public String getRepeat() {
+    public TypeRepeat getRepeat() {
         return repeat;
     }
 
@@ -64,7 +64,7 @@ public class Notes {
         this.delay = delay;
     }
 
-    public void setRepeat(String repeat) {
+    public void setRepeat(TypeRepeat repeat) {
         this.repeat = repeat;
     }
 

@@ -23,7 +23,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import com.example.mynote.R;
 import com.example.mynote.dao.NotesDAO;
-import com.example.mynote.entity.Notes;
+import com.example.mynote.entity.Note;
+import com.example.mynote.entity.TypeRepeat;
 import com.example.mynote.receiver.MyReceiver;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,17 +33,17 @@ import java.util.Locale;
 
 public class EditActivity extends Activity {
 
-    NotesDAO notesDAO;
-    SQLiteDatabase DB;
-    EditText editText_desc, editText_name;
-    Button button_apply;
-    TextView textView_delay, textView_label;
-    Spinner spinner_repeat;
-    Calendar calendar = GregorianCalendar.getInstance();
-    Locale locale = new Locale("ru", "RU");
-    SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy  HH:mm", locale);
-    SimpleDateFormat sdfCal = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", locale);
-    Boolean isSave = false;
+    private NotesDAO notesDAO;
+    private SQLiteDatabase DB;
+    private EditText editText_desc, editText_name;
+    private Button button_apply;
+    private TextView textView_delay, textView_label;
+    private Spinner spinner_repeat;
+    private Calendar calendar = GregorianCalendar.getInstance();
+    private Locale locale = new Locale("ru", "RU");
+    private SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy  HH:mm", locale);
+    private SimpleDateFormat sdfCal = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", locale);
+    private Boolean isSave = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +63,14 @@ public class EditActivity extends Activity {
         spinner_repeat = findViewById(R.id.spinner_repeat);
         //Получение id нажатой на главной активити записи
         int id = getIntent().getIntExtra("idEdit",-1);
-        Notes notes = notesDAO.getNoteById(id);
+        Note note = notesDAO.getNoteById(id);
         //Заполнение заголовка
-        editText_name.setText(notes.getName());
+        editText_name.setText(note.getName());
         editText_name.setSelection(editText_name.getText().length());
         //Заполнения поля примечания
-        editText_desc.setText(notes.getDescription());
+        editText_desc.setText(note.getDescription());
         //Переводим строку в calendar
-        calendar.setTimeInMillis(notes.getDelayCalendar().getTimeInMillis());
+        calendar.setTimeInMillis(note.getDelayCalendar().getTimeInMillis());
         //Выводим строку на экран в удобном формате
         textView_delay.setText(sdfDate.format(calendar.getTime()));
 
@@ -84,8 +85,9 @@ public class EditActivity extends Activity {
         });
 
         String[] repeat = getResources().getStringArray(R.array.repeat_array);
+        TypeRepeat[] typeRepeat = TypeRepeat.values();
         for (int i=0; i < repeat.length; i++) {
-            if (repeat[i].equals(notes.getRepeat()))
+            if (repeat[i].equals(note.getRepeat()))
                 spinner_repeat.setSelection(i);
         }
         spinner_repeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -117,8 +119,9 @@ public class EditActivity extends Activity {
             if(!name.isEmpty() || !desc.isEmpty()) {
                 calendar.set(Calendar.SECOND, 0);
                 calendar.set(Calendar.MILLISECOND, 0);
-                Notes notes = new Notes(id, name, desc,0,calendar.getTimeInMillis()+"", spinner_repeat.getSelectedItem().toString());
-                notesDAO.editNote(notes);
+                TypeRepeat repeat = TypeRepeat.values()[(int) spinner_repeat.getSelectedItemId()];
+                Note note = new Note(id, name, desc,0,calendar.getTimeInMillis()+"", repeat);
+                notesDAO.editNote(note);
             }
         }
         super.onPause();

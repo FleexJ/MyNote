@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:ems="10"
-            android:hint="Заголовок"
+            android:hint="@string/activityNoteEditTitleHint"
             android:inputType="textPersonName"
             android:paddingRight="20dp"
             android:textColor="#D8FFFFFF"
@@ -39,7 +39,7 @@
         android:background="#D7E4E2E2"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="Описание"
+        android:hint="@string/activityNoteEditContentHint"
         android:inputType="textMultiLine"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
@@ -78,7 +78,7 @@
             android:id="@+id/textView_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Установленное время"
+            android:text="@string/activityNoteEditTextLabel"
             android:textColor="#F3F5F5F5"
             android:textSize="16sp" />
 

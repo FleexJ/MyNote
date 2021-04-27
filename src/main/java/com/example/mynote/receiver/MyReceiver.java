@@ -19,7 +19,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.mynote.activity.NotifActivity;
 import com.example.mynote.R;
 import com.example.mynote.dao.NotesDAO;
-import com.example.mynote.entity.Notes;
+import com.example.mynote.entity.Note;
 
 import java.util.Calendar;
 import java.util.List;
@@ -27,10 +27,10 @@ import java.util.List;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class MyReceiver extends BroadcastReceiver
-{
-    NotesDAO notesDAO;
-    SQLiteDatabase DB;
+public class MyReceiver extends BroadcastReceiver {
+
+    private NotesDAO notesDAO;
+    private SQLiteDatabase DB;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -39,42 +39,42 @@ public class MyReceiver extends BroadcastReceiver
 
         int id = intent.getIntExtra("id",0);
         //Данные для уведомления берутся из бд, в случае если пользователь их отредактирует
-        Notes notes = notesDAO.getNoteById(id);
+        Note note = notesDAO.getNoteById(id);
 
-        startNotification(context, notes);
+        startNotification(context, note);
 
-        Calendar calendar = notes.getDelayCalendar();
-        switch (notes.getRepeat()) {
-            case "Час" :
+        Calendar calendar = note.getDelayCalendar();
+        switch (note.getRepeat()) {
+            case HOUR :
                 calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + 1);
-                notes.setDelay(calendar.getTimeInMillis() + "");
-                startAlarmNote(notes, context);
+                note.setDelay(calendar.getTimeInMillis() + "");
+                startAlarmNote(note, context);
                 break;
-            case "День" :
+            case DAY :
                 calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
-                notes.setDelay(calendar.getTimeInMillis() + "");
-                startAlarmNote(notes, context);
+                note.setDelay(calendar.getTimeInMillis() + "");
+                startAlarmNote(note, context);
                 break;
-            case "Неделя" :
+            case WEEK :
                 calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 7);
-                notes.setDelay(calendar.getTimeInMillis() + "");
-                startAlarmNote(notes, context);
+                note.setDelay(calendar.getTimeInMillis() + "");
+                startAlarmNote(note, context);
                 break;
-            case "Месяц" :
+            case MONTH:
                 calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
-                notes.setDelay(calendar.getTimeInMillis() + "");
-                startAlarmNote(notes, context);
+                note.setDelay(calendar.getTimeInMillis() + "");
+                startAlarmNote(note, context);
                 break;
-            case "Год" :
+            case YEAR:
                 calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 1);
-                notes.setDelay(calendar.getTimeInMillis() + "");
-                startAlarmNote(notes, context);
+                note.setDelay(calendar.getTimeInMillis() + "");
+                startAlarmNote(note, context);
                 break;
             default:
-                notes.setState(0);
+                note.setState(0);
                 break;
         }
-        notesDAO.editNote(notes);
+        notesDAO.editNote(note);
         DB.close();
 
 //        if(Build.VERSION.SDK_INT >= 24 && isForeground(context.getApplicationContext()))
@@ -82,25 +82,25 @@ public class MyReceiver extends BroadcastReceiver
     }
 
     //функция старта аларма для записей
-    private void startAlarmNote(Notes notes, Context context) {
+    private void startAlarmNote(Note note, Context context) {
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         //Заготовки для уведомлений
         Intent intent = new Intent(context, MyReceiver.class);
-        intent.putExtra("id", notes.getId());
+        intent.putExtra("id", note.getId());
         //Добавление флага для точного срабатывания
         intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notes.getId() , intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, note.getId() , intent, PendingIntent.FLAG_CANCEL_CURRENT);
         am.cancel(pendingIntent);
         //Активация аларма
-        am.setExact(AlarmManager.RTC_WAKEUP, notes.getDelayCalendar().getTimeInMillis(), pendingIntent);
+        am.setExact(AlarmManager.RTC_WAKEUP, note.getDelayCalendar().getTimeInMillis(), pendingIntent);
     }
 
     //Показ уведомления
-    private void startNotification(Context context, Notes notes) {
+    private void startNotification(Context context, Note note) {
         Intent intent_new = new Intent(context, NotifActivity.class);
-        intent_new.putExtra("id", notes.getId());
+        intent_new.putExtra("id", note.getId());
         intent_new.putExtra("type", 1);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), notes.getId() , intent_new, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), note.getId() , intent_new, PendingIntent.FLAG_CANCEL_CURRENT);
 
         if(Build.VERSION.SDK_INT >= 26 ){
             NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -112,24 +112,31 @@ public class MyReceiver extends BroadcastReceiver
 
             builder.setContentIntent(pendingIntent)
                     .setSmallIcon(R.drawable.icon_notif)
-                    //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.notepad_icon))
-                    .setContentTitle("Напоминание о задаче!")
-                    .setContentText(notes.getName() + ": " + notes.getDescription())
+                    .setContentTitle(
+                            context.getString(R.string.notifNoteTitle)
+                    )
+                    .setContentText(
+                            note.getName() + ": " + note.getDescription()
+                    )
                     .setPriority(Notification.PRIORITY_MAX)
                     .setShowWhen(true)
                     .setAutoCancel(true);
             Notification notification = builder.build();
             notification.defaults = NotificationCompat.DEFAULT_ALL;
             nm.createNotificationChannel(notificationChannel);
-            nm.cancel(notes.getId());
-            nm.notify(notes.getId(), notification);
+            nm.cancel(note.getId());
+            nm.notify(note.getId(), notification);
         }
         else
         if(Build.VERSION.SDK_INT >=21 ){
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(context.getApplicationContext(), "channel_id_mynote")
-                            .setContentTitle("Напоминание о задаче!")
-                            .setContentText(notes.getName() + ": " + notes.getDescription())
+                            .setContentTitle(
+                                    context.getString(R.string.notifNoteTitle)
+                            )
+                            .setContentText(
+                                    note.getName() + ": " + note.getDescription()
+                            )
                             .setContentIntent(pendingIntent)
                             .setDefaults(Notification.DEFAULT_SOUND)
                             .setAutoCancel(true)
@@ -137,8 +144,8 @@ public class MyReceiver extends BroadcastReceiver
 
             NotificationManagerCompat notificationManager =
                     NotificationManagerCompat.from(context.getApplicationContext());
-            notificationManager.cancel(notes.getId());
-            notificationManager.notify(notes.getId(), builder.build());
+            notificationManager.cancel(note.getId());
+            notificationManager.notify(note.getId(), builder.build());
         }
     }
 

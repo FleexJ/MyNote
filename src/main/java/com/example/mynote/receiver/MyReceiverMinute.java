@@ -19,7 +19,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.mynote.activity.NotifActivity;
 import com.example.mynote.R;
 import com.example.mynote.dao.TimersDAO;
-import com.example.mynote.entity.Timers;
+import com.example.mynote.entity.Timer;
 
 import java.util.List;
 
@@ -27,8 +27,9 @@ import static android.content.Context.MODE_PRIVATE;
 
 
 public class MyReceiverMinute extends BroadcastReceiver {
-    TimersDAO timersDAO;
-    SQLiteDatabase DB;
+
+    private TimersDAO timersDAO;
+    private SQLiteDatabase DB;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -36,12 +37,12 @@ public class MyReceiverMinute extends BroadcastReceiver {
         timersDAO = new TimersDAO(DB);
 
         int id = intent.getIntExtra("id",0);
-        Timers timers = timersDAO.getTimersById(id);
+        Timer timer = timersDAO.getTimersById(id);
 
-        startNotification(context, timers);
+        startNotification(context, timer);
 
-        timers.setState(0);
-        timersDAO.editTimers(timers);
+        timer.setState(0);
+        timersDAO.editTimers(timer);
         DB.close();
 
 //        if(Build.VERSION.SDK_INT >= 24 && isForeground(context.getApplicationContext()))
@@ -49,11 +50,11 @@ public class MyReceiverMinute extends BroadcastReceiver {
     }
 
     //Показ уведомления
-    private void startNotification(Context context, Timers timers) {
+    private void startNotification(Context context, Timer timer) {
         Intent intent_new = new Intent(context, NotifActivity.class);
-        intent_new.putExtra("id", timers.getId());
+        intent_new.putExtra("id", timer.getId());
         intent_new.putExtra("type", 2);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), timers.getId() , intent_new, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), timer.getId() , intent_new, PendingIntent.FLAG_CANCEL_CURRENT);
 
         if(Build.VERSION.SDK_INT >= 26 ){
             NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -66,23 +67,27 @@ public class MyReceiverMinute extends BroadcastReceiver {
             builder.setContentIntent(pendingIntent)
                     .setSmallIcon(R.drawable.icon_notif)
                     //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.notepad_icon))
-                    .setContentTitle("Сработал таймер!")
-                    .setContentText(timers.getName())
+                    .setContentTitle(
+                            context.getString(R.string.notifTimerWorkedTitle)
+                    )
+                    .setContentText(timer.getName())
                     .setPriority(Notification.PRIORITY_MAX)
                     .setShowWhen(true)
                     .setAutoCancel(true);
             Notification notification = builder.build();
             notification.defaults = NotificationCompat.DEFAULT_ALL;
             nm.createNotificationChannel(notificationChannel);
-            nm.cancel(timers.getId());
-            nm.notify(timers.getId(), notification);
+            nm.cancel(timer.getId());
+            nm.notify(timer.getId(), notification);
         }
         else
         if(Build.VERSION.SDK_INT >= 21 ){
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(context.getApplicationContext(), "channel_id_mynote")
-                            .setContentTitle("Сработал таймер!")
-                            .setContentText(timers.getName())
+                            .setContentTitle(
+                                    context.getString(R.string.notifTimerWorkedTitle)
+                            )
+                            .setContentText(timer.getName())
                             .setContentIntent(pendingIntent)
                             .setDefaults(Notification.DEFAULT_SOUND)
                             .setAutoCancel(true)
@@ -90,8 +95,8 @@ public class MyReceiverMinute extends BroadcastReceiver {
 
             NotificationManagerCompat notificationManager =
                     NotificationManagerCompat.from(context.getApplicationContext());
-            notificationManager.cancel(timers.getId());
-            notificationManager.notify(timers.getId(), builder.build());
+            notificationManager.cancel(timer.getId());
+            notificationManager.notify(timer.getId(), builder.build());
         }
     }
 
