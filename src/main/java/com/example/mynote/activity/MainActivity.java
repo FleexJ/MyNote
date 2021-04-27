@@ -267,7 +267,7 @@ public class MainActivity extends Activity {
                                                         noteList.get(final_i).getName(),
                                                         noteList.get(final_i).getDescription(),
                                                         noteList.get(final_i).getDelay(),
-                                                        1
+                                                        MyGlobal.TYPE_NOTE
                                                 ));
                                                 makeToast(
                                                         getString(R.string.toastNoteDeleted)
@@ -436,7 +436,7 @@ public class MainActivity extends Activity {
                                                         timers.get(final_i).getName(),
                                                         "",
                                                         timers.get(final_i).getMinute(),
-                                                        2
+                                                        MyGlobal.TYPE_TIMER
                                                 ));
                                                 makeToast(
                                                         getString(R.string.toastTimerDeleted)
