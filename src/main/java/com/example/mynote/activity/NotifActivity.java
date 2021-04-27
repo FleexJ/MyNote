@@ -50,8 +50,7 @@ public class NotifActivity extends Activity {
              if(note.getName().isEmpty())
                  linearLayout.removeView(textView_name);
         }
-        else
-            if(type == MyGlobal.TYPE_TIMER) {
+        else if(type == MyGlobal.TYPE_TIMER) {
                 Timer timer = timersDAO.getTimersById(id);
                 textView_title.setText(
                         getString(R.string.notifTimerWorkedTitle)

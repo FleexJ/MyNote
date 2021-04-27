@@ -51,7 +51,6 @@
         </activity>
 
         <receiver android:name=".receiver.MyReceiver" />
-        <receiver android:name=".receiver.MyReceiverMinute" />
         <receiver android:name=".receiver.MyReceiverRepeatingMinute" />
         <receiver android:name=".receiver.RebootReceiver">
             <intent-filter>
