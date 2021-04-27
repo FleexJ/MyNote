@@ -24,6 +24,7 @@ import com.example.mynote.entity.Note;
 import com.example.mynote.entity.Timer;
 import com.example.mynote.entity.TrashNote;
 import com.example.mynote.entity.TypeRepeat;
+import com.example.mynote.globalVar.MyGlobal;
 import com.example.mynote.swipeListener.TrashSwipeListener;
 
 import java.text.SimpleDateFormat;
@@ -149,11 +150,11 @@ public class TrashActivity extends Activity {
                 textView_name[i].setText(trashNoteList.get(final_i).getName());
                 textView_desc[i].setText(trashNoteList.get(final_i).getDescription());
                 //Выводим задержку в удобном формате
-                if(trashNoteList.get(final_i).getType() == MainActivity.TYPE_NOTE)
+                if(trashNoteList.get(final_i).getType() == MyGlobal.TYPE_NOTE)
                     textView_delay[i].setText(
-                            MainActivity.sdfDate.format(trashNoteList.get(final_i).getDelayCalendar().getTime())
+                            MyGlobal.sdfDate.format(trashNoteList.get(final_i).getDelayCalendar().getTime())
                     );
-                else if (trashNoteList.get(final_i).getType() == MainActivity.TYPE_TIMER)
+                else if (trashNoteList.get(final_i).getType() == MyGlobal.TYPE_TIMER)
                     textView_delay[i].setText(
                             getString(R.string.timerProgress,  trashNoteList.get(final_i).getDelay())
                     );
@@ -222,7 +223,7 @@ public class TrashActivity extends Activity {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 trashDAO.deleteTrash(trashNoteList.get(final_i));
-                                                if (trashNoteList.get(final_i).getType() == MainActivity.TYPE_NOTE) {
+                                                if (trashNoteList.get(final_i).getType() == MyGlobal.TYPE_NOTE) {
                                                     notesDAO.insertNote(new Note(
                                                             trashNoteList.get(final_i).getId(),
                                                             trashNoteList.get(final_i).getName(),
@@ -232,7 +233,7 @@ public class TrashActivity extends Activity {
                                                             TypeRepeat.NO
                                                     ));
                                                 }
-                                                else if (trashNoteList.get(final_i).getType() == MainActivity.TYPE_TIMER) {
+                                                else if (trashNoteList.get(final_i).getType() == MyGlobal.TYPE_TIMER) {
                                                     timersDAO.insertTimers(new Timer(
                                                             trashNoteList.get(final_i).getId(),
                                                             trashNoteList.get(final_i).getName(),

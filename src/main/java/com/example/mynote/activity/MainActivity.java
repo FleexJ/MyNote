@@ -43,26 +43,16 @@ import com.example.mynote.dao.TrashDAO;
 import com.example.mynote.entity.Note;
 import com.example.mynote.entity.Timer;
 import com.example.mynote.entity.TrashNote;
+import com.example.mynote.globalVar.MyGlobal;
 import com.example.mynote.receiver.MyReceiver;
 import com.example.mynote.receiver.MyReceiverRepeatingMinute;
 import com.example.mynote.swipeListener.MainSwipeListener;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 
 public class MainActivity extends Activity {
-
-    //Типа записей
-    public static final int TYPE_NOTE = 1;
-    public static final int TYPE_TIMER = 2;
-
-    //ОБъекты для работы с форматом даты
-    public static Locale locale = Locale.getDefault();
-    public static SimpleDateFormat sdfCal = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", locale);
-    public static SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy  HH:mm", locale);
 
     private long time = 3600000;
     private CountDownTimer countDownTimer_timers, countDownTimer_notes;
@@ -183,7 +173,7 @@ public class MainActivity extends Activity {
                 //Выводим задержку в удобном формате
                 textView_delay_note[final_i].setText(
                         getString(R.string.viewSimpleNoteBottom,
-                                sdfDate.format(noteList.get(final_i).getDelayCalendar().getTime()),
+                                MyGlobal.sdfDate.format(noteList.get(final_i).getDelayCalendar().getTime()),
                                 noteList.get(final_i).getRepeat())
                 );
 

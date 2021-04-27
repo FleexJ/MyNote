@@ -14,6 +14,7 @@ import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.dao.TimersDAO;
 import com.example.mynote.entity.Note;
 import com.example.mynote.entity.Timer;
+import com.example.mynote.globalVar.MyGlobal;
 
 public class NotifActivity extends Activity {
 
@@ -37,7 +38,7 @@ public class NotifActivity extends Activity {
         TextView textView_desc = findViewById(R.id.textView_notifDesc);
         id = getIntent().getIntExtra("id", 0);
         int type = getIntent().getIntExtra("type",0);
-        if(type == MainActivity.TYPE_NOTE) {
+        if(type == MyGlobal.TYPE_NOTE) {
             Note note = notesDAO.getNoteById(id);
              textView_title.setText(
                      getString(R.string.notifNoteTitle)
@@ -50,7 +51,7 @@ public class NotifActivity extends Activity {
                  linearLayout.removeView(textView_name);
         }
         else
-            if(type == MainActivity.TYPE_TIMER) {
+            if(type == MyGlobal.TYPE_TIMER) {
                 Timer timer = timersDAO.getTimersById(id);
                 textView_title.setText(
                         getString(R.string.notifTimerWorkedTitle)
