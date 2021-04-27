@@ -357,8 +357,10 @@ public class MainActivity extends Activity {
                 //Внесении данных результата запроса в массивы
                 textView_name_timer[final_i].setText(timers.get(final_i).getName());
                 //Инициализация переключателя состояния
-                if(timers.get(final_i).getState() == 1) checkBox_state_timer[final_i].setChecked(true);
-                else checkBox_state_timer[final_i].setChecked(false);
+                if(timers.get(final_i).getState() == 1)
+                    checkBox_state_timer[final_i].setChecked(true);
+                else
+                    checkBox_state_timer[final_i].setChecked(false);
 
                 //Инициализация прогресса минут
                 textView_minute_timer[final_i].setText(
