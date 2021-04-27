@@ -7,10 +7,10 @@ public class Note {
     private String name;
     private String description;
     private int state;
-    private String delay;
+    private long delay;
     private TypeRepeat repeat;
 
-    public Note(int id, String name, String description, int state, String delay, TypeRepeat repeat) {
+    public Note(int id, String name, String description, int state, long delay, TypeRepeat repeat) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -36,7 +36,7 @@ public class Note {
     }
 
 
-    public String getDelay() {
+    public long getDelay() {
         return delay;
     }
 
@@ -60,7 +60,7 @@ public class Note {
         this.state = state;
     }
 
-    public void setDelay(String delay) {
+    public void setDelay(long delay) {
         this.delay = delay;
     }
 
@@ -70,7 +70,7 @@ public class Note {
 
     public Calendar getDelayCalendar() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(Long.parseLong(delay));
+        calendar.setTimeInMillis(delay);
         return calendar;
     }
 }

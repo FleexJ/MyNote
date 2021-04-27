@@ -55,6 +55,10 @@ import java.util.Locale;
 
 public class MainActivity extends Activity {
 
+    //Типа записей
+    public static final int TYPE_NOTE = 1;
+    public static final int TYPE_TIMER = 2;
+
     //ОБъекты для работы с форматом даты
     public static Locale locale = Locale.getDefault();
     public static SimpleDateFormat sdfCal = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", locale);
@@ -441,7 +445,7 @@ public class MainActivity extends Activity {
                                                         timers.get(final_i).getId(),
                                                         timers.get(final_i).getName(),
                                                         "",
-                                                        timers.get(final_i).getMinute()+"",
+                                                        timers.get(final_i).getMinute(),
                                                         2
                                                 ));
                                                 makeToast(

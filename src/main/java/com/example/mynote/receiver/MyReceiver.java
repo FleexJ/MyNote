@@ -47,27 +47,27 @@ public class MyReceiver extends BroadcastReceiver {
         switch (note.getRepeat()) {
             case HOUR :
                 calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + 1);
-                note.setDelay(calendar.getTimeInMillis() + "");
+                note.setDelay(calendar.getTimeInMillis());
                 startAlarmNote(note, context);
                 break;
             case DAY :
                 calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
-                note.setDelay(calendar.getTimeInMillis() + "");
+                note.setDelay(calendar.getTimeInMillis());
                 startAlarmNote(note, context);
                 break;
             case WEEK :
                 calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 7);
-                note.setDelay(calendar.getTimeInMillis() + "");
+                note.setDelay(calendar.getTimeInMillis());
                 startAlarmNote(note, context);
                 break;
             case MONTH:
                 calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
-                note.setDelay(calendar.getTimeInMillis() + "");
+                note.setDelay(calendar.getTimeInMillis());
                 startAlarmNote(note, context);
                 break;
             case YEAR:
                 calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 1);
-                note.setDelay(calendar.getTimeInMillis() + "");
+                note.setDelay(calendar.getTimeInMillis());
                 startAlarmNote(note, context);
                 break;
             default:

@@ -6,10 +6,10 @@ public class TrashNote {
     private int id;
     private String name;
     private String description;
-    private String delay;
+    private long delay;
     private int type;
 
-    public TrashNote(int id, String name, String description, String delay, int type) {
+    public TrashNote(int id, String name, String description, long delay, int type) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -41,11 +41,11 @@ public class TrashNote {
         this.description = description;
     }
 
-    public String getDelay() {
+    public long getDelay() {
         return delay;
     }
 
-    public void setDelay(String delay) {
+    public void setDelay(long delay) {
         this.delay = delay;
     }
 
@@ -59,7 +59,7 @@ public class TrashNote {
 
     public Calendar getDelayCalendar() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(Long.parseLong(delay));
+        calendar.setTimeInMillis(delay);
         return calendar;
     }
 }

@@ -149,13 +149,13 @@ public class TrashActivity extends Activity {
                 textView_name[i].setText(trashNoteList.get(final_i).getName());
                 textView_desc[i].setText(trashNoteList.get(final_i).getDescription());
                 //Выводим задержку в удобном формате
-                if(trashNoteList.get(final_i).getType() == 1)
+                if(trashNoteList.get(final_i).getType() == MainActivity.TYPE_NOTE)
                     textView_delay[i].setText(
                             MainActivity.sdfDate.format(trashNoteList.get(final_i).getDelayCalendar().getTime())
                     );
-                else
+                else if (trashNoteList.get(final_i).getType() == MainActivity.TYPE_TIMER)
                     textView_delay[i].setText(
-                            getString(R.string.delayTrashTimer,  trashNoteList.get(final_i).getDelay())
+                            getString(R.string.timerProgress,  trashNoteList.get(final_i).getDelay())
                     );
 
                 //Добавление представлений на экран
@@ -222,7 +222,7 @@ public class TrashActivity extends Activity {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 trashDAO.deleteTrash(trashNoteList.get(final_i));
-                                                if(trashNoteList.get(final_i).getType() == 1) {
+                                                if (trashNoteList.get(final_i).getType() == MainActivity.TYPE_NOTE) {
                                                     notesDAO.insertNote(new Note(
                                                             trashNoteList.get(final_i).getId(),
                                                             trashNoteList.get(final_i).getName(),
@@ -232,12 +232,12 @@ public class TrashActivity extends Activity {
                                                             TypeRepeat.NO
                                                     ));
                                                 }
-                                                else {
+                                                else if (trashNoteList.get(final_i).getType() == MainActivity.TYPE_TIMER) {
                                                     timersDAO.insertTimers(new Timer(
                                                             trashNoteList.get(final_i).getId(),
                                                             trashNoteList.get(final_i).getName(),
                                                             0,
-                                                            Integer.parseInt(trashNoteList.get(final_i).getDelay())
+                                                            (int) trashNoteList.get(final_i).getDelay()
                                                     ));
                                                 }
                                                 makeToast(

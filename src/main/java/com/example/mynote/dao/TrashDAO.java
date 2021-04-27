@@ -22,7 +22,7 @@ public class TrashDAO {
         sqLiteStatement.bindLong(1, trashNote.getId());
         sqLiteStatement.bindString(2, trashNote.getName());
         sqLiteStatement.bindString(3, trashNote.getDescription());
-        sqLiteStatement.bindString(4, trashNote.getDelay());
+        sqLiteStatement.bindLong(4, trashNote.getDelay());
         sqLiteStatement.bindLong(5, trashNote.getType());
         sqLiteStatement.executeInsert();
     }
@@ -43,7 +43,7 @@ public class TrashDAO {
                     cursor.getInt(0), //id
                     cursor.getString(1), //name
                     cursor.getString(2), //descr
-                    cursor.getString(3), //delay
+                    cursor.getLong(3), //delay
                     cursor.getInt(4) //type
             ));
         }

@@ -43,7 +43,6 @@
     <string name="dialogueClearTrashPositive">Очистить</string>
     <string name="toastClearedTrash">Очищено</string>
     <string name="emptyTrashYet">Корзина пуста</string>
-    <string name="delayTrashTimer">%1$s мин.</string>
     <string name="dialogueDeleteFromTrash">Удалить запись навсегда?</string>
     <string name="toastDeletedFromTrash">Удалено</string>
     <string name="backNoteFromTrashTitle">Вернуть запись из корзины?</string>

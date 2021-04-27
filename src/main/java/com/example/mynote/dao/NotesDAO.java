@@ -26,7 +26,7 @@ public class NotesDAO {
                     cursor.getString(1),//name
                     cursor.getString(2),//descr
                     cursor.getInt(3),//state
-                    cursor.getString(4),//delay
+                    cursor.getLong(4),//delay
                     TypeRepeat.valueOf(cursor.getString(5))//repeat
             ));
         }
@@ -38,7 +38,7 @@ public class NotesDAO {
         sqLiteStatement.bindString(1, note.getName());
         sqLiteStatement.bindString(2, note.getDescription());
         sqLiteStatement.bindLong(3, note.getState());
-        sqLiteStatement.bindString(4, note.getDelay());
+        sqLiteStatement.bindLong(4, note.getDelay());
         sqLiteStatement.bindString(5, note.getRepeat().name());
         sqLiteStatement.bindLong(6, note.getId());
         sqLiteStatement.executeUpdateDelete();
@@ -59,7 +59,7 @@ public class NotesDAO {
                     cursor.getString(1),
                     cursor.getString(2),
                     cursor.getInt(3),
-                    cursor.getString(4),
+                    cursor.getLong(4),
                     TypeRepeat.valueOf(cursor.getString(5))
             ));
         }
@@ -71,7 +71,7 @@ public class NotesDAO {
         sqLiteStatement.bindLong(1, note.getId());
         sqLiteStatement.bindString(2, note.getName());
         sqLiteStatement.bindString(3, note.getDescription());
-        sqLiteStatement.bindString(4, note.getDelay());
+        sqLiteStatement.bindLong(4, note.getDelay());
         sqLiteStatement.bindString(5, note.getRepeat().name());
         sqLiteStatement.executeInsert();
     }
@@ -85,7 +85,7 @@ public class NotesDAO {
                     query.getString(1),
                     query.getString(2),
                     query.getInt(3),
-                    query.getString(4),
+                    query.getLong(4),
                     TypeRepeat.valueOf(query.getString(5))
             );
         }
