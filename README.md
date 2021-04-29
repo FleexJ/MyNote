@@ -11,7 +11,8 @@
 - SQLite для работы с базой данных
 - AlarmManager для планирования задач
 - BroadcastReceiver для выполнения плановых задач
-- Java SDK
+- Android SDK
+- Java
   
 #### Экран главной активности приложения, все записи:  
 <img src="https://github.com/FleexJ/resource/blob/main/MyNote/mynote.PNG" width="350px"/>   
