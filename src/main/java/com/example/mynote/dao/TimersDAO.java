@@ -10,16 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TimersDAO {
+    private final String table = "timers";
+
     private SQLiteDatabase DB;
 
     public TimersDAO(SQLiteDatabase DB) {
         this.DB = DB;
-        DB.execSQL("CREATE TABLE IF NOT EXISTS timers (id INTEGER PRIMARY KEY, name TEXT, state INTEGER, minute INTEGER);");
+        DB.execSQL("CREATE TABLE IF NOT EXISTS " + table + " (id INTEGER PRIMARY KEY, name TEXT, state INTEGER, minute INTEGER);");
     }
 
     public List<Timer> getAllTimers() {
         List<Timer> timerList = new ArrayList<>();
-        Cursor cursor = DB.rawQuery("SELECT * FROM timers ORDER BY id ASC", null);
+        Cursor cursor = DB.rawQuery("SELECT * FROM " + table + " ORDER BY id ASC", null);
         while (cursor.moveToNext()) {
             timerList.add(new Timer(
                     cursor.getInt(0),
@@ -28,11 +30,12 @@ public class TimersDAO {
                     cursor.getInt(3)
             ));
         }
+        cursor.close();
         return timerList;
     }
 
     public void editTimer(Timer timer) {
-        SQLiteStatement sqLiteStatement = DB.compileStatement("UPDATE timers SET name=?, state=?, minute=? WHERE id=?");
+        SQLiteStatement sqLiteStatement = DB.compileStatement("UPDATE " + table + " SET name=?, state=?, minute=? WHERE id=?");
         sqLiteStatement.bindString(1, timer.getName());
         sqLiteStatement.bindLong(2, timer.getState());
         sqLiteStatement.bindLong(3, timer.getMinute());
@@ -45,7 +48,7 @@ public class TimersDAO {
     }
 
     public void insertTimer(Timer timer) {
-        SQLiteStatement sqLiteStatement = DB.compileStatement("INSERT INTO timers VALUES(?, ?, ?, ?)");
+        SQLiteStatement sqLiteStatement = DB.compileStatement("INSERT INTO " + table + " VALUES(?, ?, ?, ?)");
         sqLiteStatement.bindLong(1, timer.getId());
         sqLiteStatement.bindString(2, timer.getName());
         sqLiteStatement.bindLong(3, timer.getState());
@@ -54,20 +57,22 @@ public class TimersDAO {
     }
 
     public Timer getTimersById(int id) {
-        Cursor query = DB.rawQuery("SELECT * FROM timers WHERE id = " + id + ";", null);
-        if (!(query == null)) {
-            query.moveToFirst();
-            return new Timer(
-                    query.getInt(0),
-                    query.getString(1),
-                    query.getInt(2),
-                    query.getInt(3)
+        Cursor cursor = DB.rawQuery("SELECT * FROM " + table + " WHERE id = " + id + ";", null);
+        if (!(cursor == null)) {
+            cursor.moveToFirst();
+            Timer timer = new Timer(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getInt(2),
+                    cursor.getInt(3)
             );
+            cursor.close();
+            return timer;
         }
         return null;
     }
 
     public void setStateNullAll() {
-        DB.execSQL("UPDATE timers SET state=0 WHERE state=1;");
+        DB.execSQL("UPDATE " + table + " SET state=0 WHERE state=1;");
     }
 }

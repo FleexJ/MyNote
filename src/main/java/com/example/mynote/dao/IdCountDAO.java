@@ -5,19 +5,21 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
 public class IdCountDAO {
+    private final String table = "id_count";
+
     private SQLiteDatabase DB;
 
     public IdCountDAO(SQLiteDatabase DB) {
         this.DB = DB;
-        DB.execSQL("CREATE TABLE IF NOT EXISTS id_count (id INTEGER PRIMARY KEY);");
+        DB.execSQL("CREATE TABLE IF NOT EXISTS " + table + " (id INTEGER PRIMARY KEY);");
     }
 
     public void insertIdCount(int id) {
-        DB.execSQL("INSERT INTO id_count VALUES(" + id + ");");
+        DB.execSQL("INSERT INTO " + table + " VALUES(" + id + ");");
     }
 
     public int getNewId() {
-        Cursor cursor = DB.rawQuery("SELECT * FROM id_count ORDER BY id ASC;", null);
+        Cursor cursor = DB.rawQuery("SELECT * FROM " + table + " ORDER BY id ASC;", null);
         //Если это первая запись, то возвращаем нулевой идентификатор
         if (cursor.getCount() == 0) {
             cursor.close();
@@ -31,7 +33,7 @@ public class IdCountDAO {
     }
 
     public void deleteId(int id) {
-        SQLiteStatement sqLiteStatement = DB.compileStatement("DELETE FROM id_count WHERE id=?");
+        SQLiteStatement sqLiteStatement = DB.compileStatement("DELETE FROM " + table + " WHERE id=?;");
         sqLiteStatement.bindLong(1, id);
         sqLiteStatement.executeUpdateDelete();
     }

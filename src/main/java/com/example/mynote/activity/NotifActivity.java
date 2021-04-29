@@ -28,7 +28,7 @@ public class NotifActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notif);
 
-        DB = getBaseContext().openOrCreateDatabase("vidgets.db", MODE_PRIVATE, null);
+        DB = getBaseContext().openOrCreateDatabase(MyGlobal.DB_NAME, MODE_PRIVATE, null);
         notesDAO = new NotesDAO(DB);
         timersDAO = new TimersDAO(DB);
 

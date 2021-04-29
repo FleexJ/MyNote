@@ -17,7 +17,6 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.mynote.R;
 import com.example.mynote.activity.MainActivity;
 import com.example.mynote.activity.NotifActivity;
-import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.entity.Note;
 import com.example.mynote.entity.Timer;
 import com.example.mynote.receiver.MyReceiver;
@@ -29,6 +28,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class MyGlobal {
+    public static final String DB_NAME = "vidgets.db";
+
     //Типа записей
     public static final int TYPE_NOTE = 1;
     public static final int TYPE_TIMER = 2;

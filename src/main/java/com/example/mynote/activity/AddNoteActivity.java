@@ -16,38 +16,34 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.mynote.R;
 import com.example.mynote.dao.IdCountDAO;
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.entity.Note;
 import com.example.mynote.entity.TypeRepeat;
+import com.example.mynote.globalVar.MyGlobal;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
 public class AddNoteActivity extends Activity {
 
+    private SQLiteDatabase DB;
     private NotesDAO notesDAO;
     private IdCountDAO idCountDAO;
-    private SQLiteDatabase DB;
+
     private EditText editText_desc, editText_name;
     private Button button_apply;
     private TextView textView_delay;
     private Spinner spinner_repeat;
     private Calendar calendar = GregorianCalendar.getInstance();
-    private Locale locale = new Locale("ru", "RU");
-    private SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy  HH:mm", locale);
-    private SimpleDateFormat sdfCal = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", locale);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
-        DB = getBaseContext().openOrCreateDatabase("vidgets.db", MODE_PRIVATE, null);
+        DB = getBaseContext().openOrCreateDatabase(MyGlobal.DB_NAME, MODE_PRIVATE, null);
         notesDAO = new NotesDAO(DB);
         idCountDAO = new IdCountDAO(DB);
 
@@ -58,7 +54,9 @@ public class AddNoteActivity extends Activity {
         //Поле с временем напоминания
         textView_delay =  findViewById(R.id.textView_delay);
         //Выводим строку на экран в удобном формате
-        textView_delay.setText(sdfDate.format(calendar.getTime()));
+        textView_delay.setText(
+                MyGlobal.sdfDate.format(calendar.getTime())
+        );
         //Выбор повтора
         spinner_repeat = findViewById(R.id.spinner_repeat);
         spinner_repeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -108,7 +106,9 @@ public class AddNoteActivity extends Activity {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         calendar.set(Calendar.MINUTE, minute);
-                        textView_delay.setText(sdfDate.format(calendar.getTime()));
+                        textView_delay.setText(
+                                MyGlobal.sdfDate.format(calendar.getTime())
+                        );
                     }
                 }, mHour, mMinute, true);
         timePickerDialog.show();
@@ -120,7 +120,9 @@ public class AddNoteActivity extends Activity {
                         calendar.set(Calendar.YEAR, year);
                         calendar.set(Calendar.MONTH, monthOfYear);
                         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        textView_delay.setText(sdfDate.format(calendar.getTime()));
+                        textView_delay.setText(
+                                MyGlobal.sdfDate.format(calendar.getTime())
+                        );
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();

@@ -42,7 +42,7 @@ public class TrashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trash);
-        DB = getBaseContext().openOrCreateDatabase("vidgets.db", MODE_PRIVATE, null);
+        DB = getBaseContext().openOrCreateDatabase(MyGlobal.DB_NAME, MODE_PRIVATE, null);
         trashDAO = new TrashDAO(DB);
         notesDAO = new NotesDAO(DB);
         timersDAO = new TimersDAO(DB);

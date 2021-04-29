@@ -10,15 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrashDAO {
+    private final String table = "trash";
+
     private SQLiteDatabase DB;
 
     public TrashDAO(SQLiteDatabase DB) {
         this.DB = DB;
-        DB.execSQL("CREATE TABLE IF NOT EXISTS trash (id INTEGER PRIMARY KEY, name TEXT, descr TEXT, delay TEXT, type INTEGER);");
+        DB.execSQL("CREATE TABLE IF NOT EXISTS " + table + " (id INTEGER PRIMARY KEY, name TEXT, descr TEXT, delay TEXT, type INTEGER);");
     }
 
     public void insertTrash(TrashNote trashNote) {
-        SQLiteStatement sqLiteStatement = DB.compileStatement("INSERT INTO trash VALUES(?, ?, ?, ?, ?)");
+        SQLiteStatement sqLiteStatement = DB.compileStatement("INSERT INTO " + table + " VALUES(?, ?, ?, ?, ?);");
         sqLiteStatement.bindLong(1, trashNote.getId());
         sqLiteStatement.bindString(2, trashNote.getName());
         sqLiteStatement.bindString(3, trashNote.getDescription());
@@ -28,16 +30,16 @@ public class TrashDAO {
     }
 
     public void deleteTrash(TrashNote trashNote) {
-        DB.execSQL("DELETE FROM trash WHERE id=" + trashNote.getId());
+        DB.execSQL("DELETE FROM " + table + " WHERE id=" + trashNote.getId() + ";");
     }
 
     public void deleteAllTrash() {
-        DB.execSQL("DELETE FROM trash");
+        DB.execSQL("DELETE FROM " + table + ";");
     }
 
     public List<TrashNote> getAllTrash() {
         List<TrashNote> trashNoteList = new ArrayList<>();
-        Cursor cursor = DB.rawQuery("SELECT * FROM trash ORDER BY id ASC;", null);
+        Cursor cursor = DB.rawQuery("SELECT * FROM " + table + " ORDER BY id ASC;", null);
         while (cursor.moveToNext()) {
             trashNoteList.add(new TrashNote(
                     cursor.getInt(0), //id
@@ -47,6 +49,7 @@ public class TrashDAO {
                     cursor.getInt(4) //type
             ));
         }
+        cursor.close();
         return trashNoteList;
     }
 }

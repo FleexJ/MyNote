@@ -24,7 +24,7 @@ public class RebootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent_rec) {
         if ("android.intent.action.BOOT_COMPLETED".equals(intent_rec.getAction())) {
-            DB = context.getApplicationContext().openOrCreateDatabase("vidgets.db", MODE_PRIVATE, null);
+            DB = context.getApplicationContext().openOrCreateDatabase(MyGlobal.DB_NAME, MODE_PRIVATE, null);
             notesDAO = new NotesDAO(DB);
             timersDAO = new TimersDAO(DB);
 

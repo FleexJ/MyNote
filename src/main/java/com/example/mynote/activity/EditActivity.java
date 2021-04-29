@@ -2,13 +2,9 @@ package com.example.mynote.activity;
 
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,13 +16,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
+
 import com.example.mynote.R;
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.entity.Note;
 import com.example.mynote.entity.TypeRepeat;
 import com.example.mynote.globalVar.MyGlobal;
-import com.example.mynote.receiver.MyReceiver;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -41,9 +37,6 @@ public class EditActivity extends Activity {
     private TextView textView_delay, textView_label;
     private Spinner spinner_repeat;
     private Calendar calendar = GregorianCalendar.getInstance();
-    private Locale locale = new Locale("ru", "RU");
-    private SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy  HH:mm", locale);
-    private SimpleDateFormat sdfCal = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", locale);
     private Boolean isSave = false;
     //Объект в котором хранятся общие методы и переменные
     private final MyGlobal myGlobal = new MyGlobal();
@@ -52,7 +45,7 @@ public class EditActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-        DB = getBaseContext().openOrCreateDatabase("vidgets.db", MODE_PRIVATE, null);
+        DB = getBaseContext().openOrCreateDatabase(MyGlobal.DB_NAME, MODE_PRIVATE, null);
         notesDAO = new NotesDAO(DB);
 
         //Заголовок активити
@@ -75,7 +68,9 @@ public class EditActivity extends Activity {
         //Переводим строку в calendar
         calendar.setTimeInMillis(note.getDelayCalendar().getTimeInMillis());
         //Выводим строку на экран в удобном формате
-        textView_delay.setText(sdfDate.format(calendar.getTime()));
+        textView_delay.setText(
+                MyGlobal.sdfDate.format(calendar.getTime())
+        );
 
         //Кнопка принятия
         button_apply = findViewById(R.id.button_apply);
@@ -141,7 +136,9 @@ public class EditActivity extends Activity {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         calendar.set(Calendar.MINUTE, minute);
-                        textView_delay.setText(sdfDate.format(calendar.getTime()));
+                        textView_delay.setText(
+                                MyGlobal.sdfDate.format(calendar.getTime())
+                        );
                     }
                 }, mHour, mMinute, true);
         timePickerDialog.show();
@@ -153,7 +150,9 @@ public class EditActivity extends Activity {
                         calendar.set(Calendar.YEAR, year);
                         calendar.set(Calendar.MONTH, monthOfYear);
                         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        textView_delay.setText(sdfDate.format(calendar.getTime()));
+                        textView_delay.setText(
+                                MyGlobal.sdfDate.format(calendar.getTime())
+                        );
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();

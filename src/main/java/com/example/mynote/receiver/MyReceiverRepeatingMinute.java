@@ -1,20 +1,10 @@
 package com.example.mynote.receiver;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
-import com.example.mynote.R;
-import com.example.mynote.activity.NotifActivity;
 import com.example.mynote.dao.TimersDAO;
 import com.example.mynote.entity.Timer;
 import com.example.mynote.globalVar.MyGlobal;
@@ -30,7 +20,7 @@ public class MyReceiverRepeatingMinute extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        DB = context.getApplicationContext().openOrCreateDatabase("vidgets.db", MODE_PRIVATE, null);
+        DB = context.getApplicationContext().openOrCreateDatabase(MyGlobal.DB_NAME, MODE_PRIVATE, null);
         timersDAO = new TimersDAO(DB);
 
         int id = intent.getIntExtra("id",0);
@@ -42,11 +32,9 @@ public class MyReceiverRepeatingMinute extends BroadcastReceiver {
 
             myGlobal.startAlarmTimers(context, timer);
             myGlobal.showNotifProgressTimers(context, timer);
-        }
-        //Если время вышло, то уведомление
-        else {
+        } else //Если время вышло, то уведомление
             myGlobal.showNotification(context, timer);
-        }
+
         DB.close();
     }
 

@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DB = getBaseContext().openOrCreateDatabase("vidgets.db", MODE_PRIVATE, null);
+        DB = getBaseContext().openOrCreateDatabase(MyGlobal.DB_NAME, MODE_PRIVATE, null);
         notesDAO = new NotesDAO(DB);
         trashDAO = new TrashDAO(DB);
         timersDAO = new TimersDAO(DB);
