@@ -65,10 +65,11 @@ public class MainActivity extends Activity {
         scrollView.setOnTouchListener(new MainSwipeListener(this));
         ScrollView scrollView_minute = findViewById(R.id.ScrollView_minute);
         scrollView_minute.setOnTouchListener(new MainSwipeListener(this));
-        myGlobal.restartAlarmNotes(
-                getApplicationContext(),
-                notesDAO
-        );
+        //Активация всех записей
+        for (Note note : notesDAO.getActiveNotes())
+            myGlobal.startAlarmNote(
+                    getApplicationContext(),
+                    note);
 
         //Настройка tabHost
         TabHost tabHost = findViewById(R.id.tab_menu);

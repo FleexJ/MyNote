@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.dao.TimersDAO;
+import com.example.mynote.entity.Note;
 import com.example.mynote.globalVar.MyGlobal;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -27,10 +28,11 @@ public class RebootReceiver extends BroadcastReceiver {
             notesDAO = new NotesDAO(DB);
             timersDAO = new TimersDAO(DB);
 
-            myGlobal.restartAlarmNotes(
-                    context,
-                    notesDAO
-            );
+            //Активация всех записей
+            for (Note note : notesDAO.getActiveNotes())
+                myGlobal.startAlarmNote(
+                        context,
+                        note);
 
             //Сброс состояний таймера до неактивного
             timersDAO.setStateNullAll();

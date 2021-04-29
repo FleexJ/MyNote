@@ -92,7 +92,7 @@ public class MyGlobal {
         am.setExact(AlarmManager.RTC_WAKEUP, delay_minute.getTimeInMillis(), pendingIntent);
     }
 
-    //функция остановки аларма для записей
+    //функция остановки аларма по id
     public void cancelAlarm(Context context, int id) {
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, MyReceiver.class);
@@ -156,13 +156,6 @@ public class MyGlobal {
     public void cancelNotifProgressTimers(Context context, Timer timer) {
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(timer.getId());
-    }
-
-
-    //Функция заново активирует напоминания, у которых состояние в базе =1
-    public void restartAlarmNotes(Context context, NotesDAO notesDAO){
-        for(Note note : notesDAO.getActiveNotes())
-            startAlarmNote(context, note);
     }
 
 
