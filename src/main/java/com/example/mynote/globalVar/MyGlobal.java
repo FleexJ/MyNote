@@ -73,6 +73,19 @@ public class MyGlobal {
                 pendingIntent);
     }
 
+    //функция остановки аларма по id
+    public void cancelAlarmNote(Context context, int id) {
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, MyReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                context,
+                id,
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+        am.cancel(pendingIntent);
+    }
+
+
     //функция старта аларма для таймеров
     public void startAlarmTimers(Context context, Timer timer) {
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -93,9 +106,9 @@ public class MyGlobal {
     }
 
     //функция остановки аларма по id
-    public void cancelAlarm(Context context, int id) {
+    public void cancelAlarmTimer(Context context, int id) {
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, MyReceiver.class);
+        Intent intent = new Intent(context, MyReceiverRepeatingMinute.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 context,
                 id,

@@ -86,8 +86,7 @@ public class EditActivity extends Activity {
         });
 
         spinner_repeat.setSelection(
-                note.getRepeat().getId()
-        );
+                note.getRepeat().getId());
         spinner_repeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -105,10 +104,7 @@ public class EditActivity extends Activity {
         if(isSave) {
             int id = getIntent().getIntExtra("idEdit",-1);
             //Отменяем напоминание, если изменения были приняты
-            myGlobal.cancelAlarm(
-                    getApplicationContext(),
-                    id
-            );
+            myGlobal.cancelAlarmNote(getApplicationContext(), id);
 
             String desc = editText_desc.getText().toString();
             String name = editText_name.getText().toString();

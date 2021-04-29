@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
         scrollView.setOnTouchListener(new MainSwipeListener(this));
         ScrollView scrollView_minute = findViewById(R.id.ScrollView_minute);
         scrollView_minute.setOnTouchListener(new MainSwipeListener(this));
-        //Активация всех записей
+        //Переактивация всех активных записей
         for (Note note : notesDAO.getActiveNotes())
             myGlobal.startAlarmNote(getApplicationContext(), note);
 
@@ -224,9 +224,7 @@ public class MainActivity extends Activity {
                             note.setState(Note.NOT_ACTIVE_STATE);
                             notesDAO.editNote(note);
                             //Удаление аларма для записи
-                            myGlobal.cancelAlarm(
-                                    getApplicationContext(),
-                                    note.getId());
+                            myGlobal.cancelAlarmNote(getApplicationContext(), note.getId());
                         }
                         setCountDownTimer_notes();
                     }
@@ -254,9 +252,7 @@ public class MainActivity extends Activity {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 //Удаление аларм менеджера, в случае удаления записи из бд
-                                                myGlobal.cancelAlarm(
-                                                        getApplicationContext(),
-                                                        note.getId());
+                                                myGlobal.cancelAlarmNote(getApplicationContext(), note.getId());
 
                                                 notesDAO.deleteNote(note);
                                                 trashDAO.insertTrash(new TrashNote(
@@ -425,13 +421,9 @@ public class MainActivity extends Activity {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 //Удаление аларм менеджера, в случае удаления записи из бд
-                                                myGlobal.cancelAlarm(
-                                                        getApplicationContext(),
-                                                        timer.getId());
+                                                myGlobal.cancelAlarmTimer(getApplicationContext(), timer.getId());
                                                 //Удаление уведомления прогресса
-                                                myGlobal.cancelNotifProgressTimers(
-                                                        getApplicationContext(),
-                                                        timer);
+                                                myGlobal.cancelNotifProgressTimers(getApplicationContext(), timer);
 
                                                 timersDAO.deleteTimer(timer);
                                                 trashDAO.insertTrash(new TrashNote(
@@ -468,13 +460,9 @@ public class MainActivity extends Activity {
                         CheckBox checkBox = (CheckBox) buttonView;
                         if(checkBox.isChecked()) {
                             //Запуск аларма для таймера
-                            myGlobal.startAlarmTimers(
-                                    getApplicationContext(),
-                                    timer);
+                            myGlobal.startAlarmTimers(getApplicationContext(), timer);
                             //Показ уведомления прогресса
-                            myGlobal.showNotifProgressTimers(
-                                    getApplicationContext(),
-                                    timer);
+                            myGlobal.showNotifProgressTimers(getApplicationContext(), timer);
 
                             timer.setState(Timer.ACTIVE_STATE);
                             timersDAO.editTimer(timer);
@@ -486,13 +474,9 @@ public class MainActivity extends Activity {
                             timer.setState(Timer.NOT_ACTIVE_STATE);
                             timersDAO.editTimer(timer);
                             //Удаление аларма для таймера
-                            myGlobal.startAlarmTimers(
-                                    getApplicationContext(),
-                                    timer);
+                            myGlobal.startAlarmTimers(getApplicationContext(), timer);
                             //Удаление уведомления прогресса
-                            myGlobal.cancelNotifProgressTimers(
-                                    getApplicationContext(),
-                                    timer);
+                            myGlobal.cancelNotifProgressTimers(getApplicationContext(), timer);
                         }
                         setCountDownTimer_timers();
                     }
@@ -526,9 +510,7 @@ public class MainActivity extends Activity {
                         timer.setState(Timer.NOT_ACTIVE_STATE);
                         timersDAO.editTimer(timer);
                         //Отменяем напоминание
-                        myGlobal.cancelAlarm(
-                                getApplicationContext(),
-                                timer.getId());
+                        myGlobal.cancelAlarmTimer(getApplicationContext(), timer.getId());
 
                         checkBox_state_timer[final_i].setChecked(false);
 

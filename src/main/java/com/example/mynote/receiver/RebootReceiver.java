@@ -32,7 +32,7 @@ public class RebootReceiver extends BroadcastReceiver {
             notesDAO = new NotesDAO(db);
             timersDAO = new TimersDAO(db);
 
-            //Активация всех записей
+            //Переактивация всех активных записей
             for (Note note : notesDAO.getActiveNotes())
                 myGlobal.startAlarmNote(context, note);
 
