@@ -122,11 +122,9 @@ public class MyGlobal {
             builder.setContentIntent(pendingIntent)
                     .setSmallIcon(R.drawable.icon_notif)
                     .setContentTitle(
-                            context.getString(R.string.notifTimerWorkTitle, timer.getName())
-                    )
+                            context.getString(R.string.notifTimerWorkTitle, timer.getName()))
                     .setContentText(
-                            context.getString(R.string.timerProgress, timer.getMinute())
-                    )
+                            context.getString(R.string.timerProgress, timer.getMinute()))
                     .setShowWhen(true)
                     .setOngoing(true)
                     .setAutoCancel(false);
@@ -139,11 +137,9 @@ public class MyGlobal {
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(context, CHANNEL_ID_PROGRESS_TIMER)
                             .setContentTitle(
-                                    context.getString(R.string.notifTimerWorkTitle, timer.getName())
-                            )
+                                    context.getString(R.string.notifTimerWorkTitle, timer.getName()))
                             .setContentText(
-                                    context.getString(R.string.timerProgress, timer.getMinute())
-                            )
+                                    context.getString(R.string.timerProgress, timer.getMinute()))
                             .setContentIntent(pendingIntent)
                             .setPriority(NotificationCompat.PRIORITY_MIN)
                             .setAutoCancel(true)

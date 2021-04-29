@@ -99,8 +99,7 @@ public class TrashActivity extends Activity {
         }
         else myGlobal.makeToastShort(
                 getApplicationContext(),
-                getString(R.string.emptyTrashYet)
-        );
+                getString(R.string.emptyTrashYet));
     }
 
     public void doSomething() {
@@ -181,8 +180,7 @@ public class TrashActivity extends Activity {
                                                 idCountDAO.deleteId(trashNote.getId());
                                                 myGlobal.makeToastShort(
                                                         getApplicationContext(),
-                                                        getString(R.string.toastDeletedFromTrash)
-                                                );
+                                                        getString(R.string.toastDeletedFromTrash));
                                                 dialog.cancel();
                                                 doSomething();
                                             }
@@ -219,21 +217,20 @@ public class TrashActivity extends Activity {
                                                             trashNote.getDescription(),
                                                             0,
                                                             trashNote.getDelay(),
-                                                            TypeRepeat.NO
-                                                    ));
+                                                            TypeRepeat.NO)
+                                                    );
                                                 }
                                                 else if (trashNote.getType() == MyGlobal.TYPE_TIMER) {
                                                     timersDAO.insertTimer(new Timer(
                                                             trashNote.getId(),
                                                             trashNote.getName(),
                                                             0,
-                                                            (int) trashNote.getDelay()
-                                                    ));
+                                                            (int) trashNote.getDelay())
+                                                    );
                                                 }
                                                 myGlobal.makeToastShort(
                                                         getApplicationContext(),
-                                                        getString(R.string.toastBackedNoteFromTrash)
-                                                );
+                                                        getString(R.string.toastBackedNoteFromTrash));
                                                 dialog.cancel();
                                                 doSomething();
                                             }

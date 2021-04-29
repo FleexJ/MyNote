@@ -77,14 +77,12 @@ public class MainActivity extends Activity {
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tag1");
         tabSpec.setContent(R.id.tab1);
         tabSpec.setIndicator(
-                getString(R.string.tab_simpleNoteTitle)
-        );
+                getString(R.string.tab_simpleNoteTitle));
         tabHost.addTab(tabSpec);
         tabSpec = tabHost.newTabSpec("tag2");
         tabSpec.setContent(R.id.tab2);
         tabSpec.setIndicator(
-                getString(R.string.tab_timerTitle)
-        );
+                getString(R.string.tab_timerTitle));
         tabHost.addTab(tabSpec);
         tabHost.setCurrentTab(0);
 
@@ -166,10 +164,10 @@ public class MainActivity extends Activity {
 
                 //Выводим задержку в удобном формате
                 textView_delay_note[i].setText(
-                        getString(R.string.viewSimpleNoteBottom,
+                        getString(
+                                R.string.viewSimpleNoteBottom,
                                 MyGlobal.sdfDate.format(noteList.get(i).getDelayCalendar().getTime()),
-                                noteList.get(i).getRepeat().getString(this)
-                                )
+                                noteList.get(i).getRepeat().getString(this))
                 );
 
                 //Добавление представлений на экран
@@ -256,8 +254,7 @@ public class MainActivity extends Activity {
                                                 //Удаление аларм менеджера, в случае удаления записи из бд
                                                 myGlobal.cancelAlarm(
                                                         getApplicationContext(),
-                                                        note.getId()
-                                                );
+                                                        note.getId());
 
                                                 notesDAO.deleteNote(note);
                                                 trashDAO.insertTrash(new TrashNote(
@@ -265,8 +262,8 @@ public class MainActivity extends Activity {
                                                         note.getName(),
                                                         note.getDescription(),
                                                         note.getDelay(),
-                                                        MyGlobal.TYPE_NOTE
-                                                ));
+                                                        MyGlobal.TYPE_NOTE)
+                                                );
                                                 myGlobal.makeToastShort(
                                                         getApplicationContext(),
                                                         getString(R.string.toastNoteDeleted));
@@ -428,13 +425,11 @@ public class MainActivity extends Activity {
                                                 //Удаление аларм менеджера, в случае удаления записи из бд
                                                 myGlobal.cancelAlarm(
                                                         getApplicationContext(),
-                                                        timer.getId()
-                                                );
+                                                        timer.getId());
                                                 //Удаление уведомления прогресса
                                                 myGlobal.cancelNotifProgressTimers(
                                                         getApplicationContext(),
-                                                        timer
-                                                );
+                                                        timer);
 
                                                 timersDAO.deleteTimer(timer);
                                                 trashDAO.insertTrash(new TrashNote(
@@ -442,12 +437,11 @@ public class MainActivity extends Activity {
                                                         timer.getName(),
                                                         "",
                                                         timer.getMinute(),
-                                                        MyGlobal.TYPE_TIMER
-                                                ));
+                                                        MyGlobal.TYPE_TIMER)
+                                                );
                                                 myGlobal.makeToastShort(
                                                         getApplicationContext(),
-                                                        getString(R.string.toastTimerDeleted)
-                                                );
+                                                        getString(R.string.toastTimerDeleted));
                                                 dialog.cancel();
                                                 doMinute();
                                             }
@@ -484,8 +478,7 @@ public class MainActivity extends Activity {
                             timersDAO.editTimer(timer);
                             myGlobal.makeToastShort(
                                     getApplicationContext(),
-                                    getString(R.string.toastTimerStarted, timer.getMinute())
-                            );
+                                    getString(R.string.toastTimerStarted, timer.getMinute()));
                         }
                         else {
                             timer.setState(0);
@@ -566,8 +559,8 @@ public class MainActivity extends Activity {
                 newId,
                 getString(R.string.timerDefaultName),
                 0,
-                1
-        ));
+                1)
+        );
         idCountDAO.insertIdCount(newId);
         doMinute();
     }
@@ -582,11 +575,9 @@ public class MainActivity extends Activity {
     public void clickPopupMenu(View view){
         PopupMenu popup = new PopupMenu(getApplicationContext(), view);
         popup.getMenu().add(Menu.NONE, 0, Menu.NONE,
-                getString(R.string.popupTrash)
-        );
+                getString(R.string.popupTrash));
         popup.getMenu().add(Menu.NONE, 1, Menu.NONE,
-                getString(R.string.popupUpdateScreen)
-        );
+                getString(R.string.popupUpdateScreen));
         popup.show();
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
