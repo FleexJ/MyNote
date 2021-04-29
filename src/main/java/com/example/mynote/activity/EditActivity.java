@@ -23,15 +23,14 @@ import com.example.mynote.entity.Note;
 import com.example.mynote.entity.TypeRepeat;
 import com.example.mynote.globalVar.MyGlobal;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
 public class EditActivity extends Activity {
 
-    private NotesDAO notesDAO;
     private SQLiteDatabase DB;
+    private NotesDAO notesDAO;
+
     private EditText editText_desc, editText_name;
     private Button button_apply;
     private TextView textView_delay, textView_label;

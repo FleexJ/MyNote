@@ -115,8 +115,8 @@ public class MainActivity extends Activity {
         linear_note.removeAllViews();
 
         final List<Note> noteList = notesDAO.getAllNotes();
-
         final int note_k = noteList.size();
+
         //Форма для вывода информации из бд
         if (note_k == 0) {//Если в таблице нет ни одной записи, то выводим сообщение об этом, путем добавления на слой textView и imageView
             TextView textView_null_note = new TextView(this, null, 0, R.style.BDout_null);
@@ -145,64 +145,65 @@ public class MainActivity extends Activity {
 
             for (int i = 0 ; i < note_k; i++) {
                 final int final_i = i;
-                linear_name_checkbox[final_i] = new LinearLayout(this);
-                checkBox_note[final_i] = new CheckBox(this);
+                final Note note = noteList.get(i);
+
+                linear_name_checkbox[i] = new LinearLayout(this);
+                checkBox_note[i] = new CheckBox(this);
                 //Инициализация массивов данных с присвоением стиля
-                textView_name_note[final_i] = new TextView(this, null, 0, R.style.BDout_name_note);
-                //textView_name_note[final_i].setTypeface(Typeface.createFromAsset(getAssets(), "fonts/main_font.ttf"));
-                textView_desc_note[final_i] = new TextView(this, null, 0, R.style.BDout_desc);
-                textView_delay_note[final_i] = new TextView(this , null, 0, R.style.BDout_delay);
+                textView_name_note[i] = new TextView(this, null, 0, R.style.BDout_name_note);
+                //textView_name_note[i].setTypeface(Typeface.createFromAsset(getAssets(), "fonts/main_font.ttf"));
+                textView_desc_note[i] = new TextView(this, null, 0, R.style.BDout_desc);
+                textView_delay_note[i] = new TextView(this , null, 0, R.style.BDout_delay);
 
                 //Внесении данных результата запроса в массивы
-                if(noteList.get(final_i).getState() == 1)
-                    checkBox_note[final_i].setChecked(true);
+                if(noteList.get(i).getState() == 1)
+                    checkBox_note[i].setChecked(true);
                 else
-                    checkBox_note[final_i].setChecked(false);
+                    checkBox_note[i].setChecked(false);
 
-                textView_name_note[final_i].setText(noteList.get(final_i).getName());
-                textView_desc_note[final_i].setText(noteList.get(final_i).getDescription());
+                textView_name_note[i].setText(noteList.get(i).getName());
+                textView_desc_note[i].setText(noteList.get(i).getDescription());
 
                 //Выводим задержку в удобном формате
-                textView_delay_note[final_i].setText(
+                textView_delay_note[i].setText(
                         getString(R.string.viewSimpleNoteBottom,
-                                MyGlobal.sdfDate.format(noteList.get(final_i).getDelayCalendar().getTime()),
-                                noteList.get(final_i).getRepeat().getString(this)
+                                MyGlobal.sdfDate.format(noteList.get(i).getDelayCalendar().getTime()),
+                                noteList.get(i).getRepeat().getString(this)
                                 )
                 );
 
                 //Добавление представлений на экран
-                linear_bd_note[final_i] = new LinearLayout(this, null, 0, R.style.BDout_layout);
-                linear_bd_note[final_i].setBackgroundResource(R.drawable.linear_round);
-//                linear_bd_note[final_i].addView(textView_name_note[final_i]);
-                linear_name_checkbox[final_i].addView(checkBox_note[final_i]);
-                linear_name_checkbox[final_i].addView(textView_name_note[final_i]);
-                linear_bd_note[final_i].addView(linear_name_checkbox[final_i]);
-                linear_bd_note[final_i].addView(new View(this, null, 0, R.style.BDout_line));
+                linear_bd_note[i] = new LinearLayout(this, null, 0, R.style.BDout_layout);
+                linear_bd_note[i].setBackgroundResource(R.drawable.linear_round);
+//                linear_bd_note[i].addView(textView_name_note[i]);
+                linear_name_checkbox[i].addView(checkBox_note[i]);
+                linear_name_checkbox[i].addView(textView_name_note[i]);
+                linear_bd_note[i].addView(linear_name_checkbox[i]);
+                linear_bd_note[i].addView(new View(this, null, 0, R.style.BDout_line));
 
                 //Если поле описания не пусто, то добавляем его на экран
-                if(!textView_desc_note[final_i].getText().toString().isEmpty())
-                    linear_bd_note[final_i].addView(textView_desc_note[final_i]);
+                if(!textView_desc_note[i].getText().toString().isEmpty())
+                    linear_bd_note[i].addView(textView_desc_note[i]);
 
-                linear_bd_note[final_i].addView(textView_delay_note[final_i]);
-                linear_note.addView(linear_bd_note[final_i]);
+                linear_bd_note[i].addView(textView_delay_note[i]);
+                linear_note.addView(linear_bd_note[i]);
 
                 //Слушатель для клика по состоянию записи
-                checkBox_note[final_i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                checkBox_note[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         CheckBox checkBox = (CheckBox) buttonView;
                         if(checkBox.isChecked()) {
-                            if(System.currentTimeMillis() >= noteList.get(final_i).getDelayCalendar().getTimeInMillis()) {
+                            if(System.currentTimeMillis() >= note.getDelayCalendar().getTimeInMillis()) {
                                 myGlobal.makeToastShort(
                                         getApplicationContext(),
-                                        getString(R.string.toastIncorrectTimeForStart)
-                                        );
+                                        getString(R.string.toastIncorrectTimeForStart));
                                 checkBox.setChecked(false);
                             } else {
                                 //Запуск аларма для записи
-                                myGlobal.startAlarmNote(getApplicationContext(), noteList.get(final_i));
-                                noteList.get(final_i).setState(1);
-                                notesDAO.editNote(noteList.get(final_i));
+                                myGlobal.startAlarmNote(getApplicationContext(), note);
+                                note.setState(1);
+                                notesDAO.editNote(note);
 //                                AlertDialog.Builder alert_builder = new AlertDialog.Builder(MainActivity.this);
 //                                alert_builder.setMessage("Для корректной работы приложения, нужно разрешить автозапуск в системных настройках приложения.")
 //                                        .setCancelable(true)
@@ -216,22 +217,21 @@ public class MainActivity extends Activity {
 //                                alert_builder.show();
                                 myGlobal.makeToastShort(
                                         getApplicationContext(),
-                                        getString(R.string.toastNoteStarted)
-                                );
+                                        getString(R.string.toastNoteStarted));
                                 checkBox_note[final_i].setChecked(false);
                             }
                         } else {
-                            noteList.get(final_i).setState(0);
-                            notesDAO.editNote(noteList.get(final_i));
+                            note.setState(0);
+                            notesDAO.editNote(note);
                             //Удаление аларма для записи
                             myGlobal.cancelAlarm(
                                     getApplicationContext(),
-                                    noteList.get(final_i).getId());
+                                    note.getId());
                         }
                         setCountDownTimer_notes();
                     }
                 });
-                checkBox_note[final_i].setOnTouchListener(new View.OnTouchListener() {
+                checkBox_note[i].setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         if (countDownTimer_notes != null)
@@ -241,14 +241,12 @@ public class MainActivity extends Activity {
                 });
 
                 //Диалог предлагающий удалить запись при долгом клике
-                linear_bd_note[final_i].setOnLongClickListener(new View.OnLongClickListener() {
+                linear_bd_note[i].setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
                         AlertDialog.Builder alert_builder = new AlertDialog.Builder(MainActivity.this);
                         alert_builder
-                                .setMessage(
-                                        getString(R.string.dialogueTitleDeleteNote)
-                                )
+                                .setMessage(getString(R.string.dialogueTitleDeleteNote))
                                 .setCancelable(true)
                                 .setPositiveButton(
                                         getString(R.string.dialogueOk) ,
@@ -258,27 +256,26 @@ public class MainActivity extends Activity {
                                                 //Удаление аларм менеджера, в случае удаления записи из бд
                                                 myGlobal.cancelAlarm(
                                                         getApplicationContext(),
-                                                        noteList.get(final_i).getId()
+                                                        note.getId()
                                                 );
 
-                                                notesDAO.deleteNote(noteList.get(final_i));
+                                                notesDAO.deleteNote(note);
                                                 trashDAO.insertTrash(new TrashNote(
-                                                        noteList.get(final_i).getId(),
-                                                        noteList.get(final_i).getName(),
-                                                        noteList.get(final_i).getDescription(),
-                                                        noteList.get(final_i).getDelay(),
+                                                        note.getId(),
+                                                        note.getName(),
+                                                        note.getDescription(),
+                                                        note.getDelay(),
                                                         MyGlobal.TYPE_NOTE
                                                 ));
                                                 myGlobal.makeToastShort(
                                                         getApplicationContext(),
-                                                        getString(R.string.toastNoteDeleted)
-                                                );
+                                                        getString(R.string.toastNoteDeleted));
                                                 dialog.cancel();
                                                 doSomething();
                                             }
                                         })
                                 .setNegativeButton(
-                                        getString(R.string.dialogueCancel) ,
+                                        getString(R.string.dialogueCancel),
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
@@ -291,12 +288,12 @@ public class MainActivity extends Activity {
                 });
 
                 //Редактирование записи по одному клику
-                linear_bd_note[final_i].setOnClickListener(new View.OnClickListener() {
+                linear_bd_note[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intentEdit = new Intent(".EditActivity");
                         //Передаем в другое активити индекс нажатой записи
-                        intentEdit.putExtra("idEdit", noteList.get(final_i).getId());
+                        intentEdit.putExtra("idEdit", note.getId());
                         startActivity(intentEdit);
                         //Удаление слушателя, чтобы не было двойного вызова при двойном клике
                         v.setOnClickListener(null);
@@ -319,10 +316,10 @@ public class MainActivity extends Activity {
         linear_timer.removeAllViews();
 
         final List<Timer> timers = timersDAO.getAllTimers();
+        int timer_k = timers.size();
 
-        int note_k = timers.size();
         //Форма для вывода информации из бд
-        if (note_k == 0) {//Если в таблице нет ни одной записи, то выводим сообщение об этом, путем добавления на слой textView и imageView
+        if (timer_k == 0) {//Если в таблице нет ни одной записи, то выводим сообщение об этом, путем добавления на слой textView и imageView
             TextView textView_null_timer = new TextView(this, null, 0, R.style.BDout_null);
             textView_null_timer.setText(
                     getString(R.string.emptyTimersYet)
@@ -335,46 +332,48 @@ public class MainActivity extends Activity {
         }
         else {
             //Если в таблице есть какие-то записи
-            final LinearLayout[] linear_name_state = new LinearLayout[note_k];
-            final CheckBox[] checkBox_state_timer = new CheckBox[note_k];
+            final LinearLayout[] linear_name_state = new LinearLayout[timer_k];
+            final CheckBox[] checkBox_state_timer = new CheckBox[timer_k];
             //Поле для хранения имени
-            final TextView[] textView_name_timer = new TextView[note_k];
+            final TextView[] textView_name_timer = new TextView[timer_k];
             //Текстовое поле для прогресса
-            final TextView[] textView_minute_timer = new TextView[note_k];
+            final TextView[] textView_minute_timer = new TextView[timer_k];
             //Поле задержки
-            final SeekBar[] seekBar_minute_timer = new SeekBar[note_k];
+            final SeekBar[] seekBar_minute_timer = new SeekBar[timer_k];
             //Общий лэйаут для хранения всех данных одной записи
-            final LinearLayout[] linear_bd_timer = new LinearLayout[note_k];
+            final LinearLayout[] linear_bd_timer = new LinearLayout[timer_k];
 
-            for (int i = 0; i < note_k; i++) {
+            for (int i = 0; i < timer_k; i++) {
                 final int final_i = i;
-                linear_name_state[final_i] = new LinearLayout(this, null, 0, R.style.BDout_name);
-                checkBox_state_timer[final_i] = new CheckBox(this);
-                textView_name_timer[final_i] = new TextView(this, null, 0, R.style.BDout_name);
-                textView_minute_timer[final_i] = new TextView(this, null, 0, R.style.BDout_minute);
-                seekBar_minute_timer[final_i] = new SeekBar(this, null, 0, R.style.BDout_seekBar);
-                linear_bd_timer[final_i] = new LinearLayout(this, null, 0, R.style.BDout_layout);
+                final Timer timer = timers.get(i);
+
+                linear_name_state[i] = new LinearLayout(this, null, 0, R.style.BDout_name);
+                checkBox_state_timer[i] = new CheckBox(this);
+                textView_name_timer[i] = new TextView(this, null, 0, R.style.BDout_name);
+                textView_minute_timer[i] = new TextView(this, null, 0, R.style.BDout_minute);
+                seekBar_minute_timer[i] = new SeekBar(this, null, 0, R.style.BDout_seekBar);
+                linear_bd_timer[i] = new LinearLayout(this, null, 0, R.style.BDout_layout);
 
                 //Внесении данных результата запроса в массивы
-                textView_name_timer[final_i].setText(timers.get(final_i).getName());
+                textView_name_timer[i].setText(timer.getName());
                 //Инициализация переключателя состояния
-                if(timers.get(final_i).getState() == 1)
-                    checkBox_state_timer[final_i].setChecked(true);
+                if(timer.getState() == 1)
+                    checkBox_state_timer[i].setChecked(true);
                 else
-                    checkBox_state_timer[final_i].setChecked(false);
+                    checkBox_state_timer[i].setChecked(false);
 
                 //Инициализация прогресса минут
-                textView_minute_timer[final_i].setText(
-                        getString(R.string.timerProgress, timers.get(final_i).getMinute())
+                textView_minute_timer[i].setText(
+                        getString(R.string.timerProgress, timers.get(i).getMinute())
                 );
-                seekBar_minute_timer[final_i].setMax(61);
-                seekBar_minute_timer[final_i].setProgress(timers.get(final_i).getMinute());
+                seekBar_minute_timer[i].setMax(61);
+                seekBar_minute_timer[i].setProgress(timers.get(i).getMinute());
                 //Задаем кастомный вид seekBar
-                //seekBar_minute_timer[final_i].setProgressDrawable(getDrawable(R.drawable.seekbar_custom));
-                //seekBar_minute_timer[final_i].setThumb(getDrawable(R.drawable.seekbar_thumb));
+                //seekBar_minute_timer[i].setProgressDrawable(getDrawable(R.drawable.seekbar_custom));
+                //seekBar_minute_timer[i].setThumb(getDrawable(R.drawable.seekbar_thumb));
 
                 //Слушатель одного клика по записи, здесь отображается диалоговое окно, которое предлагает ввести новое название таймера
-                linear_bd_timer[final_i].setOnClickListener(new View.OnClickListener() {
+                linear_bd_timer[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         LayoutInflater li = LayoutInflater.from(MainActivity.this);
@@ -384,24 +383,23 @@ public class MainActivity extends Activity {
                         mDialogBuilder.setView(promptsView);
                         //Настраиваем отображение поля для ввода текста в открытом диалоге:
                         final EditText userInput = promptsView.findViewById(R.id.editName_minute);
-                        userInput.setText(timers.get(final_i).getName());
+                        userInput.setText(timer.getName());
                         //Настраиваем сообщение в диалоговом окне:
-                        mDialogBuilder
-                                .setCancelable(true)
+                        mDialogBuilder.setCancelable(true)
                                 .setPositiveButton(
-                                        getString(R.string.dialogueOk) ,
-                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                if(!userInput.getText().toString().isEmpty()) {
-                                                    timers.get(final_i).setName(userInput.getText().toString());
-                                                    timersDAO.editTimer(timers.get(final_i));
-                                                    textView_name_timer[final_i].setText(userInput.getText().toString());
-                                                }
+                                        getString(R.string.dialogueOk),
+                                        new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        if(!userInput.getText().toString().isEmpty()) {
+                                                timer.setName(userInput.getText().toString());
+                                                timersDAO.editTimer(timer);
+                                                textView_name_timer[final_i].setText(userInput.getText().toString());
                                             }
+                                        }
                                         })
                                 .setNegativeButton(
-                                        getString(R.string.dialogueCancel) ,
+                                        getString(R.string.dialogueCancel),
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
@@ -415,36 +413,35 @@ public class MainActivity extends Activity {
                 });
 
                 //Диалог предлагающий удалить таймер при долгом клике
-                linear_bd_timer[final_i].setOnLongClickListener(new View.OnLongClickListener() {
+                linear_bd_timer[i].setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
                         AlertDialog.Builder alert_builder = new AlertDialog.Builder(MainActivity.this);
                         alert_builder
-                                .setMessage(
-                                        getString(R.string.dialogueTitleDeleteTimer))
+                                .setMessage(getString(R.string.dialogueTitleDeleteTimer))
                                 .setCancelable(true)
                                 .setPositiveButton(
-                                        getString(R.string.dialogueOk) ,
+                                        getString(R.string.dialogueOk),
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 //Удаление аларм менеджера, в случае удаления записи из бд
                                                 myGlobal.cancelAlarm(
                                                         getApplicationContext(),
-                                                        timers.get(final_i).getId()
+                                                        timer.getId()
                                                 );
                                                 //Удаление уведомления прогресса
                                                 myGlobal.cancelNotifProgressTimers(
                                                         getApplicationContext(),
-                                                        timers.get(final_i)
+                                                        timer
                                                 );
 
-                                                timersDAO.deleteTimer(timers.get(final_i));
+                                                timersDAO.deleteTimer(timer);
                                                 trashDAO.insertTrash(new TrashNote(
-                                                        timers.get(final_i).getId(),
-                                                        timers.get(final_i).getName(),
+                                                        timer.getId(),
+                                                        timer.getName(),
                                                         "",
-                                                        timers.get(final_i).getMinute(),
+                                                        timer.getMinute(),
                                                         MyGlobal.TYPE_TIMER
                                                 ));
                                                 myGlobal.makeToastShort(
@@ -456,7 +453,7 @@ public class MainActivity extends Activity {
                                             }
                                         })
                                 .setNegativeButton(
-                                        getString(R.string.dialogueCancel) ,
+                                        getString(R.string.dialogueCancel),
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
@@ -469,7 +466,7 @@ public class MainActivity extends Activity {
                 });
 
                 //Слушатель переключателя состояния
-                checkBox_state_timer[final_i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                checkBox_state_timer[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         CheckBox checkBox = (CheckBox) buttonView;
@@ -477,39 +474,35 @@ public class MainActivity extends Activity {
                             //Запуск аларма для таймера
                             myGlobal.startAlarmTimers(
                                     getApplicationContext(),
-                                    timers.get(final_i)
-                            );
+                                    timer);
                             //Показ уведомления прогресса
                             myGlobal.showNotifProgressTimers(
                                     getApplicationContext(),
-                                    timers.get(final_i)
-                            );
+                                    timer);
 
-                            timers.get(final_i).setState(1);
-                            timersDAO.editTimer(timers.get(final_i));
+                            timer.setState(1);
+                            timersDAO.editTimer(timer);
                             myGlobal.makeToastShort(
                                     getApplicationContext(),
-                                    getString(R.string.toastTimerStarted, timers.get(final_i).getMinute())
+                                    getString(R.string.toastTimerStarted, timer.getMinute())
                             );
                         }
                         else {
-                            timers.get(final_i).setState(0);
-                            timersDAO.editTimer(timers.get(final_i));
+                            timer.setState(0);
+                            timersDAO.editTimer(timer);
                             //Удаление аларма для таймера
                             myGlobal.startAlarmTimers(
                                     getApplicationContext(),
-                                    timers.get(final_i)
-                            );
+                                    timer);
                             //Удаление уведомления прогресса
                             myGlobal.cancelNotifProgressTimers(
                                     getApplicationContext(),
-                                    timers.get(final_i)
-                            );
+                                    timer);
                         }
                         setCountDownTimer_timers();
                     }
                 });
-                checkBox_state_timer[final_i].setOnTouchListener(new View.OnTouchListener() {
+                checkBox_state_timer[i].setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         if (countDownTimer_timers != null)
@@ -519,12 +512,11 @@ public class MainActivity extends Activity {
                 });
 
                 //Слушатель смены прогресса SeekBar
-                seekBar_minute_timer[final_i].setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                seekBar_minute_timer[i].setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         textView_minute_timer[final_i].setText(
-                                getString(R.string.timerProgress, progress)
-                        );
+                                getString(R.string.timerProgress, progress));
                     }
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {
@@ -535,14 +527,13 @@ public class MainActivity extends Activity {
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         if(seekBar.getProgress() == 0)
                             seekBar.setProgress(1);
-                        timers.get(final_i).setMinute(seekBar.getProgress());
-                        timers.get(final_i).setState(0);
-                        timersDAO.editTimer(timers.get(final_i));
+                        timer.setMinute(seekBar.getProgress());
+                        timer.setState(0);
+                        timersDAO.editTimer(timer);
                         //Отменяем напоминание
                         myGlobal.cancelAlarm(
                                 getApplicationContext(),
-                                timers.get(final_i).getId()
-                        );
+                                timer.getId());
 
                         checkBox_state_timer[final_i].setChecked(false);
 
@@ -610,8 +601,7 @@ public class MainActivity extends Activity {
                         doMinute();
                         myGlobal.makeToastShort(
                                 getApplicationContext(),
-                                getString(R.string.popupUpdated)
-                        );
+                                getString(R.string.popupUpdated));
                         break;
                 }
                 return true;

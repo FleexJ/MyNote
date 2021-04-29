@@ -30,11 +30,11 @@ import java.util.List;
 
 public class TrashActivity extends Activity {
 
+    private SQLiteDatabase DB;
     private TrashDAO trashDAO;
     private NotesDAO notesDAO;
     private TimersDAO timersDAO;
     private IdCountDAO idCountDAO;
-    private SQLiteDatabase DB;
     //Объект общих функций
     private final MyGlobal myGlobal = new MyGlobal();
 
@@ -72,9 +72,7 @@ public class TrashActivity extends Activity {
         AlertDialog.Builder alert_builder = new AlertDialog.Builder(TrashActivity.this);
         if(trashNoteList.size() != 0) {
             alert_builder
-                    .setMessage(
-                            getString(R.string.dialogueClearTrash)
-                    )
+                    .setMessage(getString(R.string.dialogueClearTrash))
                     .setCancelable(true)
                     .setPositiveButton(
                             getString(R.string.dialogueClearTrashPositive),
@@ -84,8 +82,7 @@ public class TrashActivity extends Activity {
                                     trashDAO.deleteAllTrash();
                                     myGlobal.makeToastShort(
                                             getApplicationContext(),
-                                            getString(R.string.toastClearedTrash)
-                                    );
+                                            getString(R.string.toastClearedTrash));
                                     dialog.cancel();
                                     doSomething();
                                 }
@@ -110,15 +107,11 @@ public class TrashActivity extends Activity {
         LinearLayout linear_trash = findViewById(R.id.linear_trash);
         linear_trash.removeAllViews();
         final List<TrashNote> trashNoteList = trashDAO.getAllTrash();
-
-        //Подсчет количества записей корзины
         int trash_k = trashNoteList.size(), i;
 
         if (trash_k == 0) {//Если в таблице нет ни одной записи, то выводим сообщение об этом, путем добавления на слой textView и imageView
             TextView textView_null = new TextView(this, null, 0, R.style.BDout_null);
-            textView_null.setText(
-                    getString(R.string.emptyTrashYet)
-            );
+            textView_null.setText(getString(R.string.emptyTrashYet));
             linear_trash.addView(textView_null);
             ImageView imageView_null = new ImageView(this, null, 0, R.style.BDout_null);
             imageView_null.setImageResource(R.drawable.icon_null);
@@ -136,7 +129,8 @@ public class TrashActivity extends Activity {
             LinearLayout[] linear_bd = new LinearLayout[trash_k];
 
             for (i=0; i<trash_k; i++) {
-                final int final_i = i;
+//                final int final_i = i;
+                final TrashNote trashNote = trashNoteList.get(i);
 
                 //Инициализация массивов данных с присвоением стиля
                 textView_name[i] = new TextView(this, null, 0, R.style.BDout_name);
@@ -144,16 +138,16 @@ public class TrashActivity extends Activity {
                 textView_delay[i] = new TextView(this , null, 0, R.style.BDout_delay);
 
                 //Внесении данных результата запроса в массивы
-                textView_name[i].setText(trashNoteList.get(final_i).getName());
-                textView_desc[i].setText(trashNoteList.get(final_i).getDescription());
+                textView_name[i].setText(trashNoteList.get(i).getName());
+                textView_desc[i].setText(trashNoteList.get(i).getDescription());
                 //Выводим задержку в удобном формате
-                if(trashNoteList.get(final_i).getType() == MyGlobal.TYPE_NOTE)
+                if(trashNoteList.get(i).getType() == MyGlobal.TYPE_NOTE)
                     textView_delay[i].setText(
-                            MyGlobal.sdfDate.format(trashNoteList.get(final_i).getDelayCalendar().getTime())
+                            MyGlobal.sdfDate.format(trashNoteList.get(i).getDelayCalendar().getTime())
                     );
-                else if (trashNoteList.get(final_i).getType() == MyGlobal.TYPE_TIMER)
+                else if (trashNoteList.get(i).getType() == MyGlobal.TYPE_TIMER)
                     textView_delay[i].setText(
-                            getString(R.string.timerProgress,  trashNoteList.get(final_i).getDelay())
+                            getString(R.string.timerProgress,  trashNoteList.get(i).getDelay())
                     );
 
                 //Добавление представлений на экран
@@ -176,16 +170,15 @@ public class TrashActivity extends Activity {
                     public boolean onLongClick(View v) {
                         AlertDialog.Builder alert_builder = new AlertDialog.Builder(TrashActivity.this);
                         alert_builder
-                                .setMessage(
-                                        getString(R.string.dialogueDeleteFromTrash))
+                                .setMessage(getString(R.string.dialogueDeleteFromTrash))
                                 .setCancelable(true)
                                 .setPositiveButton(
                                         getString(R.string.dialogueOk),
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                trashDAO.deleteTrash(trashNoteList.get(final_i));
-                                                idCountDAO.deleteId(trashNoteList.get(final_i).getId());
+                                                trashDAO.deleteTrash(trashNote);
+                                                idCountDAO.deleteId(trashNote.getId());
                                                 myGlobal.makeToastShort(
                                                         getApplicationContext(),
                                                         getString(R.string.toastDeletedFromTrash)
@@ -211,32 +204,30 @@ public class TrashActivity extends Activity {
                     @Override
                     public void onClick(View v) {
                         AlertDialog.Builder alert_builder = new AlertDialog.Builder(TrashActivity.this);
-                        alert_builder.setMessage(
-                                getString(R.string.backNoteFromTrashTitle)
-                        )
+                        alert_builder.setMessage(getString(R.string.backNoteFromTrashTitle))
                                 .setCancelable(true)
                                 .setPositiveButton(
                                         getString(R.string.dialogueOk),
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                trashDAO.deleteTrash(trashNoteList.get(final_i));
-                                                if (trashNoteList.get(final_i).getType() == MyGlobal.TYPE_NOTE) {
+                                                trashDAO.deleteTrash(trashNote);
+                                                if (trashNote.getType() == MyGlobal.TYPE_NOTE) {
                                                     notesDAO.insertNote(new Note(
-                                                            trashNoteList.get(final_i).getId(),
-                                                            trashNoteList.get(final_i).getName(),
-                                                            trashNoteList.get(final_i).getDescription(),
+                                                            trashNote.getId(),
+                                                            trashNote.getName(),
+                                                            trashNote.getDescription(),
                                                             0,
-                                                            trashNoteList.get(final_i).getDelay(),
+                                                            trashNote.getDelay(),
                                                             TypeRepeat.NO
                                                     ));
                                                 }
-                                                else if (trashNoteList.get(final_i).getType() == MyGlobal.TYPE_TIMER) {
+                                                else if (trashNote.getType() == MyGlobal.TYPE_TIMER) {
                                                     timersDAO.insertTimer(new Timer(
-                                                            trashNoteList.get(final_i).getId(),
-                                                            trashNoteList.get(final_i).getName(),
+                                                            trashNote.getId(),
+                                                            trashNote.getName(),
                                                             0,
-                                                            (int) trashNoteList.get(final_i).getDelay()
+                                                            (int) trashNote.getDelay()
                                                     ));
                                                 }
                                                 myGlobal.makeToastShort(

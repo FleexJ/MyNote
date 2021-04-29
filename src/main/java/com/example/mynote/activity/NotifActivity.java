@@ -19,9 +19,10 @@ import com.example.mynote.globalVar.MyGlobal;
 public class NotifActivity extends Activity {
 
     private int id;
+
+    private SQLiteDatabase DB;
     private NotesDAO notesDAO;
     private TimersDAO timersDAO;
-    private SQLiteDatabase DB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
