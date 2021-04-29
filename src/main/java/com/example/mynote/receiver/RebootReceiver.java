@@ -34,9 +34,7 @@ public class RebootReceiver extends BroadcastReceiver {
 
             //Активация всех записей
             for (Note note : notesDAO.getActiveNotes())
-                myGlobal.startAlarmNote(
-                        context,
-                        note);
+                myGlobal.startAlarmNote(context, note);
 
             //Сброс состояний таймера до неактивного
             timersDAO.setStateNotActiveAll();

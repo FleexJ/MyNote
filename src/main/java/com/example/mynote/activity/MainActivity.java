@@ -71,9 +71,7 @@ public class MainActivity extends Activity {
         scrollView_minute.setOnTouchListener(new MainSwipeListener(this));
         //Активация всех записей
         for (Note note : notesDAO.getActiveNotes())
-            myGlobal.startAlarmNote(
-                    getApplicationContext(),
-                    note);
+            myGlobal.startAlarmNote(getApplicationContext(), note);
 
         //Настройка tabHost
         TabHost tabHost = findViewById(R.id.tab_menu);
@@ -367,7 +365,7 @@ public class MainActivity extends Activity {
                 textView_minute_timer[i].setText(
                         getString(R.string.timerProgress, timer.getMinute())
                 );
-                seekBar_minute_timer[i].setMax(60);
+                seekBar_minute_timer[i].setMax(Timer.MAX_PROGRESS);
                 seekBar_minute_timer[i].setProgress(timer.getMinute());
                 //Задаем кастомный вид seekBar
                 //seekBar_minute_timer[i].setProgressDrawable(getDrawable(R.drawable.seekbar_custom));
