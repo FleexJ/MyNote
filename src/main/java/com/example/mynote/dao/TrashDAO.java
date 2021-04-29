@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TrashDAO {
 
-    private SQLiteDatabase db;
+    private final SQLiteDatabase db;
 
     public TrashDAO(SQLiteDatabase db) {
         this.db = db;

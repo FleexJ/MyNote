@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TimersDAO {
 
-    private SQLiteDatabase db;
+    private final SQLiteDatabase db;
 
     public TimersDAO(SQLiteDatabase db) {
         this.db = db;

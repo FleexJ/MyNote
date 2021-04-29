@@ -16,12 +16,9 @@ public enum TypeRepeat {
     //Возвращает локализированную строку типа в соответствии с массивом строковых ресурсов repeat_array
     public String getString(Context context) {
         String[] noteRepeat = context.getResources().getStringArray(R.array.repeat_array);
-        TypeRepeat[] repeats = TypeRepeat.values();
-
-        for (int i = 0; i < noteRepeat.length; i++)
-            if (repeats[i].equals(this))
-                return noteRepeat[i];
-
+        if (TypeRepeat.values().length == noteRepeat.length) {
+            return noteRepeat[this.getId()];
+        }
         return this.name();
     }
 

@@ -158,20 +158,20 @@ public class MainActivity extends Activity {
                 textView_delay_note[i] = new TextView(this , null, 0, R.style.BDout_delay);
 
                 //Внесении данных результата запроса в массивы
-                if(noteList.get(i).getState() == 1)
+                if (note.getState() == Note.ACTIVE_STATE)
                     checkBox_note[i].setChecked(true);
-                else
+                else if (note.getState() == Note.NOT_ACTIVE_STATE)
                     checkBox_note[i].setChecked(false);
 
-                textView_name_note[i].setText(noteList.get(i).getName());
-                textView_desc_note[i].setText(noteList.get(i).getDescription());
+                textView_name_note[i].setText(note.getName());
+                textView_desc_note[i].setText(note.getDescription());
 
                 //Выводим задержку в удобном формате
                 textView_delay_note[i].setText(
                         getString(
                                 R.string.viewSimpleNoteBottom,
-                                MyGlobal.sdfDate.format(noteList.get(i).getDelayCalendar().getTime()),
-                                noteList.get(i).getRepeat().getString(this))
+                                MyGlobal.sdfDate.format(note.getDelayCalendar().getTime()),
+                                note.getRepeat().getString(this))
                 );
 
                 //Добавление представлений на экран
@@ -358,17 +358,17 @@ public class MainActivity extends Activity {
                 //Внесении данных результата запроса в массивы
                 textView_name_timer[i].setText(timer.getName());
                 //Инициализация переключателя состояния
-                if(timer.getState() == 1)
+                if (timer.getState() == Timer.ACTIVE_STATE)
                     checkBox_state_timer[i].setChecked(true);
-                else
+                else if (timer.getState() == Timer.NOT_ACTIVE_STATE)
                     checkBox_state_timer[i].setChecked(false);
 
                 //Инициализация прогресса минут
                 textView_minute_timer[i].setText(
-                        getString(R.string.timerProgress, timers.get(i).getMinute())
+                        getString(R.string.timerProgress, timer.getMinute())
                 );
-                seekBar_minute_timer[i].setMax(61);
-                seekBar_minute_timer[i].setProgress(timers.get(i).getMinute());
+                seekBar_minute_timer[i].setMax(60);
+                seekBar_minute_timer[i].setProgress(timer.getMinute());
                 //Задаем кастомный вид seekBar
                 //seekBar_minute_timer[i].setProgressDrawable(getDrawable(R.drawable.seekbar_custom));
                 //seekBar_minute_timer[i].setThumb(getDrawable(R.drawable.seekbar_thumb));
@@ -562,7 +562,7 @@ public class MainActivity extends Activity {
         timersDAO.insertTimer(new Timer(
                 newId,
                 getString(R.string.timerDefaultName),
-                0,
+                Timer.NOT_ACTIVE_STATE,
                 1)
         );
         idCountDAO.insertIdCount(newId);

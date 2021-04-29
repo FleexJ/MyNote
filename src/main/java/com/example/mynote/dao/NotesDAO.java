@@ -12,7 +12,7 @@ import java.util.List;
 
 public class NotesDAO {
 
-    private SQLiteDatabase db;
+    private final SQLiteDatabase db;
 
     public NotesDAO(SQLiteDatabase db) {
         this.db = db;

@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteStatement;
 
 public class IdCountDAO {
 
-    private SQLiteDatabase db;
+    private final SQLiteDatabase db;
 
     public IdCountDAO(SQLiteDatabase db) {
         this.db = db;
