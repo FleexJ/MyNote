@@ -83,7 +83,9 @@ public class AddNoteActivity extends Activity {
                     int newId = idCountDAO.getNewId();
                     calendar.set(Calendar.SECOND, 0);
                     calendar.set(Calendar.MILLISECOND, 0);
-                    TypeRepeat repeat = TypeRepeat.values()[(int) spinner_repeat.getSelectedItemId()];
+                    TypeRepeat repeat = TypeRepeat.values()[
+                                                            (int) spinner_repeat.getSelectedItemId()
+                                                           ];
                     Note note = new Note(newId, name, desc, 0, calendar.getTimeInMillis(), repeat);
                     notesDAO.insertNote(note);
                     idCountDAO.insertIdCount(newId);
@@ -91,10 +93,6 @@ public class AddNoteActivity extends Activity {
                 finish();
             }
         });
-    }
-
-    public void makeToast(String mes){
-        Toast.makeText(this, mes, Toast.LENGTH_SHORT).show();
     }
 
     //Вызов диалогов выбора даты и времени

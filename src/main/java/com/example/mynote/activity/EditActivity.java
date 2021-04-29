@@ -25,6 +25,7 @@ import com.example.mynote.R;
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.entity.Note;
 import com.example.mynote.entity.TypeRepeat;
+import com.example.mynote.globalVar.MyGlobal;
 import com.example.mynote.receiver.MyReceiver;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -44,6 +45,8 @@ public class EditActivity extends Activity {
     private SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy  HH:mm", locale);
     private SimpleDateFormat sdfCal = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", locale);
     private Boolean isSave = false;
+    //Объект в котором хранятся общие методы и переменные
+    private final MyGlobal myGlobal = new MyGlobal();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,12 +87,9 @@ public class EditActivity extends Activity {
             }
         });
 
-        String[] repeat = getResources().getStringArray(R.array.repeat_array);
-        TypeRepeat[] typeRepeat = TypeRepeat.values();
-        for (int i=0; i < repeat.length; i++) {
-            if (repeat[i].equals(note.getRepeat()))
-                spinner_repeat.setSelection(i);
-        }
+        spinner_repeat.setSelection(
+                note.getRepeat().getId()
+        );
         spinner_repeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -107,11 +107,10 @@ public class EditActivity extends Activity {
         if(isSave) {
             int id = getIntent().getIntExtra("idEdit",-1);
             //Отменяем напоминание, если изменения были приняты
-            AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(getApplicationContext(), MyReceiver.class);
-            intent.putExtra("id", id);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), id , intent, PendingIntent.FLAG_CANCEL_CURRENT);
-            am.cancel(pendingIntent);
+            myGlobal.cancelAlarm(
+                    getApplicationContext(),
+                    id
+            );
 
             String desc = editText_desc.getText().toString();
             String name = editText_name.getText().toString();
@@ -119,16 +118,14 @@ public class EditActivity extends Activity {
             if(!name.isEmpty() || !desc.isEmpty()) {
                 calendar.set(Calendar.SECOND, 0);
                 calendar.set(Calendar.MILLISECOND, 0);
-                TypeRepeat repeat = TypeRepeat.values()[(int) spinner_repeat.getSelectedItemId()];
+                TypeRepeat repeat = TypeRepeat.values()[
+                                                         (int) spinner_repeat.getSelectedItemId()
+                                                       ];
                 Note note = new Note(id, name, desc,0,calendar.getTimeInMillis(), repeat);
                 notesDAO.editNote(note);
             }
         }
         super.onPause();
-    }
-
-    public void makeToast(String mes){
-        Toast.makeText(this, mes, Toast.LENGTH_SHORT).show();
     }
 
     //Вызов диалогов выбора даты и времени

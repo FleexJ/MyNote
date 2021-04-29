@@ -31,7 +31,7 @@ public class TimersDAO {
         return timerList;
     }
 
-    public void editTimers(Timer timer) {
+    public void editTimer(Timer timer) {
         SQLiteStatement sqLiteStatement = DB.compileStatement("UPDATE timers SET name=?, state=?, minute=? WHERE id=?");
         sqLiteStatement.bindString(1, timer.getName());
         sqLiteStatement.bindLong(2, timer.getState());
@@ -40,11 +40,11 @@ public class TimersDAO {
         sqLiteStatement.executeUpdateDelete();
     }
 
-    public void deleteTimers(Timer timer) {
+    public void deleteTimer(Timer timer) {
         DB.execSQL("DELETE FROM timers WHERE id=" + timer.getId());
     }
 
-    public void insertTimers(Timer timer) {
+    public void insertTimer(Timer timer) {
         SQLiteStatement sqLiteStatement = DB.compileStatement("INSERT INTO timers VALUES(?, ?, ?, ?)");
         sqLiteStatement.bindLong(1, timer.getId());
         sqLiteStatement.bindString(2, timer.getName());

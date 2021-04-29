@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -27,9 +26,7 @@ import com.example.mynote.entity.TypeRepeat;
 import com.example.mynote.globalVar.MyGlobal;
 import com.example.mynote.swipeListener.TrashSwipeListener;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class TrashActivity extends Activity {
 
@@ -38,6 +35,8 @@ public class TrashActivity extends Activity {
     private TimersDAO timersDAO;
     private IdCountDAO idCountDAO;
     private SQLiteDatabase DB;
+    //Объект общих функций
+    private final MyGlobal myGlobal = new MyGlobal();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +61,6 @@ public class TrashActivity extends Activity {
         super.onDestroy();
     }
 
-    public void makeToast(String mes){
-        Toast.makeText(this, mes, Toast.LENGTH_SHORT).show();
-    }
-
     //Закрытие активити корзины
     public void click_back(View view) {
         finish();
@@ -87,7 +82,8 @@ public class TrashActivity extends Activity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     trashDAO.deleteAllTrash();
-                                    makeToast(
+                                    myGlobal.makeToastShort(
+                                            getApplicationContext(),
                                             getString(R.string.toastClearedTrash)
                                     );
                                     dialog.cancel();
@@ -104,7 +100,8 @@ public class TrashActivity extends Activity {
                             });
             alert_builder.show();
         }
-        else makeToast(
+        else myGlobal.makeToastShort(
+                getApplicationContext(),
                 getString(R.string.emptyTrashYet)
         );
     }
@@ -189,7 +186,8 @@ public class TrashActivity extends Activity {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 trashDAO.deleteTrash(trashNoteList.get(final_i));
                                                 idCountDAO.deleteId(trashNoteList.get(final_i).getId());
-                                                makeToast(
+                                                myGlobal.makeToastShort(
+                                                        getApplicationContext(),
                                                         getString(R.string.toastDeletedFromTrash)
                                                 );
                                                 dialog.cancel();
@@ -234,14 +232,15 @@ public class TrashActivity extends Activity {
                                                     ));
                                                 }
                                                 else if (trashNoteList.get(final_i).getType() == MyGlobal.TYPE_TIMER) {
-                                                    timersDAO.insertTimers(new Timer(
+                                                    timersDAO.insertTimer(new Timer(
                                                             trashNoteList.get(final_i).getId(),
                                                             trashNoteList.get(final_i).getName(),
                                                             0,
                                                             (int) trashNoteList.get(final_i).getDelay()
                                                     ));
                                                 }
-                                                makeToast(
+                                                myGlobal.makeToastShort(
+                                                        getApplicationContext(),
                                                         getString(R.string.toastBackedNoteFromTrash)
                                                 );
                                                 dialog.cancel();

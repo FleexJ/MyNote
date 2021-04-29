@@ -2,17 +2,10 @@ package com.example.mynote.activity;
 
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
@@ -30,10 +23,6 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TabHost;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.example.mynote.R;
 import com.example.mynote.dao.IdCountDAO;
@@ -44,11 +33,8 @@ import com.example.mynote.entity.Note;
 import com.example.mynote.entity.Timer;
 import com.example.mynote.entity.TrashNote;
 import com.example.mynote.globalVar.MyGlobal;
-import com.example.mynote.receiver.MyReceiver;
-import com.example.mynote.receiver.MyReceiverRepeatingMinute;
 import com.example.mynote.swipeListener.MainSwipeListener;
 
-import java.util.Calendar;
 import java.util.List;
 
 
@@ -62,6 +48,8 @@ public class MainActivity extends Activity {
     private TrashDAO trashDAO;
     private TimersDAO timersDAO;
     private IdCountDAO idCountDAO;
+    //Объект общих функций
+    private final MyGlobal myGlobal = new MyGlobal();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -77,7 +65,10 @@ public class MainActivity extends Activity {
         scrollView.setOnTouchListener(new MainSwipeListener(this));
         ScrollView scrollView_minute = findViewById(R.id.ScrollView_minute);
         scrollView_minute.setOnTouchListener(new MainSwipeListener(this));
-        restart_notif();
+        myGlobal.restartAlarmNotes(
+                getApplicationContext(),
+                notesDAO
+        );
 
         //Настройка tabHost
         TabHost tabHost = findViewById(R.id.tab_menu);
@@ -174,7 +165,8 @@ public class MainActivity extends Activity {
                 textView_delay_note[final_i].setText(
                         getString(R.string.viewSimpleNoteBottom,
                                 MyGlobal.sdfDate.format(noteList.get(final_i).getDelayCalendar().getTime()),
-                                noteList.get(final_i).getRepeat())
+                                noteList.get(final_i).getRepeat().getString(this)
+                                )
                 );
 
                 //Добавление представлений на экран
@@ -200,13 +192,14 @@ public class MainActivity extends Activity {
                         CheckBox checkBox = (CheckBox) buttonView;
                         if(checkBox.isChecked()) {
                             if(System.currentTimeMillis() >= noteList.get(final_i).getDelayCalendar().getTimeInMillis()) {
-                                makeToast(
+                                myGlobal.makeToastShort(
+                                        getApplicationContext(),
                                         getString(R.string.toastIncorrectTimeForStart)
-                                );
+                                        );
                                 checkBox.setChecked(false);
                             } else {
                                 //Запуск аларма для записи
-                                startAlarmNote(noteList.get(final_i));
+                                myGlobal.startAlarmNote(getApplicationContext(), noteList.get(final_i));
                                 noteList.get(final_i).setState(1);
                                 notesDAO.editNote(noteList.get(final_i));
 //                                AlertDialog.Builder alert_builder = new AlertDialog.Builder(MainActivity.this);
@@ -220,7 +213,8 @@ public class MainActivity extends Activity {
 //                                                    }
 //                                                    });
 //                                alert_builder.show();
-                                makeToast(
+                                myGlobal.makeToastShort(
+                                        getApplicationContext(),
                                         getString(R.string.toastNoteStarted)
                                 );
                                 checkBox_note[final_i].setChecked(false);
@@ -229,7 +223,9 @@ public class MainActivity extends Activity {
                             noteList.get(final_i).setState(0);
                             notesDAO.editNote(noteList.get(final_i));
                             //Удаление аларма для записи
-                            cancelAlarmNote(noteList.get(final_i));
+                            myGlobal.cancelAlarm(
+                                    getApplicationContext(),
+                                    noteList.get(final_i).getId());
                         }
                         setCountDownTimer_notes();
                     }
@@ -259,7 +255,10 @@ public class MainActivity extends Activity {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 //Удаление аларм менеджера, в случае удаления записи из бд
-                                                cancelAlarmNote(noteList.get(final_i));
+                                                myGlobal.cancelAlarm(
+                                                        getApplicationContext(),
+                                                        noteList.get(final_i).getId()
+                                                );
 
                                                 notesDAO.deleteNote(noteList.get(final_i));
                                                 trashDAO.insertTrash(new TrashNote(
@@ -269,7 +268,8 @@ public class MainActivity extends Activity {
                                                         noteList.get(final_i).getDelay(),
                                                         MyGlobal.TYPE_NOTE
                                                 ));
-                                                makeToast(
+                                                myGlobal.makeToastShort(
+                                                        getApplicationContext(),
                                                         getString(R.string.toastNoteDeleted)
                                                 );
                                                 dialog.cancel();
@@ -394,7 +394,7 @@ public class MainActivity extends Activity {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 if(!userInput.getText().toString().isEmpty()) {
                                                     timers.get(final_i).setName(userInput.getText().toString());
-                                                    timersDAO.editTimers(timers.get(final_i));
+                                                    timersDAO.editTimer(timers.get(final_i));
                                                     textView_name_timer[final_i].setText(userInput.getText().toString());
                                                 }
                                             }
@@ -428,11 +428,17 @@ public class MainActivity extends Activity {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 //Удаление аларм менеджера, в случае удаления записи из бд
-                                                cancelAlarmTimers(timers.get(final_i));
+                                                myGlobal.cancelAlarm(
+                                                        getApplicationContext(),
+                                                        timers.get(final_i).getId()
+                                                );
                                                 //Удаление уведомления прогресса
-                                                cancelNotifProgressTimers(timers.get(final_i));
+                                                myGlobal.cancelNotifProgressTimers(
+                                                        getApplicationContext(),
+                                                        timers.get(final_i)
+                                                );
 
-                                                timersDAO.deleteTimers(timers.get(final_i));
+                                                timersDAO.deleteTimer(timers.get(final_i));
                                                 trashDAO.insertTrash(new TrashNote(
                                                         timers.get(final_i).getId(),
                                                         timers.get(final_i).getName(),
@@ -440,7 +446,8 @@ public class MainActivity extends Activity {
                                                         timers.get(final_i).getMinute(),
                                                         MyGlobal.TYPE_TIMER
                                                 ));
-                                                makeToast(
+                                                myGlobal.makeToastShort(
+                                                        getApplicationContext(),
                                                         getString(R.string.toastTimerDeleted)
                                                 );
                                                 dialog.cancel();
@@ -467,23 +474,36 @@ public class MainActivity extends Activity {
                         CheckBox checkBox = (CheckBox) buttonView;
                         if(checkBox.isChecked()) {
                             //Запуск аларма для таймера
-                            startAlarmTimers(timers.get(final_i));
+                            myGlobal.startAlarmTimers(
+                                    getApplicationContext(),
+                                    timers.get(final_i)
+                            );
                             //Показ уведомления прогресса
-                            startNotifProgressTimers(timers.get(final_i));
+                            myGlobal.showNotifProgressTimers(
+                                    getApplicationContext(),
+                                    timers.get(final_i)
+                            );
 
                             timers.get(final_i).setState(1);
-                            timersDAO.editTimers(timers.get(final_i));
-                            makeToast(
+                            timersDAO.editTimer(timers.get(final_i));
+                            myGlobal.makeToastShort(
+                                    getApplicationContext(),
                                     getString(R.string.toastTimerStarted, timers.get(final_i).getMinute())
                             );
                         }
                         else {
                             timers.get(final_i).setState(0);
-                            timersDAO.editTimers(timers.get(final_i));
+                            timersDAO.editTimer(timers.get(final_i));
                             //Удаление аларма для таймера
-                            cancelAlarmTimers(timers.get(final_i));
+                            myGlobal.startAlarmTimers(
+                                    getApplicationContext(),
+                                    timers.get(final_i)
+                            );
                             //Удаление уведомления прогресса
-                            cancelNotifProgressTimers(timers.get(final_i));
+                            myGlobal.cancelNotifProgressTimers(
+                                    getApplicationContext(),
+                                    timers.get(final_i)
+                            );
                         }
                         setCountDownTimer_timers();
                     }
@@ -516,9 +536,12 @@ public class MainActivity extends Activity {
                             seekBar.setProgress(1);
                         timers.get(final_i).setMinute(seekBar.getProgress());
                         timers.get(final_i).setState(0);
-                        timersDAO.editTimers(timers.get(final_i));
+                        timersDAO.editTimer(timers.get(final_i));
                         //Отменяем напоминание
-                        cancelAlarmTimers(timers.get(final_i));
+                        myGlobal.cancelAlarm(
+                                getApplicationContext(),
+                                timers.get(final_i).getId()
+                        );
 
                         checkBox_state_timer[final_i].setChecked(false);
 
@@ -547,7 +570,7 @@ public class MainActivity extends Activity {
     //Добавление новых записей таймера
     public void addMinute(View view){
         int newId = idCountDAO.getNewId();
-        timersDAO.insertTimers(new Timer(
+        timersDAO.insertTimer(new Timer(
                 newId,
                 getString(R.string.timerDefaultName),
                 0,
@@ -584,7 +607,8 @@ public class MainActivity extends Activity {
                     case 1:
                         doSomething();
                         doMinute();
-                        makeToast(
+                        myGlobal.makeToastShort(
+                                getApplicationContext(),
                                 getString(R.string.popupUpdated)
                         );
                         break;
@@ -592,123 +616,6 @@ public class MainActivity extends Activity {
                 return true;
             }
         });
-    }
-
-    //Вывод тоста
-    public void makeToast(String mes){
-        Toast.makeText(this, mes, Toast.LENGTH_SHORT).show();
-    }
-
-    //Функция заново активирует напоминания, у которых состояние в базе =1
-    public void restart_notif(){
-        AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        List<Note> noteList = notesDAO.getActiveNotes();
-        for(Note note : noteList) {
-            Intent intent = new Intent(getApplicationContext(), MyReceiver.class);
-            intent.putExtra("id", note.getId());
-            //Добавление флага для точного срабатывания
-            intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), note.getId() , intent, PendingIntent.FLAG_CANCEL_CURRENT);
-            am.cancel(pendingIntent);
-            am.setExact(AlarmManager.RTC_WAKEUP, note.getDelayCalendar().getTimeInMillis(), pendingIntent);
-        }
-    }
-
-    //функция старта аларма для записей
-    public void startAlarmNote(Note note) {
-        AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        //Заготовки для уведомлений
-        Intent intent = new Intent(getApplicationContext(), MyReceiver.class);
-        intent.putExtra("id", note.getId());
-        //Добавление флага для точного срабатывания
-        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), note.getId() , intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        am.cancel(pendingIntent);
-        //Активация аларма
-        am.setExact(AlarmManager.RTC_WAKEUP, note.getDelayCalendar().getTimeInMillis(), pendingIntent);
-    }
-
-    //функция остановки аларма для записей
-    public void cancelAlarmNote(Note note) {
-        AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getApplicationContext(), MyReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),  note.getId() , intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        am.cancel(pendingIntent);
-    }
-
-    //функция старта аларма для таймеров
-    public void startAlarmTimers(Timer timer) {
-        AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        //Заготовки для уведомлений
-        Intent intent = new Intent(getApplicationContext(), MyReceiverRepeatingMinute.class);
-        intent.putExtra("id", timer.getId());
-        Calendar delay_minute = Calendar.getInstance();
-        delay_minute.add(Calendar.MINUTE, 1);
-        //Добавление флага для точного срабатывания
-        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), timer.getId() , intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        am.cancel(pendingIntent);
-        am.setExact(AlarmManager.RTC_WAKEUP, delay_minute.getTimeInMillis(), pendingIntent);
-    }
-
-    //функция остановки аларма для таймеров
-    public void cancelAlarmTimers(Timer timer) {
-        AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getApplicationContext(), MyReceiverRepeatingMinute.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), timer.getId() , intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        am.cancel(pendingIntent);
-    }
-
-    //Показ уведомления
-    private void startNotifProgressTimers(Timer timer) {
-        Intent intent_new = new Intent(getApplicationContext(), MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), timer.getId() , intent_new, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        if(Build.VERSION.SDK_INT >= 26 ){
-            NotificationManager nm = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-            Notification.Builder builder = new Notification.Builder(getApplicationContext(), "channel_id_mynote_progress");
-            NotificationChannel notificationChannel = new NotificationChannel("channel_id_mynote_progress", "channel_name_mynote_progress", NotificationManager.IMPORTANCE_LOW);
-            notificationChannel.setLockscreenVisibility(1);
-
-            builder.setContentIntent(pendingIntent)
-                    .setSmallIcon(R.drawable.icon_notif)
-                    .setContentTitle(
-                            getString(R.string.notifTimerWorkTitle, timer.getName())
-                    )
-                    .setContentText(
-                            getString(R.string.timerProgress, timer.getMinute())
-                    )
-                    .setShowWhen(true)
-                    .setOngoing(true)
-                    .setAutoCancel(false);
-            Notification notification = builder.build();
-            nm.createNotificationChannel(notificationChannel);
-            nm.cancel(timer.getId());
-            nm.notify(timer.getId(), notification);
-        }
-        else
-        if(Build.VERSION.SDK_INT >= 21 ){
-            NotificationCompat.Builder builder =
-                    new NotificationCompat.Builder(getApplicationContext(), "channel_id_mynote_progress")
-                            .setContentTitle(
-                                    getString(R.string.notifTimerWorkTitle, timer.getName())
-                            )
-                            .setContentText(
-                                    getString(R.string.timerProgress, timer.getMinute())
-                            )
-                            .setContentIntent(pendingIntent)
-                            .setPriority(NotificationCompat.PRIORITY_MIN)
-                            .setAutoCancel(true)
-                            .setSmallIcon(R.drawable.icon_notif);
-
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-            notificationManager.cancel(timer.getId());
-            notificationManager.notify(timer.getId(), builder.build());
-        }
-    }
-    public void cancelNotifProgressTimers(Timer timer) {
-        NotificationManager nm = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.cancel(timer.getId());
     }
 
     //запускает таймер обратного отсчета, который обновляет экран таймеров
