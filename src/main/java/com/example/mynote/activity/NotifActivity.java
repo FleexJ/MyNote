@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.mynote.R;
+import com.example.mynote.dao.DatabaseHelper;
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.dao.TimersDAO;
 import com.example.mynote.entity.Note;
@@ -20,7 +21,8 @@ public class NotifActivity extends Activity {
 
     private int id;
 
-    private SQLiteDatabase DB;
+    private DatabaseHelper databaseHelper;
+    private SQLiteDatabase db;
     private NotesDAO notesDAO;
     private TimersDAO timersDAO;
 
@@ -29,9 +31,10 @@ public class NotifActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notif);
 
-        DB = getBaseContext().openOrCreateDatabase(MyGlobal.DB_NAME, MODE_PRIVATE, null);
-        notesDAO = new NotesDAO(DB);
-        timersDAO = new TimersDAO(DB);
+        databaseHelper = new DatabaseHelper(getApplicationContext());
+        db = databaseHelper.getWritableDatabase();
+        notesDAO = new NotesDAO(db);
+        timersDAO = new TimersDAO(db);
 
         LinearLayout linearLayout = findViewById(R.id.linearLayout_notif);
         TextView textView_title = findViewById(R.id.textView_notifTitle);
@@ -59,7 +62,7 @@ public class NotifActivity extends Activity {
                 textView_name.setText(timer.getName());
                 linearLayout.removeView(textView_desc);
             }
-        DB.close();
+        db.close();
     }
 
     public void clickApply(View view) {

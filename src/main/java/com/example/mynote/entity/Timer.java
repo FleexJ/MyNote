@@ -1,6 +1,9 @@
 package com.example.mynote.entity;
 
 public class Timer {
+    public static final int NOT_ACTIVE_STATE = 0;
+    public static final int ACTIVE_STATE = 1;
+
     private int id;
     private String name;
     private int state;

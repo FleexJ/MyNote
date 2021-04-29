@@ -25,6 +25,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.example.mynote.R;
+import com.example.mynote.dao.DatabaseHelper;
 import com.example.mynote.dao.IdCountDAO;
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.dao.TimersDAO;
@@ -43,7 +44,8 @@ public class MainActivity extends Activity {
     private long time = 3600000;
     private CountDownTimer countDownTimer_timers, countDownTimer_notes;
     //Объект работы с бд
-    private SQLiteDatabase DB;
+    private DatabaseHelper databaseHelper;
+    private SQLiteDatabase db;
     private NotesDAO notesDAO;
     private TrashDAO trashDAO;
     private TimersDAO timersDAO;
@@ -55,11 +57,13 @@ public class MainActivity extends Activity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DB = getBaseContext().openOrCreateDatabase(MyGlobal.DB_NAME, MODE_PRIVATE, null);
-        notesDAO = new NotesDAO(DB);
-        trashDAO = new TrashDAO(DB);
-        timersDAO = new TimersDAO(DB);
-        idCountDAO = new IdCountDAO(DB);
+
+        databaseHelper = new DatabaseHelper(getApplicationContext());
+        db = databaseHelper.getWritableDatabase();
+        notesDAO = new NotesDAO(db);
+        trashDAO = new TrashDAO(db);
+        timersDAO = new TimersDAO(db);
+        idCountDAO = new IdCountDAO(db);
 
         ScrollView scrollView = findViewById(R.id.ScrollView_note);
         scrollView.setOnTouchListener(new MainSwipeListener(this));
@@ -103,7 +107,7 @@ public class MainActivity extends Activity {
 
     @Override
     public void onDestroy() {
-        DB.close();
+        db.close();
         super.onDestroy();
     }
 
@@ -200,7 +204,7 @@ public class MainActivity extends Activity {
                             } else {
                                 //Запуск аларма для записи
                                 myGlobal.startAlarmNote(getApplicationContext(), note);
-                                note.setState(1);
+                                note.setState(Note.ACTIVE_STATE);
                                 notesDAO.editNote(note);
 //                                AlertDialog.Builder alert_builder = new AlertDialog.Builder(MainActivity.this);
 //                                alert_builder.setMessage("Для корректной работы приложения, нужно разрешить автозапуск в системных настройках приложения.")
@@ -219,7 +223,7 @@ public class MainActivity extends Activity {
                                 checkBox_note[final_i].setChecked(false);
                             }
                         } else {
-                            note.setState(0);
+                            note.setState(Note.NOT_ACTIVE_STATE);
                             notesDAO.editNote(note);
                             //Удаление аларма для записи
                             myGlobal.cancelAlarm(
@@ -474,14 +478,14 @@ public class MainActivity extends Activity {
                                     getApplicationContext(),
                                     timer);
 
-                            timer.setState(1);
+                            timer.setState(Timer.ACTIVE_STATE);
                             timersDAO.editTimer(timer);
                             myGlobal.makeToastShort(
                                     getApplicationContext(),
                                     getString(R.string.toastTimerStarted, timer.getMinute()));
                         }
                         else {
-                            timer.setState(0);
+                            timer.setState(Timer.NOT_ACTIVE_STATE);
                             timersDAO.editTimer(timer);
                             //Удаление аларма для таймера
                             myGlobal.startAlarmTimers(
@@ -521,7 +525,7 @@ public class MainActivity extends Activity {
                         if(seekBar.getProgress() == 0)
                             seekBar.setProgress(1);
                         timer.setMinute(seekBar.getProgress());
-                        timer.setState(0);
+                        timer.setState(Timer.NOT_ACTIVE_STATE);
                         timersDAO.editTimer(timer);
                         //Отменяем напоминание
                         myGlobal.cancelAlarm(

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.mynote.dao.DatabaseHelper;
 import com.example.mynote.dao.TimersDAO;
 import com.example.mynote.entity.Timer;
 import com.example.mynote.globalVar.MyGlobal;
@@ -13,15 +14,17 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class MyReceiverRepeatingMinute extends BroadcastReceiver {
 
+    private DatabaseHelper databaseHelper;
+    private SQLiteDatabase db;
     private TimersDAO timersDAO;
-    private SQLiteDatabase DB;
     //Объект общих функций
     private final MyGlobal myGlobal = new MyGlobal();
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        DB = context.getApplicationContext().openOrCreateDatabase(MyGlobal.DB_NAME, MODE_PRIVATE, null);
-        timersDAO = new TimersDAO(DB);
+        databaseHelper = new DatabaseHelper(context.getApplicationContext());
+        db = databaseHelper.getWritableDatabase();
+        timersDAO = new TimersDAO(db);
 
         int id = intent.getIntExtra("id",0);
         Timer timer = timersDAO.getTimersById(id);
@@ -35,7 +38,7 @@ public class MyReceiverRepeatingMinute extends BroadcastReceiver {
         } else //Если время вышло, то уведомление
             myGlobal.showNotification(context, timer);
 
-        DB.close();
+        db.close();
     }
 
 }

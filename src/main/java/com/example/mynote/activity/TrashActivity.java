@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.mynote.R;
+import com.example.mynote.dao.DatabaseHelper;
 import com.example.mynote.dao.IdCountDAO;
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.dao.TimersDAO;
@@ -30,7 +31,8 @@ import java.util.List;
 
 public class TrashActivity extends Activity {
 
-    private SQLiteDatabase DB;
+    private DatabaseHelper databaseHelper;
+    private SQLiteDatabase db;
     private TrashDAO trashDAO;
     private NotesDAO notesDAO;
     private TimersDAO timersDAO;
@@ -42,11 +44,13 @@ public class TrashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trash);
-        DB = getBaseContext().openOrCreateDatabase(MyGlobal.DB_NAME, MODE_PRIVATE, null);
-        trashDAO = new TrashDAO(DB);
-        notesDAO = new NotesDAO(DB);
-        timersDAO = new TimersDAO(DB);
-        idCountDAO = new IdCountDAO(DB);
+
+        databaseHelper = new DatabaseHelper(getApplicationContext());
+        db = databaseHelper.getWritableDatabase();
+        trashDAO = new TrashDAO(db);
+        notesDAO = new NotesDAO(db);
+        timersDAO = new TimersDAO(db);
+        idCountDAO = new IdCountDAO(db);
 
         doSomething();
         ConstraintLayout trash_constraint = findViewById(R.id.trash_constraint);
@@ -57,7 +61,7 @@ public class TrashActivity extends Activity {
 
     @Override
     public void onDestroy() {
-        DB.close();
+        db.close();
         super.onDestroy();
     }
 
@@ -215,7 +219,7 @@ public class TrashActivity extends Activity {
                                                             trashNote.getId(),
                                                             trashNote.getName(),
                                                             trashNote.getDescription(),
-                                                            0,
+                                                            Note.NOT_ACTIVE_STATE,
                                                             trashNote.getDelay(),
                                                             TypeRepeat.NO)
                                                     );
@@ -224,7 +228,7 @@ public class TrashActivity extends Activity {
                                                     timersDAO.insertTimer(new Timer(
                                                             trashNote.getId(),
                                                             trashNote.getName(),
-                                                            0,
+                                                            Timer.NOT_ACTIVE_STATE,
                                                             (int) trashNote.getDelay())
                                                     );
                                                 }

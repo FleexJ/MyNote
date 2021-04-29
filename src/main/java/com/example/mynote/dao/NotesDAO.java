@@ -11,18 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotesDAO {
-    private final String table = "notes";
 
-    private SQLiteDatabase DB;
+    private SQLiteDatabase db;
 
-    public NotesDAO(SQLiteDatabase DB) {
-        this.DB = DB;
-        DB.execSQL("CREATE TABLE IF NOT EXISTS " + table + " (id INTEGER PRIMARY KEY, name TEXT, descr TEXT, state INTEGER, delay TEXT, repeat TEXT);");
+    public NotesDAO(SQLiteDatabase db) {
+        this.db = db;
     }
 
     public List<Note> getAllNotes() {
         List<Note> noteList = new ArrayList<>();
-        Cursor cursor = DB.rawQuery("SELECT * FROM " + table + ";", null);
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + DatabaseHelper.TABLE_NOTES,
+                null);
         while (cursor.moveToNext()) {
             noteList.add(new Note(
                     cursor.getInt(0), //id
@@ -38,7 +38,14 @@ public class NotesDAO {
     }
 
     public void editNote(Note note) {
-        SQLiteStatement sqLiteStatement = DB.compileStatement("UPDATE " + table + " SET name=?, descr=?, state=?, delay=?, repeat=? WHERE id=?");
+        SQLiteStatement sqLiteStatement = db.compileStatement("UPDATE " + DatabaseHelper.TABLE_NOTES + " SET " +
+                DatabaseHelper.COLUMN_NOTES_NAME +"=?, " +
+                DatabaseHelper.COLUMN_NOTES_DESCRIPTION + "=?, " +
+                DatabaseHelper.COLUMN_NOTES_STATE + "=?, " +
+                DatabaseHelper.COLUMN_NOTES_DELAY + "=?, " +
+                DatabaseHelper.COLUMN_NOTES_REPEAT + "=? " +
+                "WHERE " + DatabaseHelper.COLUMN_NOTES_ID + "=?"
+        );
         sqLiteStatement.bindString(1, note.getName());
         sqLiteStatement.bindString(2, note.getDescription());
         sqLiteStatement.bindLong(3, note.getState());
@@ -49,14 +56,17 @@ public class NotesDAO {
     }
 
     public void deleteNote(Note note) {
-        SQLiteStatement sqLiteStatement = DB.compileStatement("DELETE FROM " + table + " WHERE id=?;");
+        SQLiteStatement sqLiteStatement = db.compileStatement(
+                "DELETE FROM " + DatabaseHelper.TABLE_NOTES + " WHERE " + DatabaseHelper.COLUMN_NOTES_ID + "=?");
         sqLiteStatement.bindLong(1, note.getId());
         sqLiteStatement.executeUpdateDelete();
     }
 
     public List<Note> getActiveNotes() {
         List<Note> noteList = new ArrayList<>();
-        Cursor cursor = DB.rawQuery("SELECT * FROM " + table + " WHERE state=1;", null);
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + DatabaseHelper.TABLE_NOTES + " WHERE " + DatabaseHelper.COLUMN_NOTES_STATE + "=" + Note.ACTIVE_STATE,
+                null);
         while (cursor.moveToNext()) {
             noteList.add(new Note(
                     cursor.getInt(0),
@@ -72,7 +82,9 @@ public class NotesDAO {
     }
 
     public void insertNote(Note note) {
-        SQLiteStatement sqLiteStatement = DB.compileStatement("INSERT INTO " + table + " VALUES(?, ?, ?, 0, ?, ?);");
+        SQLiteStatement sqLiteStatement = db.compileStatement(
+                "INSERT INTO " + DatabaseHelper.TABLE_NOTES + " VALUES(?, ?, ?, " + Note.NOT_ACTIVE_STATE + ", ?, ?)"
+        );
         sqLiteStatement.bindLong(1, note.getId());
         sqLiteStatement.bindString(2, note.getName());
         sqLiteStatement.bindString(3, note.getDescription());
@@ -82,7 +94,9 @@ public class NotesDAO {
     }
 
     public Note getNoteById(int id) {
-        Cursor cursor = DB.rawQuery("SELECT * FROM " + table + " WHERE id = " + id + ";", null);
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + DatabaseHelper.TABLE_NOTES + " WHERE " + DatabaseHelper.COLUMN_NOTES_ID + "=" + id,
+                null);
         if (!(cursor == null)) {
             cursor.moveToFirst();
             Note note = new Note(

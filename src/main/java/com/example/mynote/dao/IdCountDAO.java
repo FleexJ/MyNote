@@ -5,27 +5,31 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
 public class IdCountDAO {
-    private final String table = "id_count";
 
-    private SQLiteDatabase DB;
+    private SQLiteDatabase db;
 
-    public IdCountDAO(SQLiteDatabase DB) {
-        this.DB = DB;
-        DB.execSQL("CREATE TABLE IF NOT EXISTS " + table + " (id INTEGER PRIMARY KEY);");
+    public IdCountDAO(SQLiteDatabase db) {
+        this.db = db;
     }
 
     public void insertIdCount(int id) {
-        DB.execSQL("INSERT INTO " + table + " VALUES(" + id + ");");
+        db.execSQL(
+                "INSERT INTO " + DatabaseHelper.TABLE_ID_COUNT +
+                        " VALUES(" + id + ")"
+        );
     }
 
     public int getNewId() {
-        Cursor cursor = DB.rawQuery("SELECT * FROM " + table + " ORDER BY id ASC;", null);
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + DatabaseHelper.TABLE_ID_COUNT + " ORDER BY " + DatabaseHelper.COLUMN_ID_COUNT_ID + " DESC",
+                null
+        );
         //Если это первая запись, то возвращаем нулевой идентификатор
         if (cursor.getCount() == 0) {
             cursor.close();
             return 0;
         } else {
-            cursor.moveToLast();
+            cursor.moveToFirst();
             int newId = cursor.getInt(0) + 1;
             cursor.close();
             return newId;
@@ -33,7 +37,10 @@ public class IdCountDAO {
     }
 
     public void deleteId(int id) {
-        SQLiteStatement sqLiteStatement = DB.compileStatement("DELETE FROM " + table + " WHERE id=?;");
+        SQLiteStatement sqLiteStatement = db.compileStatement(
+                "DELETE FROM " + DatabaseHelper.TABLE_ID_COUNT +
+                        " WHERE " + DatabaseHelper.COLUMN_ID_COUNT_ID + "=?"
+        );
         sqLiteStatement.bindLong(1, id);
         sqLiteStatement.executeUpdateDelete();
     }

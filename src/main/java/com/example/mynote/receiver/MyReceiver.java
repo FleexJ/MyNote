@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.mynote.dao.DatabaseHelper;
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.entity.Note;
 import com.example.mynote.globalVar.MyGlobal;
@@ -16,15 +17,17 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class MyReceiver extends BroadcastReceiver {
 
+    private DatabaseHelper databaseHelper;
+    private SQLiteDatabase db;
     private NotesDAO notesDAO;
-    private SQLiteDatabase DB;
     //Объект общих функций
     private final MyGlobal myGlobal = new MyGlobal();
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        DB = context.getApplicationContext().openOrCreateDatabase(MyGlobal.DB_NAME, MODE_PRIVATE, null);
-        notesDAO = new NotesDAO(DB);
+        databaseHelper = new DatabaseHelper(context.getApplicationContext());
+        db = databaseHelper.getWritableDatabase();
+        notesDAO = new NotesDAO(db);
 
         int id = intent.getIntExtra("id",0);
         //Данные для уведомления берутся из бд, в случае если пользователь их отредактирует
@@ -60,11 +63,11 @@ public class MyReceiver extends BroadcastReceiver {
                 myGlobal.startAlarmNote(context, note);
                 break;
             default:
-                note.setState(0);
+                note.setState(Note.NOT_ACTIVE_STATE);
                 break;
         }
         notesDAO.editNote(note);
-        DB.close();
+        db.close();
 
 //        if(Build.VERSION.SDK_INT >= 24 && isForeground(context.getApplicationContext()))
 //            context.getApplicationContext().startActivity(intent_new);

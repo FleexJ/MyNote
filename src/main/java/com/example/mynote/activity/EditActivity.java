@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.mynote.R;
+import com.example.mynote.dao.DatabaseHelper;
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.entity.Note;
 import com.example.mynote.entity.TypeRepeat;
@@ -28,7 +29,8 @@ import java.util.GregorianCalendar;
 
 public class EditActivity extends Activity {
 
-    private SQLiteDatabase DB;
+    private DatabaseHelper databaseHelper;
+    private SQLiteDatabase db;
     private NotesDAO notesDAO;
 
     private EditText editText_desc, editText_name;
@@ -44,8 +46,10 @@ public class EditActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-        DB = getBaseContext().openOrCreateDatabase(MyGlobal.DB_NAME, MODE_PRIVATE, null);
-        notesDAO = new NotesDAO(DB);
+
+        databaseHelper = new DatabaseHelper(getApplicationContext());
+        db = databaseHelper.getWritableDatabase();
+        notesDAO = new NotesDAO(db);
 
         //Заголовок активити
         editText_name = findViewById(R.id.editText_name);
