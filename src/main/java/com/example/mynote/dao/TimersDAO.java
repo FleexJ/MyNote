@@ -22,14 +22,13 @@ public class TimersDAO {
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DatabaseHelper.TABLE_TIMERS + " ORDER BY " + DatabaseHelper.COLUMN_TIMERS_ID + " ASC",
                 null);
-        while (cursor.moveToNext()) {
+        while (cursor.moveToNext())
             timerList.add(new Timer(
                     cursor.getInt(0),
                     cursor.getString(1),
                     cursor.getInt(2),
                     cursor.getInt(3)
             ));
-        }
         cursor.close();
         return timerList;
     }
@@ -79,6 +78,23 @@ public class TimersDAO {
             return timer;
         }
         return null;
+    }
+
+    public List<Timer> getActiveTimers() {
+        List<Timer> timers = new ArrayList<>();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + DatabaseHelper.TABLE_TIMERS +
+                        " WHERE " + DatabaseHelper.COLUMN_TIMERS_STATE + "=" + Timer.ACTIVE_STATE,
+                null);
+        while (cursor.moveToNext())
+            timers.add(new Timer(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getInt(2),
+                    cursor.getInt(3)
+                    ));
+        cursor.close();
+        return timers;
     }
 
     public void setStateNotActiveAll() {

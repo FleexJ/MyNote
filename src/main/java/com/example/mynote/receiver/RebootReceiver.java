@@ -10,6 +10,7 @@ import com.example.mynote.dao.DatabaseHelper;
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.dao.TimersDAO;
 import com.example.mynote.entity.Note;
+import com.example.mynote.entity.Timer;
 import com.example.mynote.globalVar.MyGlobal;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -35,6 +36,8 @@ public class RebootReceiver extends BroadcastReceiver {
             //Переактивация всех активных записей
             for (Note note : notesDAO.getActiveNotes())
                 myGlobal.startAlarmNote(context, note);
+            for (Timer timer : timersDAO.getActiveTimers())
+                myGlobal.startAlarmTimers(context, timer);
 
             //Сброс состояний таймера до неактивного
             timersDAO.setStateNotActiveAll();

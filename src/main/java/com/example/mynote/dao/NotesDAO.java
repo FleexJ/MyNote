@@ -23,7 +23,7 @@ public class NotesDAO {
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DatabaseHelper.TABLE_NOTES,
                 null);
-        while (cursor.moveToNext()) {
+        while (cursor.moveToNext())
             noteList.add(new Note(
                     cursor.getInt(0), //id
                     cursor.getString(1),//name
@@ -32,7 +32,6 @@ public class NotesDAO {
                     cursor.getLong(4),//delay
                     TypeRepeat.valueOf(cursor.getString(5))//repeat
             ));
-        }
         cursor.close();
         return noteList;
     }
@@ -57,7 +56,8 @@ public class NotesDAO {
 
     public void deleteNote(Note note) {
         SQLiteStatement sqLiteStatement = db.compileStatement(
-                "DELETE FROM " + DatabaseHelper.TABLE_NOTES + " WHERE " + DatabaseHelper.COLUMN_NOTES_ID + "=?");
+                "DELETE FROM " + DatabaseHelper.TABLE_NOTES +
+                        " WHERE " + DatabaseHelper.COLUMN_NOTES_ID + "=?");
         sqLiteStatement.bindLong(1, note.getId());
         sqLiteStatement.executeUpdateDelete();
     }
@@ -65,9 +65,10 @@ public class NotesDAO {
     public List<Note> getActiveNotes() {
         List<Note> noteList = new ArrayList<>();
         Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + DatabaseHelper.TABLE_NOTES + " WHERE " + DatabaseHelper.COLUMN_NOTES_STATE + "=" + Note.ACTIVE_STATE,
+                "SELECT * FROM " + DatabaseHelper.TABLE_NOTES +
+                        " WHERE " + DatabaseHelper.COLUMN_NOTES_STATE + "=" + Note.ACTIVE_STATE,
                 null);
-        while (cursor.moveToNext()) {
+        while (cursor.moveToNext())
             noteList.add(new Note(
                     cursor.getInt(0),
                     cursor.getString(1),
@@ -76,7 +77,6 @@ public class NotesDAO {
                     cursor.getLong(4),
                     TypeRepeat.valueOf(cursor.getString(5))
             ));
-        }
         cursor.close();
         return noteList;
     }

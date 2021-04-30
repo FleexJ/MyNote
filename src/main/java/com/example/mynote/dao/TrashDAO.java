@@ -46,7 +46,7 @@ public class TrashDAO {
                 "SELECT * FROM " + DatabaseHelper.TABLE_TRASH + " ORDER BY id ASC",
                 null
         );
-        while (cursor.moveToNext()) {
+        while (cursor.moveToNext())
             trashNoteList.add(new TrashNote(
                     cursor.getInt(0), //id
                     cursor.getString(1), //name
@@ -54,7 +54,6 @@ public class TrashDAO {
                     cursor.getLong(3), //delay
                     cursor.getInt(4) //type
             ));
-        }
         cursor.close();
         return trashNoteList;
     }

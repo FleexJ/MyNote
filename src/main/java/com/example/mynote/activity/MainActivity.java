@@ -72,6 +72,8 @@ public class MainActivity extends Activity {
         //Переактивация всех активных записей
         for (Note note : notesDAO.getActiveNotes())
             myGlobal.startAlarmNote(getApplicationContext(), note);
+        for (Timer timer : timersDAO.getActiveTimers())
+            myGlobal.startAlarmTimers(getApplicationContext(), timer);
 
         //Настройка tabHost
         TabHost tabHost = findViewById(R.id.tab_menu);
@@ -474,7 +476,7 @@ public class MainActivity extends Activity {
                             timer.setState(Timer.NOT_ACTIVE_STATE);
                             timersDAO.editTimer(timer);
                             //Удаление аларма для таймера
-                            myGlobal.startAlarmTimers(getApplicationContext(), timer);
+                            myGlobal.cancelAlarmTimer(getApplicationContext(), timer.getId());
                             //Удаление уведомления прогресса
                             myGlobal.cancelNotifProgressTimers(getApplicationContext(), timer);
                         }
