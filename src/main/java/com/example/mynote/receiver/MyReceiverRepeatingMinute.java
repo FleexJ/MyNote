@@ -37,6 +37,7 @@ public class MyReceiverRepeatingMinute extends BroadcastReceiver {
             myGlobal.showNotifProgressTimers(context, timer);
         } else {//Если время вышло, то уведомление
             timer.setState(Timer.NOT_ACTIVE_STATE);
+            timer.setMinute(1);
             timersDAO.editTimer(timer);
 
             myGlobal.showNotification(context, timer);
