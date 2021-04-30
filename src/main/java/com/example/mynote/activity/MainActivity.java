@@ -53,6 +53,7 @@ public class MainActivity extends Activity {
     //Объект общих функций
     private final MyGlobal myGlobal = new MyGlobal();
 
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,6 +189,13 @@ public class MainActivity extends Activity {
                 linear_bd_note[i].addView(textView_delay_note[i]);
                 linear_note.addView(linear_bd_note[i]);
 
+                checkBox_note[i].setOnTouchListener(new CheckBox.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        cancelCountDownTimer_notes();
+                        return false;
+                    }
+                });
                 //Слушатель для клика по состоянию записи
                 checkBox_note[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
@@ -229,19 +237,13 @@ public class MainActivity extends Activity {
                         setCountDownTimer_notes();
                     }
                 });
-                checkBox_note[i].setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (countDownTimer_notes != null)
-                            countDownTimer_notes.cancel();
-                        return false;
-                    }
-                });
 
                 //Диалог предлагающий удалить запись при долгом клике
                 linear_bd_note[i].setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
+                        cancelCountDownTimer_notes();
+
                         AlertDialog.Builder alert_builder = new AlertDialog.Builder(MainActivity.this);
                         alert_builder
                                 .setMessage(getString(R.string.dialogueTitleDeleteNote))
@@ -277,6 +279,14 @@ public class MainActivity extends Activity {
                                                 dialog.cancel();
                                             }
                                         });
+
+                        alert_builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                setCountDownTimer_notes();
+                            }
+                        });
+
                         alert_builder.show();
                         return true;
                     }
@@ -411,6 +421,8 @@ public class MainActivity extends Activity {
                 linear_bd_timer[i].setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
+                        cancelCountDownTimer_timers();
+
                         AlertDialog.Builder alert_builder = new AlertDialog.Builder(MainActivity.this);
                         alert_builder
                                 .setMessage(getString(R.string.dialogueTitleDeleteTimer))
@@ -448,11 +460,26 @@ public class MainActivity extends Activity {
                                                 dialog.cancel();
                                             }
                                         });
+
+                        alert_builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                setCountDownTimer_timers();
+                            }
+                        });
+
                         alert_builder.show();
                         return true;
                     }
                 });
 
+                checkBox_state_timer[i].setOnTouchListener(new CheckBox.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        cancelCountDownTimer_timers();
+                        return false;
+                    }
+                });
                 //Слушатель переключателя состояния
                 checkBox_state_timer[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
@@ -481,14 +508,6 @@ public class MainActivity extends Activity {
                         setCountDownTimer_timers();
                     }
                 });
-                checkBox_state_timer[i].setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (countDownTimer_timers != null)
-                            countDownTimer_timers.cancel();
-                        return false;
-                    }
-                });
 
                 //Слушатель смены прогресса SeekBar
                 seekBar_minute_timer[i].setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -500,7 +519,7 @@ public class MainActivity extends Activity {
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {
                         //Останавливаем обновление экрана, пока пользователь выбирает время таймера
-                        countDownTimer_timers.cancel();
+                        cancelCountDownTimer_timers();
                     }
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
@@ -600,6 +619,10 @@ public class MainActivity extends Activity {
         };
         countDownTimer_timers.start();
     }
+    public void cancelCountDownTimer_timers() {
+        if (countDownTimer_timers != null)
+            countDownTimer_timers.cancel();
+    }
 
     //запускает таймер обратного отсчета, который обновляет экран записей
     public void setCountDownTimer_notes() {
@@ -616,6 +639,10 @@ public class MainActivity extends Activity {
             }
         };
         countDownTimer_notes.start();
+    }
+    public void cancelCountDownTimer_notes() {
+        if (countDownTimer_notes != null)
+            countDownTimer_notes.cancel();
     }
 }
 
