@@ -35,8 +35,12 @@ public class MyReceiverRepeatingMinute extends BroadcastReceiver {
 
             myGlobal.startAlarmTimers(context, timer);
             myGlobal.showNotifProgressTimers(context, timer);
-        } else //Если время вышло, то уведомление
+        } else {//Если время вышло, то уведомление
+            timer.setState(Timer.NOT_ACTIVE_STATE);
+            timersDAO.editTimer(timer);
+
             myGlobal.showNotification(context, timer);
+        }
 
         db.close();
     }

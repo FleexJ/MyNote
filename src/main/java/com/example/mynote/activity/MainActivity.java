@@ -72,8 +72,6 @@ public class MainActivity extends Activity {
         //Переактивация всех активных записей
         for (Note note : notesDAO.getActiveNotes())
             myGlobal.startAlarmNote(getApplicationContext(), note);
-        for (Timer timer : timersDAO.getActiveTimers())
-            myGlobal.startAlarmTimers(getApplicationContext(), timer);
 
         //Настройка tabHost
         TabHost tabHost = findViewById(R.id.tab_menu);
