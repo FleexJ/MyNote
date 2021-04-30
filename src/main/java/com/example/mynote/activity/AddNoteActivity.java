@@ -97,6 +97,12 @@ public class AddNoteActivity extends Activity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        db.close();
+        super.onDestroy();
+    }
+
     //Вызов диалогов выбора даты и времени
     public void initDate(View view){
         final int     mHour=calendar.get(Calendar.HOUR_OF_DAY),

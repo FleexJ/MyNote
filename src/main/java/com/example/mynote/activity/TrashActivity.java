@@ -137,7 +137,7 @@ public class TrashActivity extends Activity {
 
                 //Инициализация массивов данных с присвоением стиля
                 textView_name[i] = new TextView(this, null, 0, R.style.BDout_name);
-                textView_desc[i] = new TextView(this, null, 0, R.style.BDout_desc);
+                textView_desc[i] = new TextView(this, null, 0, R.style.BDout_description);
                 textView_delay[i] = new TextView(this , null, 0, R.style.BDout_delay);
 
                 //Внесении данных результата запроса в массивы

@@ -120,6 +120,7 @@ public class EditActivity extends Activity {
             }
         }
         super.onPause();
+        db.close();
     }
 
     //Вызов диалогов выбора даты и времени

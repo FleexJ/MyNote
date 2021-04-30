@@ -8,19 +8,24 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -70,6 +75,7 @@ public class MainActivity extends Activity {
         scrollView.setOnTouchListener(new MainSwipeListener(this));
         ScrollView scrollView_minute = findViewById(R.id.ScrollView_minute);
         scrollView_minute.setOnTouchListener(new MainSwipeListener(this));
+
         //Переактивация всех активных записей
         for (Note note : notesDAO.getActiveNotes())
             myGlobal.startAlarmNote(getApplicationContext(), note);
@@ -88,11 +94,6 @@ public class MainActivity extends Activity {
                 getString(R.string.tab_timerTitle));
         tabHost.addTab(tabSpec);
         tabHost.setCurrentTab(0);
-
-        if( getIntent().getIntExtra("tab_nom",-1) == 1)
-            tabHost.setCurrentTab(1);
-        else
-            tabHost.setCurrentTab(0);
     }
 
     @Override
@@ -151,9 +152,8 @@ public class MainActivity extends Activity {
                 linear_name_checkbox[i] = new LinearLayout(this);
                 checkBox_note[i] = new CheckBox(this);
                 //Инициализация массивов данных с присвоением стиля
-                textView_name_note[i] = new TextView(this, null, 0, R.style.BDout_name_note);
-                //textView_name_note[i].setTypeface(Typeface.createFromAsset(getAssets(), "fonts/main_font.ttf"));
-                textView_desc_note[i] = new TextView(this, null, 0, R.style.BDout_desc);
+                textView_name_note[i] = new TextView(this, null, 0, R.style.BDout_name);
+                textView_desc_note[i] = new TextView(this, null, 0, R.style.BDout_description);
                 textView_delay_note[i] = new TextView(this , null, 0, R.style.BDout_delay);
 
                 //Внесении данных результата запроса в массивы
@@ -176,11 +176,9 @@ public class MainActivity extends Activity {
                 //Добавление представлений на экран
                 linear_bd_note[i] = new LinearLayout(this, null, 0, R.style.BDout_layout);
                 linear_bd_note[i].setBackgroundResource(R.drawable.linear_round);
-//                linear_bd_note[i].addView(textView_name_note[i]);
                 linear_name_checkbox[i].addView(checkBox_note[i]);
                 linear_name_checkbox[i].addView(textView_name_note[i]);
                 linear_bd_note[i].addView(linear_name_checkbox[i]);
-                linear_bd_note[i].addView(new View(this, null, 0, R.style.BDout_line));
 
                 //Если поле описания не пусто, то добавляем его на экран
                 if(!textView_desc_note[i].getText().toString().isEmpty())

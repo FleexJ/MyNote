@@ -76,4 +76,16 @@ public class Note {
         calendar.setTimeInMillis(delay);
         return calendar;
     }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", state=" + state +
+                ", delay=" + delay +
+                ", repeat=" + repeat +
+                '}';
+    }
 }

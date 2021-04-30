@@ -41,6 +41,7 @@ public class RebootReceiver extends BroadcastReceiver {
 
             //Сброс состояний таймера до неактивного
             timersDAO.setStateNotActiveAll();
+            db.close();
         }
     }
 }
