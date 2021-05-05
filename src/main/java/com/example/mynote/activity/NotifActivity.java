@@ -21,7 +21,6 @@ public class NotifActivity extends Activity {
 
     private int id;
 
-    private DatabaseHelper databaseHelper;
     private SQLiteDatabase db;
     private NotesDAO notesDAO;
     private TimersDAO timersDAO;
@@ -31,7 +30,7 @@ public class NotifActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notif);
 
-        databaseHelper = new DatabaseHelper(getApplicationContext());
+        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
         db = databaseHelper.getWritableDatabase();
         notesDAO = new NotesDAO(db);
         timersDAO = new TimersDAO(db);
@@ -69,7 +68,8 @@ public class NotifActivity extends Activity {
     }
 
     public void clickApply(View view) {
-        ((NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE)).cancel(id);
+        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(id);
         finish();
     }
 

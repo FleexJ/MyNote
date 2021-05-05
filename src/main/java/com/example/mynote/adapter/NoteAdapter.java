@@ -152,6 +152,7 @@ public class NoteAdapter extends BaseAdapter {
                         MyGlobal.showToastShort(
                                 context,
                                 context.getString(R.string.incorrectTimeForStart));
+                        buttonView.setChecked(false);
                     } else {
                         //Запуск аларма для записи
                         NoteReceiver.startAlarmNote(context, note);
@@ -161,7 +162,6 @@ public class NoteAdapter extends BaseAdapter {
                                 context,
                                 context.getString(R.string.noteStarted));
                     }
-                    buttonView.setChecked(false);
                 } else {
                     note.setState(Note.NOT_ACTIVE_STATE);
                     notesDAO.editNote(note);
