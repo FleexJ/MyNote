@@ -5,14 +5,14 @@
     android:id="@+id/edit_note"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fon"
+    android:background="@color/colorGrey"
     tools:context=".activity.EditActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout_title"
         android:layout_width="0dp"
         android:layout_height="72dp"
-        android:background="#2D4D8F"
+        android:background="@color/colorMain"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,10 +24,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:ems="10"
-            android:hint="@string/activityNoteEditTitleHint"
+            android:hint="@string/noteTitle"
             android:inputType="textPersonName"
             android:paddingRight="20dp"
-            android:textColor="#D8FFFFFF"
+            android:textColor="@color/colorWhite"
             android:textSize="24sp" />
     </LinearLayout>
 
@@ -36,14 +36,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="200dp"
-        android:background="#D7E4E2E2"
-        android:ems="10"
+        android:background="@color/colorWhite"
         android:gravity="start|top"
-        android:hint="@string/activityNoteEditContentHint"
+        android:hint="@string/noteDescription"
         android:inputType="textMultiLine"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:textSize="14sp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textColor="@color/colorGreyDark"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
         android:background="@drawable/button_apply"
         android:text="✓"
         android:textAlignment="center"
-        android:textColor="@color/colorMain"
+        android:textColor="@color/colorWhite"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -78,8 +78,8 @@
             android:id="@+id/textView_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/activityNoteEditTextLabel"
-            android:textColor="#F3F5F5F5"
+            android:text="@string/noteDateLabel"
+            android:textColor="@color/colorBlack"
             android:textSize="16sp" />
 
         <TextView
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="22dp"
             android:layout_marginTop="5dp"
-            android:textColor="#DAE7E1E1"
+            android:textColor="@color/colorBlack"
             android:textSize="15sp"
             tools:visibility="visible" />
 

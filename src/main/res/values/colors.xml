@@ -3,11 +3,16 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#154194</color>
-    <color name="colorMain">#154194</color>
     <color name="colorTitle">#2D4D8F</color>
     <color name="colorText">#3B3F4E</color>
     <color name="colorTextWhite">#EBF0E9E9</color>
-    <color name="colorBackgroundMain">#DADADA</color>
-    <color name="colorGrey">#CACACC</color>
     <color name="colorDarkerGrey">#686868</color>
+
+    <color name="colorMain">#75B6D5</color>
+    <color name="colorMainDark">#3D90B8</color>
+    <color name="colorBackgroundMain">#F6D4B0</color>
+    <color name="colorGrey">#DAD3D3</color>
+    <color name="colorGreyDark">#5C5B5B</color>
+    <color name="colorWhite">#F8F3F3</color>
+    <color name="colorBlack">#303030</color>
 </resources>

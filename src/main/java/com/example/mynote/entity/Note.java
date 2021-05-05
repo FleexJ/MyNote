@@ -38,7 +38,6 @@ public class Note {
         return state;
     }
 
-
     public long getDelay() {
         return delay;
     }
@@ -75,17 +74,5 @@ public class Note {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(delay);
         return calendar;
-    }
-
-    @Override
-    public String toString() {
-        return "Note{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", state=" + state +
-                ", delay=" + delay +
-                ", repeat=" + repeat +
-                '}';
     }
 }

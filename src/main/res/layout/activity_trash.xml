@@ -5,14 +5,14 @@
     android:id="@+id/trash_constraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="@color/colorGrey"
     tools:context=".activity.TrashActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout_title"
         android:layout_width="0dp"
         android:layout_height="70dp"
-        android:background="#2D4D8F"
+        android:background="@color/colorMain"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,14 +21,14 @@
             android:id="@+id/textView_title"
             android:layout_width="118dp"
             android:layout_height="32dp"
-            android:text="@string/activityTitleTrash"
-            android:textColor="#D3FFFCFC"
+            android:text="@string/trash"
+            android:textColor="@color/colorWhite"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageButton_back"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.421"
-            tools:text="Корзина" />
+            tools:text="@string/trash" />
 
         <ImageButton
             android:id="@+id/imageButton_back"
@@ -41,7 +41,8 @@
             android:src="?attr/actionModeCloseDrawable"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/back" />
 
         <ImageButton
             android:id="@+id/imageButton_deleteAll"
@@ -54,7 +55,8 @@
             android:src="@drawable/del_all"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/clear" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -71,21 +73,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout_title">
 
-        <ScrollView
-            android:id="@+id/ScrollViewTrash"
+        <ListView
+            android:id="@+id/listView_trash"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:divider="@color/colorGrey"
+            android:dividerHeight="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
+        <!--Empty ListView-->
+        <LinearLayout
+            android:id="@+id/layout_emptyTrash"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorGrey"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:visibility="gone">
 
-            <LinearLayout
-                android:id="@+id/linear_trash"
+            <TextView
+                android:id="@+id/textView_trashTitle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical" />
-        </ScrollView>
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/emptyTrashYet"
+                android:textColor="@color/colorGreyDark"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/emptyTrashYet"
+                android:src="@drawable/icon_null" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

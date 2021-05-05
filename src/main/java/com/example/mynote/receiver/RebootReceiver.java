@@ -1,6 +1,5 @@
 package com.example.mynote.receiver;
 
-import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +12,6 @@ import com.example.mynote.entity.Note;
 import com.example.mynote.entity.Timer;
 import com.example.mynote.globalVar.MyGlobal;
 
-import static android.content.Context.MODE_PRIVATE;
-
 //Класс для активации напоминаний при перезагрузке устройства
 public class RebootReceiver extends BroadcastReceiver {
 
@@ -22,8 +19,6 @@ public class RebootReceiver extends BroadcastReceiver {
     private SQLiteDatabase db;
     private TimersDAO timersDAO;
     private NotesDAO notesDAO;
-
-    private final MyGlobal myGlobal = new MyGlobal();
 
     @Override
     public void onReceive(Context context, Intent intent_rec) {
@@ -35,9 +30,9 @@ public class RebootReceiver extends BroadcastReceiver {
 
             //Переактивация всех активных записей
             for (Note note : notesDAO.getActiveNotes())
-                myGlobal.startAlarmNote(context, note);
+                NoteReceiver.startAlarmNote(context, note);
             for (Timer timer : timersDAO.getActiveTimers())
-                myGlobal.startAlarmTimers(context, timer);
+                TimerReceiver.startAlarmTimer(context, timer);
 
             //Сброс состояний таймера до неактивного
             timersDAO.setStateNotActiveAll();

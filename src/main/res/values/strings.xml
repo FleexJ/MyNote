@@ -10,46 +10,47 @@
         <item>Год</item>
     </string-array>
 
-    <string name="tab_simpleNoteTitle">Простая запись</string>
-    <string name="tab_timerTitle">Таймер</string>
+    <string name="simpleNote">Запись</string>
+    <string name="timer">Таймер</string>
 
-    <string name="dialogueOk">Ок</string>
-    <string name="dialogueCancel">Отмена</string>
+    <string name="noteTitle">Заголовок</string>
+    <string name="noteDescription">Описание</string>
+    <string name="noteDateLabel">Установленное время</string>
 
-    <string name="emptyNotesYet">Записей пока нет</string>
-    <string name="viewSimpleNoteBottom">Установленное время: %1$s | Повторы: %2$s</string>
-    <string name="toastIncorrectTimeForStart">Установленное время раньше текущего, либо равно ему!</string>
-    <string name="toastNoteStarted">Напоминание активировано!</string>
+    <string name="ok">Ок</string>
+    <string name="cancel">Отмена</string>
+
+    <string name="trash">Корзина</string>
+    <string name="clear">Очистить</string>
+    <string name="cleared">Очищено</string>
+    <string name="deleted">Удалено</string>
+    <string name="returned">Возвращено</string>
+    <string name="updated">Обновлено</string>
+    <string name="back">Назад</string>
+
+    <string name="emptyNotesYet">Записи пусты</string>
+    <string name="noteBottom">Время: %s | Повторы: %s</string>
+    <string name="incorrectTimeForStart">Установленное время раньше текущего, либо равно ему!</string>
+    <string name="noteStarted">Напоминание активировано!</string>
     <string name="dialogueTitleDeleteNote">Удалить выбранную запись?</string>
-    <string name="toastNoteDeleted">Запись перемещена в корзину</string>
+    <string name="noteDeleted">Запись перемещена в корзину</string>
 
-    <string name="emptyTimersYet">Ни одного таймера пока нет</string>
-    <string name="timerProgress">%1$d мин.</string>
+    <string name="emptyTimersYet">Таймеры пусты</string>
+    <string name="timerProgress">%d мин.</string>
     <string name="dialogueTitleDeleteTimer">Удалить выбранный таймер?</string>
-    <string name="toastTimerDeleted">Таймер перемещен в корзину</string>
-    <string name="toastTimerStarted">Таймер сработает через %1$d мин.</string>
+    <string name="timerDeleted">Таймер перемещен в корзину</string>
+    <string name="timerStarted">Таймер сработает через %d мин.</string>
     <string name="timerDefaultName">Введите название</string>
     <string name="dialogueTitleEditTimer">Введите новое название</string>
 
-    <string name="popupTrash">Корзина</string>
     <string name="popupUpdateScreen">Обновить окно</string>
-    <string name="popupUpdated">Обновлено</string>
 
-    <string name="notifTimerWorkTitle">Прогресс таймера: %1$s</string>
-    <string name="notifTimerWorkedTitle">Сработал таймер!</string>
+    <string name="notifTimerProgress">Прогресс таймера: %s</string>
+    <string name="notifTimerDoneTitle">Сработал таймер!</string>
     <string name="notifNoteTitle">Напоминание о задаче!</string>
 
-    <string name="activityTitleTrash">Корзина</string>
     <string name="dialogueClearTrash">Очистить корзину?</string>
-    <string name="dialogueClearTrashPositive">Очистить</string>
-    <string name="toastClearedTrash">Очищено</string>
     <string name="emptyTrashYet">Корзина пуста</string>
-    <string name="dialogueDeleteFromTrash">Удалить запись навсегда?</string>
-    <string name="toastDeletedFromTrash">Удалено</string>
-    <string name="backNoteFromTrashTitle">Вернуть запись из корзины?</string>
-    <string name="toastBackedNoteFromTrash">Возвращено</string>
-
-    <string name="activityNoteEditTitleHint">Заголовок</string>
-    <string name="activityNoteEditContentHint">Содержимое</string>
-    <string name="activityNoteEditTextLabel">Установленное время</string>
+    <string name="deleteFromTrash">Удалить запись навсегда?</string>
+    <string name="returnFromTrash">Вернуть запись из корзины?</string>
 </resources>

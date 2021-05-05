@@ -36,27 +36,6 @@ public class NotesDAO {
         return noteList;
     }
 
-    public Note[] getArrayNotes() {
-        Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + DatabaseHelper.TABLE_NOTES,
-                null);
-        Note[] notes = new Note[cursor.getCount()];
-
-        for (int i = 0; i < cursor.getCount(); i++) {
-            cursor.moveToNext();
-            notes[i] = new Note(
-                    cursor.getInt(0), //id
-                    cursor.getString(1),//name
-                    cursor.getString(2),//descr
-                    cursor.getInt(3),//state
-                    cursor.getLong(4),//delay
-                    TypeRepeat.valueOf(cursor.getString(5))//repeat
-            );
-        }
-        cursor.close();
-        return notes;
-    }
-
     public void editNote(Note note) {
         SQLiteStatement sqLiteStatement = db.compileStatement("UPDATE " + DatabaseHelper.TABLE_NOTES + " SET " +
                 DatabaseHelper.COLUMN_NOTES_NAME +"=?, " +

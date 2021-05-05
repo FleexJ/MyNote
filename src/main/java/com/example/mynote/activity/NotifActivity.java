@@ -42,26 +42,29 @@ public class NotifActivity extends Activity {
         TextView textView_desc = findViewById(R.id.textView_notifDesc);
         id = getIntent().getIntExtra("id", 0);
         int type = getIntent().getIntExtra("type",0);
-        if(type == MyGlobal.TYPE_NOTE) {
-            Note note = notesDAO.getNoteById(id);
-             textView_title.setText(
-                     getString(R.string.notifNoteTitle)
-             );
-             textView_name.setText(note.getName());
-             textView_desc.setText(note.getDescription());
-             if(note.getDescription().isEmpty())
-                 linearLayout.removeView(textView_desc);
-             if(note.getName().isEmpty())
-                 linearLayout.removeView(textView_name);
-        }
-        else if(type == MyGlobal.TYPE_TIMER) {
+        switch (type) {
+            case MyGlobal.TYPE_NOTE:
+                Note note = notesDAO.getNoteById(id);
+                textView_title.setText(
+                        getString(R.string.notifNoteTitle)
+                );
+                textView_name.setText(note.getName());
+                textView_desc.setText(note.getDescription());
+                if(note.getDescription().isEmpty())
+                    linearLayout.removeView(textView_desc);
+                if(note.getName().isEmpty())
+                    linearLayout.removeView(textView_name);
+                break;
+
+            case MyGlobal.TYPE_TIMER:
                 Timer timer = timersDAO.getTimersById(id);
                 textView_title.setText(
-                        getString(R.string.notifTimerWorkedTitle)
+                        getString(R.string.notifTimerProgress)
                 );
                 textView_name.setText(timer.getName());
                 linearLayout.removeView(textView_desc);
-            }
+                break;
+        }
         db.close();
     }
 

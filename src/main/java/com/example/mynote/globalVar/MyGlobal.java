@@ -19,8 +19,7 @@ import com.example.mynote.activity.MainActivity;
 import com.example.mynote.activity.NotifActivity;
 import com.example.mynote.entity.Note;
 import com.example.mynote.entity.Timer;
-import com.example.mynote.receiver.MyReceiver;
-import com.example.mynote.receiver.MyReceiverRepeatingMinute;
+import com.example.mynote.receiver.TimerReceiver;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,136 +39,19 @@ public class MyGlobal {
 
     public static String CHANNEL_ID = "channel_id_mynote";
     public static String CHANNEL_NAME = "channel_name_mynote";
-    public static String CHANNEL_ID_PROGRESS_TIMER = "channel_id_mynote_progress";
-    public static String CHANNEL_NAME_PROGRESS_TIMER = "channel_name_mynote_progress";
 
-    public void makeToastShort(Context context, String message) {
+
+    public static void showToastShort(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
-    public void makeToastLong(Context context, String message) {
+    public static void showToastLong(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
 
-    //функция старта аларма для записей
-    public void startAlarmNote(Context context, Note note) {
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        //Заготовки для уведомлений
-        Intent intent = new Intent(context, MyReceiver.class);
-        intent.putExtra("id", note.getId());
-        //Добавление флага для точного срабатывания
-        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                context,
-                note.getId(),
-                intent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
-        am.cancel(pendingIntent);
-        //Активация аларма
-        am.setExact(
-                AlarmManager.RTC_WAKEUP,
-                note.getDelayCalendar().getTimeInMillis(),
-                pendingIntent);
-    }
-
-    //функция остановки аларма по id
-    public void cancelAlarmNote(Context context, int id) {
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, MyReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                context,
-                id,
-                intent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
-        am.cancel(pendingIntent);
-    }
-
-
-    //функция старта аларма для таймеров
-    public void startAlarmTimers(Context context, Timer timer) {
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        //Заготовки для уведомлений
-        Intent intent = new Intent(context, MyReceiverRepeatingMinute.class);
-        intent.putExtra("id", timer.getId());
-        Calendar delay_minute = Calendar.getInstance();
-        delay_minute.add(Calendar.MINUTE, 1);
-        //Добавление флага для точного срабатывания
-        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                context,
-                timer.getId(),
-                intent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
-        am.cancel(pendingIntent);
-        am.setExact(AlarmManager.RTC_WAKEUP, delay_minute.getTimeInMillis(), pendingIntent);
-    }
-
-    //функция остановки аларма по id
-    public void cancelAlarmTimer(Context context, int id) {
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, MyReceiverRepeatingMinute.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                context,
-                id,
-                intent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
-        am.cancel(pendingIntent);
-    }
-
     //Показ уведомления
-    public void showNotifProgressTimers(Context context, Timer timer) {
-        Intent intent_new = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, timer.getId() , intent_new, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        if(Build.VERSION.SDK_INT >= 26 ){
-            NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            Notification.Builder builder = new Notification.Builder(context, CHANNEL_ID_PROGRESS_TIMER);
-            NotificationChannel notificationChannel = new NotificationChannel(
-                    CHANNEL_ID_PROGRESS_TIMER,
-                    CHANNEL_NAME_PROGRESS_TIMER,
-                    NotificationManager.IMPORTANCE_LOW);
-            notificationChannel.setLockscreenVisibility(1);
-
-            builder.setContentIntent(pendingIntent)
-                    .setSmallIcon(R.drawable.icon_notif)
-                    .setContentTitle(
-                            context.getString(R.string.notifTimerWorkTitle, timer.getName()))
-                    .setContentText(
-                            context.getString(R.string.timerProgress, timer.getMinute()))
-                    .setShowWhen(true)
-                    .setOngoing(true)
-                    .setAutoCancel(false);
-            Notification notification = builder.build();
-            nm.createNotificationChannel(notificationChannel);
-            nm.cancel(timer.getId());
-            nm.notify(timer.getId(), notification);
-        }
-        else if(Build.VERSION.SDK_INT >= 21 ){
-            NotificationCompat.Builder builder =
-                    new NotificationCompat.Builder(context, CHANNEL_ID_PROGRESS_TIMER)
-                            .setContentTitle(
-                                    context.getString(R.string.notifTimerWorkTitle, timer.getName()))
-                            .setContentText(
-                                    context.getString(R.string.timerProgress, timer.getMinute()))
-                            .setContentIntent(pendingIntent)
-                            .setPriority(NotificationCompat.PRIORITY_MIN)
-                            .setAutoCancel(true)
-                            .setSmallIcon(R.drawable.icon_notif);
-
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            notificationManager.cancel(timer.getId());
-            notificationManager.notify(timer.getId(), builder.build());
-        }
-    }
-    public void cancelNotifProgressTimers(Context context, Timer timer) {
-        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.cancel(timer.getId());
-    }
-
-
-    //Показ уведомления
-    public void showNotification(Context context, Object objectToNotif) {
+    public static void showNotification(Context context, Object objectToNotif) {
         String title;
         String content;
         int type;
@@ -184,7 +66,7 @@ public class MyGlobal {
         }
         else if (objectToNotif instanceof Timer) {
             Timer timer = (Timer) objectToNotif;
-            title = context.getString(R.string.notifTimerWorkedTitle);
+            title = context.getString(R.string.notifTimerDoneTitle);
             content = timer.getName();
             type = TYPE_TIMER;
             id = timer.getId();

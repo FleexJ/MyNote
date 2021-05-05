@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
 import com.example.mynote.entity.TrashNote;
+import com.example.mynote.entity.TypeRepeat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +20,14 @@ public class TrashDAO {
 
     public void insertTrash(TrashNote trashNote) {
         SQLiteStatement sqLiteStatement = db.compileStatement(
-                "INSERT INTO " + DatabaseHelper.TABLE_TRASH + " VALUES(?, ?, ?, ?, ?)"
+                "INSERT INTO " + DatabaseHelper.TABLE_TRASH + " VALUES(?, ?, ?, ?, ?, ?)"
         );
         sqLiteStatement.bindLong(1, trashNote.getId());
         sqLiteStatement.bindString(2, trashNote.getName());
         sqLiteStatement.bindString(3, trashNote.getDescription());
         sqLiteStatement.bindLong(4, trashNote.getDelay());
-        sqLiteStatement.bindLong(5, trashNote.getType());
+        sqLiteStatement.bindString(5, trashNote.getRepeat().name());
+        sqLiteStatement.bindLong(6, trashNote.getType());
         sqLiteStatement.executeInsert();
     }
 
@@ -52,7 +54,8 @@ public class TrashDAO {
                     cursor.getString(1), //name
                     cursor.getString(2), //descr
                     cursor.getLong(3), //delay
-                    cursor.getInt(4) //type
+                    TypeRepeat.valueOf(cursor.getString(4)), //repeat
+                    cursor.getInt(5) //type
             ));
         cursor.close();
         return trashNoteList;

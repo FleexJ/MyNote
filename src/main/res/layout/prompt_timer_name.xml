@@ -8,16 +8,18 @@
     android:padding="10dp" >
 
     <TextView
-        android:id="@+id/label_prompt_minute"
+        android:labelFor="@id/editText_name"
+        android:id="@+id/label_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dialogueTitleEditTimer"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:id="@+id/editName_minute"
+        android:id="@+id/editText_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:inputType="text">
         <requestFocus />
     </EditText>
 

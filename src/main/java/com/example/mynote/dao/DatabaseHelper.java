@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "widgets.db";
-    public static final int SCHEMA = 2;
+    public static final int SCHEMA = 4;
 
     public static final String TABLE_NOTES = "notes";
     public static final String COLUMN_NOTES_ID = "id";
@@ -27,6 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_TRASH_NAME = "name";
     public static final String COLUMN_TRASH_DESCRIPTION = "description";
     public static final String COLUMN_TRASH_DELAY = "delay";
+    public static final String COLUMN_TRASH_REPEAT = "repeat";
     public static final String COLUMN_TRASH_TYPE = "type";
 
     public static final String TABLE_ID_COUNT = "id_count";
@@ -44,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_NOTES_NAME + " TEXT, " +
                 COLUMN_NOTES_DESCRIPTION + " TEXT, " +
                 COLUMN_NOTES_STATE + " INTEGER, " +
-                COLUMN_NOTES_DELAY + " TEXT, " +
+                COLUMN_NOTES_DELAY + " INTEGER, " +
                 COLUMN_NOTES_REPEAT + " TEXT)"
         );
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TIMERS + " (" +
@@ -57,7 +58,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_TRASH_ID + " INTEGER PRIMARY KEY, " +
                 COLUMN_TRASH_NAME + " TEXT, " +
                 COLUMN_TRASH_DESCRIPTION + " TEXT, " +
-                COLUMN_TRASH_DELAY + " TEXT, " +
+                COLUMN_TRASH_DELAY + " INTEGER, " +
+                COLUMN_TRASH_REPEAT + " TEXT," +
                 COLUMN_TRASH_TYPE + " INTEGER)"
         );
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_ID_COUNT + " (" +

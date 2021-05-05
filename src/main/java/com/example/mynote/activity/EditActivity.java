@@ -23,6 +23,7 @@ import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.entity.Note;
 import com.example.mynote.entity.TypeRepeat;
 import com.example.mynote.globalVar.MyGlobal;
+import com.example.mynote.receiver.NoteReceiver;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -39,8 +40,6 @@ public class EditActivity extends Activity {
     private Spinner spinner_repeat;
     private Calendar calendar = GregorianCalendar.getInstance();
     private Boolean isSave = false;
-    //Объект в котором хранятся общие методы и переменные
-    private final MyGlobal myGlobal = new MyGlobal();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,16 +86,16 @@ public class EditActivity extends Activity {
 
         spinner_repeat.setSelection(
                 note.getRepeat().getId());
-        spinner_repeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+//        spinner_repeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
     }
 
     @Override
@@ -104,7 +103,7 @@ public class EditActivity extends Activity {
         if(isSave) {
             int id = getIntent().getIntExtra("idEdit",-1);
             //Отменяем напоминание, если изменения были приняты
-            myGlobal.cancelAlarmNote(getApplicationContext(), id);
+            NoteReceiver.cancelAlarmNote(getApplicationContext(), id);
 
             String desc = editText_desc.getText().toString();
             String name = editText_name.getText().toString();

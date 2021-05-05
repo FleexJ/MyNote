@@ -63,16 +63,16 @@ public class AddNoteActivity extends Activity {
         );
         //Выбор повтора
         spinner_repeat = findViewById(R.id.spinner_repeat);
-        spinner_repeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+//        spinner_repeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
 
         //Кнопка принятия
         button_apply = findViewById(R.id.button_apply);

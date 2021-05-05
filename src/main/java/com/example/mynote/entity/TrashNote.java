@@ -7,13 +7,15 @@ public class TrashNote {
     private String name;
     private String description;
     private long delay;
+    private TypeRepeat repeat;
     private int type;
 
-    public TrashNote(int id, String name, String description, long delay, int type) {
+    public TrashNote(int id, String name, String description, long delay, TypeRepeat repeat, int type) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.delay = delay;
+        this.repeat = repeat;
         this.type = type;
     }
 
@@ -55,6 +57,14 @@ public class TrashNote {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public TypeRepeat getRepeat() {
+        return repeat;
+    }
+
+    public void setRepeat(TypeRepeat repeat) {
+        this.repeat = repeat;
     }
 
     public Calendar getDelayCalendar() {
