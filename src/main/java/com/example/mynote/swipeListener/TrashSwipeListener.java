@@ -22,6 +22,7 @@ public class TrashSwipeListener implements View.OnTouchListener {
 
     private void onRightToLeftSwipe() {
         Log.i(LOG_TAG, "Справа налево!");
+        activity.finish();
     }
 
     private void onLeftToRightSwipe() {

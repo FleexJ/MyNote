@@ -22,7 +22,7 @@
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_marginTop="244dp"
-            android:background="@color/colorTitle"
+            android:background="@color/colorMain"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/colorTextWhite"
+                android:textColor="@color/colorWhite"
                 app:textAllCaps="true" />
         </LinearLayout>
 
@@ -42,7 +42,7 @@
             android:id="@+id/linearLayout_notif"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:background="#B3C5DF"
+            android:background="@color/colorWhite"
             android:gravity="center"
             android:orientation="vertical"
             android:paddingStart="20dp"
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textAlignment="center"
-                android:textColor="#2549A5"
+                android:textColor="@color/colorGreyDark"
                 app:fontFamily="sans-serif-black" />
 
             <TextView
@@ -70,24 +70,24 @@
                 android:maxLines="15"
                 android:text=""
                 android:textAlignment="center"
-                android:textColor="#424249"
+                android:textColor="@color/colorGreyDark"
                 app:fontFamily="sans-serif-condensed" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/button_apply2"
+        android:id="@+id/button_apply"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="25dp"
-        android:background="@drawable/button_notif"
+        android:background="@drawable/button_apply"
+        android:onClick="clickApply"
         android:text="✓"
         android:textAlignment="center"
-        android:textColor="#0347D8"
+        android:textColor="@color/colorWhite"
         android:textSize="30sp"
-        android:onClick="clickApply"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

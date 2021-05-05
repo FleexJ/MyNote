@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.ScrollView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.mynote.R;
 import com.example.mynote.adapter.TrashAdapter;
@@ -18,6 +21,7 @@ import com.example.mynote.dao.TimersDAO;
 import com.example.mynote.dao.TrashDAO;
 import com.example.mynote.entity.TrashNote;
 import com.example.mynote.globalVar.MyGlobal;
+import com.example.mynote.swipeListener.TrashSwipeListener;
 
 import java.util.List;
 
@@ -46,13 +50,13 @@ public class TrashActivity extends Activity {
         idCountDAO = new IdCountDAO(db);
 
         listView_trash = findViewById(R.id.listView_trash);
-        listView_trash.setEmptyView(findViewById(R.id.layout_emptyTrash));
+        View emptyTrash = findViewById(R.id.layout_emptyTrash);
+        listView_trash.setEmptyView(emptyTrash);
+
+        emptyTrash.setOnTouchListener(new TrashSwipeListener(this));
+        listView_trash.setOnTouchListener(new TrashSwipeListener(this));
 
         initTrash();
-//        ConstraintLayout trash_constraint = findViewById(R.id.trash_constraint);
-//        trash_constraint.setOnTouchListener(new TrashSwipeListener(this));
-//        ScrollView scrollView = findViewById(R.id.ScrollViewTrash);
-//        scrollView.setOnTouchListener(new TrashSwipeListener(this));
     }
 
     @Override

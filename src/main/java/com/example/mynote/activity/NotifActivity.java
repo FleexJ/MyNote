@@ -58,7 +58,7 @@ public class NotifActivity extends Activity {
             case MyGlobal.TYPE_TIMER:
                 Timer timer = timersDAO.getTimersById(id);
                 textView_title.setText(
-                        getString(R.string.notifTimerProgress)
+                        getString(R.string.notifTimerDoneTitle)
                 );
                 textView_name.setText(timer.getName());
                 linearLayout.removeView(textView_desc);

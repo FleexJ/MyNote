@@ -216,4 +216,9 @@ public class TimerAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
 }

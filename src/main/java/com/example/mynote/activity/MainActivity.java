@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.ScrollView;
 import android.widget.TabHost;
 
 import com.example.mynote.R;
@@ -26,6 +27,7 @@ import com.example.mynote.entity.Timer;
 import com.example.mynote.globalVar.MyGlobal;
 import com.example.mynote.receiver.NoteReceiver;
 import com.example.mynote.receiver.TimerReceiver;
+import com.example.mynote.swipeListener.MainSwipeListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,15 +66,17 @@ public class MainActivity extends Activity {
         idCountDAO = new IdCountDAO(db);
 
         listView_note = findViewById(R.id.listView_notes);
-        listView_note.setEmptyView(findViewById(R.id.layout_emptyNotes));
+        View emptyNotes = findViewById(R.id.layout_emptyNotes);
+        listView_note.setEmptyView(emptyNotes);
 
         listView_timer = findViewById(R.id.listView_timers);
-        listView_timer.setEmptyView(findViewById(R.id.layout_emptyTimers));
+        View emptyTimers = findViewById(R.id.layout_emptyTimers);
+        listView_timer.setEmptyView(emptyTimers);
 
-//        ScrollView scrollView = findViewById(R.id.ScrollView_note);
-//        scrollView.setOnTouchListener(new MainSwipeListener(this));
-//        ScrollView scrollView_minute = findViewById(R.id.ScrollView_minute);
-//        scrollView_minute.setOnTouchListener(new MainSwipeListener(this));
+        emptyNotes.setOnTouchListener(new MainSwipeListener(this));
+        emptyTimers.setOnTouchListener(new MainSwipeListener(this));
+        listView_note.setOnTouchListener(new MainSwipeListener(this));
+        listView_timer.setOnTouchListener(new MainSwipeListener(this));
 
         //Переактивация всех активных записей
         for (Note note : notesDAO.getActiveNotes())
@@ -105,9 +109,6 @@ public class MainActivity extends Activity {
 
     @Override
     public void onDestroy() {
-        for (Timer timer : timersDAO.getActiveTimers())
-            TimerReceiver.showNotifProgressTimer(this, timer);
-
         db.close();
         super.onDestroy();
     }
