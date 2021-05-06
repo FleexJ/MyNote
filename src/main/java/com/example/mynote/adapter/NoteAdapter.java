@@ -112,8 +112,8 @@ public class NoteAdapter extends BaseAdapter {
                                         //Удаление аларм менеджера, в случае удаления записи из бд
                                         NoteReceiver.cancelAlarmNote(context, note.getId());
 
-                                        notesDAO.deleteNote(note);
-                                        trashDAO.insertTrash(new TrashNote(
+                                        notesDAO.delete(note);
+                                        trashDAO.insert(new TrashNote(
                                                 note.getId(),
                                                 note.getName(),
                                                 note.getDescription(),
@@ -157,14 +157,14 @@ public class NoteAdapter extends BaseAdapter {
                         //Запуск аларма для записи
                         NoteReceiver.startAlarmNote(context, note);
                         note.setState(Note.ACTIVE_STATE);
-                        notesDAO.editNote(note);
+                        notesDAO.edit(note);
                         MyGlobal.showToastShort(
                                 context,
                                 context.getString(R.string.noteStarted));
                     }
                 } else {
                     note.setState(Note.NOT_ACTIVE_STATE);
-                    notesDAO.editNote(note);
+                    notesDAO.edit(note);
                     //Удаление аларма для записи
                     NoteReceiver.cancelAlarmNote(context, note.getId());
                 }

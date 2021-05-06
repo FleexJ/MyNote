@@ -29,7 +29,7 @@ public class NoteReceiver extends BroadcastReceiver {
 
         int id = intent.getIntExtra("id",0);
         //Данные для уведомления берутся из бд, в случае если пользователь их отредактирует
-        Note note = notesDAO.getNoteById(id);
+        Note note = notesDAO.getById(id);
 
         MyGlobal.showNotification(context, note);
 
@@ -64,11 +64,8 @@ public class NoteReceiver extends BroadcastReceiver {
                 note.setState(Note.NOT_ACTIVE_STATE);
                 break;
         }
-        notesDAO.editNote(note);
+        notesDAO.edit(note);
         db.close();
-
-//        if(Build.VERSION.SDK_INT >= 24 && isForeground(context.getApplicationContext()))
-//            context.getApplicationContext().startActivity(intent_new);
     }
 
     //функция старта аларма для записей

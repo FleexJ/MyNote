@@ -102,12 +102,12 @@ public class TrashAdapter extends BaseAdapter {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        trashDAO.deleteTrash(trashNote);
+                                        trashDAO.delete(trashNote);
                                         trashNotes.remove(trashNote);
 
                                         switch (trashNote.getType()) {
                                             case MyGlobal.TYPE_NOTE:
-                                                notesDAO.insertNote(new Note(
+                                                notesDAO.insert(new Note(
                                                         trashNote.getId(),
                                                         trashNote.getName(),
                                                         trashNote.getDescription(),
@@ -118,7 +118,7 @@ public class TrashAdapter extends BaseAdapter {
                                                 break;
 
                                             case MyGlobal.TYPE_TIMER:
-                                                timersDAO.insertTimer(new Timer(
+                                                timersDAO.insert(new Timer(
                                                         trashNote.getId(),
                                                         trashNote.getName(),
                                                         Timer.NOT_ACTIVE_STATE,
@@ -158,8 +158,8 @@ public class TrashAdapter extends BaseAdapter {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        trashDAO.deleteTrash(trashNote);
-                                        idCountDAO.deleteId(trashNote.getId());
+                                        trashDAO.delete(trashNote);
+                                        idCountDAO.delete(trashNote.getId());
                                         trashNotes.remove(trashNote);
 
                                         notifyDataSetChanged();

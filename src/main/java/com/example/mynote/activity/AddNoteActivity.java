@@ -28,7 +28,6 @@ import java.util.GregorianCalendar;
 
 public class AddNoteActivity extends Activity {
 
-    private DatabaseHelper databaseHelper;
     private SQLiteDatabase db;
     private NotesDAO notesDAO;
     private IdCountDAO idCountDAO;
@@ -43,7 +42,7 @@ public class AddNoteActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
 
-        databaseHelper = new DatabaseHelper(getApplicationContext());
+        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
         db = databaseHelper.getWritableDatabase();
         notesDAO = new NotesDAO(db);
         idCountDAO = new IdCountDAO(db);
@@ -74,8 +73,8 @@ public class AddNoteActivity extends Activity {
                     (int) spinner_repeat.getSelectedItemId()
                     ];
             Note note = new Note(newId, name, desc, 0, calendar.getTimeInMillis(), repeat);
-            notesDAO.insertNote(note);
-            idCountDAO.insertIdCount(newId);
+            notesDAO.insert(note);
+            idCountDAO.insert(newId);
         }
         finish();
     }

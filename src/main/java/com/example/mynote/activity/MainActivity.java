@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
         listView_timer.setOnTouchListener(new MainSwipeListener(this));
 
         //Переактивация всех активных записей
-        for (Note note : notesDAO.getActiveNotes())
+        for (Note note : notesDAO.getActiveAll())
             NoteReceiver.startAlarmNote(getApplicationContext(), note);
 
         //Настройка tabHost
@@ -117,7 +117,7 @@ public class MainActivity extends Activity {
     public void initNotes(){
         noteAdapter = new NoteAdapter(
                 this,
-                notesDAO.getAllNotes(),
+                notesDAO.getAll(),
                 db
         );
         listView_note.setAdapter(noteAdapter);
@@ -127,7 +127,7 @@ public class MainActivity extends Activity {
      public void initTimers(){
         timerAdapter = new TimerAdapter(
                 this,
-                timersDAO.getAllTimers(),
+                timersDAO.getAll(),
                 db
         );
         listView_timer.setAdapter(timerAdapter);
@@ -141,8 +141,8 @@ public class MainActivity extends Activity {
                         getString(R.string.timerDefaultName),
                         Timer.NOT_ACTIVE_STATE,
                         1);
-        timersDAO.insertTimer(timer);
-        idCountDAO.insertIdCount(newId);
+        timersDAO.insert(timer);
+        idCountDAO.insert(newId);
 
         initTimers();
     }

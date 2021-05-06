@@ -29,9 +29,9 @@ public class RebootReceiver extends BroadcastReceiver {
             timersDAO = new TimersDAO(db);
 
             //Переактивация всех активных записей
-            for (Note note : notesDAO.getActiveNotes())
+            for (Note note : notesDAO.getActiveAll())
                 NoteReceiver.startAlarmNote(context, note);
-            for (Timer timer : timersDAO.getActiveTimers())
+            for (Timer timer : timersDAO.getActiveAll())
                 TimerReceiver.startAlarmTimer(context, timer);
 
             //Сброс состояний таймера до неактивного

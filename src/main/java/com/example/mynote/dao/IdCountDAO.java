@@ -12,7 +12,7 @@ public class IdCountDAO {
         this.db = db;
     }
 
-    public void insertIdCount(int id) {
+    public void insert(int id) {
         db.execSQL(
                 "INSERT INTO " + DatabaseHelper.TABLE_ID_COUNT +
                         " VALUES(" + id + ")"
@@ -36,7 +36,7 @@ public class IdCountDAO {
         }
     }
 
-    public void deleteId(int id) {
+    public void delete(int id) {
         SQLiteStatement sqLiteStatement = db.compileStatement(
                 "DELETE FROM " + DatabaseHelper.TABLE_ID_COUNT +
                         " WHERE " + DatabaseHelper.COLUMN_ID_COUNT_ID + "=?"

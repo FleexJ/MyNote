@@ -17,7 +17,7 @@ public class TimersDAO {
         this.db = db;
     }
 
-    public List<Timer> getAllTimers() {
+    public List<Timer> getAll() {
         List<Timer> timerList = new ArrayList<>();
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DatabaseHelper.TABLE_TIMERS + " ORDER BY " + DatabaseHelper.COLUMN_TIMERS_ID + " ASC",
@@ -33,7 +33,7 @@ public class TimersDAO {
         return timerList;
     }
 
-    public void editTimer(Timer timer) {
+    public void edit(Timer timer) {
         SQLiteStatement sqLiteStatement = db.compileStatement("UPDATE " + DatabaseHelper.TABLE_TIMERS + " SET " +
                 DatabaseHelper.COLUMN_TIMERS_NAME + "=?, " +
                 DatabaseHelper.COLUMN_TIMERS_STATE + "=?, " +
@@ -47,11 +47,11 @@ public class TimersDAO {
         sqLiteStatement.executeUpdateDelete();
     }
 
-    public void deleteTimer(Timer timer) {
+    public void delete(Timer timer) {
         db.execSQL("DELETE FROM timers WHERE " + DatabaseHelper.COLUMN_TIMERS_ID + "=" + timer.getId());
     }
 
-    public void insertTimer(Timer timer) {
+    public void insert(Timer timer) {
         SQLiteStatement sqLiteStatement = db.compileStatement(
                 "INSERT INTO " + DatabaseHelper.TABLE_TIMERS + " VALUES(?, ?, ?, ?)"
         );
@@ -62,7 +62,7 @@ public class TimersDAO {
         sqLiteStatement.executeInsert();
     }
 
-    public Timer getTimersById(int id) {
+    public Timer getById(int id) {
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DatabaseHelper.TABLE_TIMERS + " WHERE " + DatabaseHelper.COLUMN_TIMERS_ID + "=" + id,
                 null);
@@ -80,7 +80,7 @@ public class TimersDAO {
         return null;
     }
 
-    public List<Timer> getActiveTimers() {
+    public List<Timer> getActiveAll() {
         List<Timer> timers = new ArrayList<>();
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DatabaseHelper.TABLE_TIMERS +

@@ -53,7 +53,7 @@ public class EditNoteActivity extends Activity {
         spinner_repeat = findViewById(R.id.spinner_repeat);
 
         id = getIntent().getIntExtra("idEdit",-1);
-        Note note = notesDAO.getNoteById(id);
+        Note note = notesDAO.getById(id);
 
         editText_name.setText(note.getName());
         editText_name.setSelection(editText_name.getText().length());
@@ -88,7 +88,7 @@ public class EditNoteActivity extends Activity {
                                                     (int) spinner_repeat.getSelectedItemId()
                                                    ];
             Note note = new Note(id, name, desc,0,calendar.getTimeInMillis(), repeat);
-            notesDAO.editNote(note);
+            notesDAO.edit(note);
         }
         finish();
     }

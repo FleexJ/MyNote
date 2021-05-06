@@ -101,7 +101,7 @@ public class TimerAdapter extends BaseAdapter {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 if(!userInput.getText().toString().isEmpty()) {
                                                     timer.setName(userInput.getText().toString());
-                                                    timersDAO.editTimer(timer);
+                                                    timersDAO.edit(timer);
                                                     textView_name.setText(userInput.getText().toString());
                                                 }
                                             }
@@ -135,9 +135,9 @@ public class TimerAdapter extends BaseAdapter {
                                                 TimerReceiver.cancelAlarmTimer(context, timer.getId());
                                                 TimerReceiver.cancelNotifProgressTimer(context, timer);
 
-                                                timersDAO.deleteTimer(timer);
+                                                timersDAO.delete(timer);
                                                 timers.remove(timer);
-                                                trashDAO.insertTrash(
+                                                trashDAO.insert(
                                                         new TrashNote(
                                                                 timer.getId(),
                                                                 timer.getName(),
@@ -174,7 +174,7 @@ public class TimerAdapter extends BaseAdapter {
                             TimerReceiver.showNotifProgressTimer(context, timer);
 
                             timer.setState(Timer.ACTIVE_STATE);
-                            timersDAO.editTimer(timer);
+                            timersDAO.edit(timer);
                             MyGlobal.showToastShort(
                                     context,
                                     context.getString(R.string.timerStarted, timer.getMinute())
@@ -182,7 +182,7 @@ public class TimerAdapter extends BaseAdapter {
                         }
                         else {
                             timer.setState(Timer.NOT_ACTIVE_STATE);
-                            timersDAO.editTimer(timer);
+                            timersDAO.edit(timer);
                             TimerReceiver.cancelAlarmTimer(context, timer.getId());
                             TimerReceiver.cancelNotifProgressTimer(context, timer);
                         }
@@ -205,7 +205,7 @@ public class TimerAdapter extends BaseAdapter {
                         if(seekBar.getProgress() <= 0)
                             seekBar.setProgress(1);
                         timer.setMinute(seekBar.getProgress());
-                        timersDAO.editTimer(timer);
+                        timersDAO.edit(timer);
 
                         if (timer.getState() == Timer.ACTIVE_STATE) {
                             TimerReceiver.startAlarmTimer(context, timer);

@@ -18,7 +18,7 @@ public class TrashDAO {
         this.db = db;
     }
 
-    public void insertTrash(TrashNote trashNote) {
+    public void insert(TrashNote trashNote) {
         SQLiteStatement sqLiteStatement = db.compileStatement(
                 "INSERT INTO " + DatabaseHelper.TABLE_TRASH + " VALUES(?, ?, ?, ?, ?, ?)"
         );
@@ -31,18 +31,18 @@ public class TrashDAO {
         sqLiteStatement.executeInsert();
     }
 
-    public void deleteTrash(TrashNote trashNote) {
+    public void delete(TrashNote trashNote) {
         db.execSQL(
                 "DELETE FROM " + DatabaseHelper.TABLE_TRASH +
                         " WHERE " + DatabaseHelper.COLUMN_TRASH_ID + "=" + trashNote.getId()
         );
     }
 
-    public void deleteAllTrash() {
+    public void deleteAll() {
         db.execSQL("DELETE FROM " + DatabaseHelper.TABLE_TRASH);
     }
 
-    public List<TrashNote> getAllTrash() {
+    public List<TrashNote> getAll() {
         List<TrashNote> trashNoteList = new ArrayList<>();
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DatabaseHelper.TABLE_TRASH + " ORDER BY id ASC",

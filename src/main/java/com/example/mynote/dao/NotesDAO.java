@@ -18,7 +18,7 @@ public class NotesDAO {
         this.db = db;
     }
 
-    public List<Note> getAllNotes() {
+    public List<Note> getAll() {
         List<Note> noteList = new ArrayList<>();
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DatabaseHelper.TABLE_NOTES,
@@ -36,7 +36,7 @@ public class NotesDAO {
         return noteList;
     }
 
-    public void editNote(Note note) {
+    public void edit(Note note) {
         SQLiteStatement sqLiteStatement = db.compileStatement("UPDATE " + DatabaseHelper.TABLE_NOTES + " SET " +
                 DatabaseHelper.COLUMN_NOTES_NAME +"=?, " +
                 DatabaseHelper.COLUMN_NOTES_DESCRIPTION + "=?, " +
@@ -54,7 +54,7 @@ public class NotesDAO {
         sqLiteStatement.executeUpdateDelete();
     }
 
-    public void deleteNote(Note note) {
+    public void delete(Note note) {
         SQLiteStatement sqLiteStatement = db.compileStatement(
                 "DELETE FROM " + DatabaseHelper.TABLE_NOTES +
                         " WHERE " + DatabaseHelper.COLUMN_NOTES_ID + "=?");
@@ -62,7 +62,7 @@ public class NotesDAO {
         sqLiteStatement.executeUpdateDelete();
     }
 
-    public List<Note> getActiveNotes() {
+    public List<Note> getActiveAll() {
         List<Note> noteList = new ArrayList<>();
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DatabaseHelper.TABLE_NOTES +
@@ -81,7 +81,7 @@ public class NotesDAO {
         return noteList;
     }
 
-    public void insertNote(Note note) {
+    public void insert(Note note) {
         SQLiteStatement sqLiteStatement = db.compileStatement(
                 "INSERT INTO " + DatabaseHelper.TABLE_NOTES + " VALUES(?, ?, ?, " + Note.NOT_ACTIVE_STATE + ", ?, ?)"
         );
@@ -93,7 +93,7 @@ public class NotesDAO {
         sqLiteStatement.executeInsert();
     }
 
-    public Note getNoteById(int id) {
+    public Note getById(int id) {
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DatabaseHelper.TABLE_NOTES + " WHERE " + DatabaseHelper.COLUMN_NOTES_ID + "=" + id,
                 null);

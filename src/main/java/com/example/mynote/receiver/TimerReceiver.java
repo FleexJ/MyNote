@@ -41,18 +41,18 @@ public class TimerReceiver extends BroadcastReceiver {
         timersDAO = new TimersDAO(db);
 
         int id = intent.getIntExtra("id",0);
-        Timer timer = timersDAO.getTimersById(id);
+        Timer timer = timersDAO.getById(id);
         //Если время не вышло, то убавляем его и создаем новый аларм
         if((timer.getMinute() - 1) >= 1) {
             timer.setMinute(timer.getMinute() - 1);
-            timersDAO.editTimer(timer);
+            timersDAO.edit(timer);
 
             startAlarmTimer(context, timer);
             showNotifProgressTimer(context, timer);
         } else {//Если время вышло, то уведомление
             timer.setState(Timer.NOT_ACTIVE_STATE);
             timer.setMinute(1);
-            timersDAO.editTimer(timer);
+            timersDAO.edit(timer);
 
             MyGlobal.showNotification(context, timer);
         }

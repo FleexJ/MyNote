@@ -43,7 +43,7 @@ public class NotifActivity extends Activity {
         int type = getIntent().getIntExtra("type",0);
         switch (type) {
             case MyGlobal.TYPE_NOTE:
-                Note note = notesDAO.getNoteById(id);
+                Note note = notesDAO.getById(id);
                 textView_title.setText(
                         getString(R.string.notifNoteTitle)
                 );
@@ -56,7 +56,7 @@ public class NotifActivity extends Activity {
                 break;
 
             case MyGlobal.TYPE_TIMER:
-                Timer timer = timersDAO.getTimersById(id);
+                Timer timer = timersDAO.getById(id);
                 textView_title.setText(
                         getString(R.string.notifTimerDoneTitle)
                 );
