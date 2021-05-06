@@ -1,5 +1,6 @@
 package com.example.mynote.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
@@ -31,20 +32,20 @@ import java.util.List;
 import static android.content.Context.MODE_PRIVATE;
 
 public class TimerAdapter extends BaseAdapter {
-    Context context;
+    Activity activity;
     LayoutInflater inflater;
     List<Timer> timers;
 
     TimersDAO timersDAO;
     TrashDAO trashDAO;
 
-    public TimerAdapter(Context context, List<Timer> timers, SQLiteDatabase db) {
+    public TimerAdapter(Activity activity, List<Timer> timers, SQLiteDatabase db) {
         timersDAO = new TimersDAO(db);
         trashDAO = new TrashDAO(db);
 
-        this.context = context;
+        this.activity = activity;
         this.timers = timers;
-        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -80,7 +81,7 @@ public class TimerAdapter extends BaseAdapter {
 
         final TextView textView_progress = convertView.findViewById(R.id.textView_progress);
         textView_progress.setText(
-                context.getString(R.string.timerProgress, timer.getMinute())
+                activity.getString(R.string.timerProgress, timer.getMinute())
         );
 
         final SeekBar seekBar_progress = convertView.findViewById(R.id.seekBar_progress);
@@ -90,10 +91,10 @@ public class TimerAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        LayoutInflater li = LayoutInflater.from(context);
+                        LayoutInflater li = LayoutInflater.from(activity);
                         View promptsView = li.inflate(R.layout.prompt_timer_name, null);
 
-                        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(context);
+                        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(activity);
                         mDialogBuilder.setView(promptsView);
 
                         final EditText userInput = promptsView.findViewById(R.id.editText_name);
@@ -101,7 +102,7 @@ public class TimerAdapter extends BaseAdapter {
 
                         mDialogBuilder.setCancelable(true)
                                 .setPositiveButton(
-                                        context.getString(R.string.ok),
+                                        activity.getString(R.string.ok),
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
@@ -109,12 +110,16 @@ public class TimerAdapter extends BaseAdapter {
                                                     timer.setName(userInput.getText().toString());
                                                     timersDAO.edit(timer);
                                                     textView_name.setText(userInput.getText().toString());
+
+                                                    if (timer.getState() == Timer.ACTIVE_STATE) {
+                                                        TimerReceiver.showNotifProgressTimer(activity, timer);
+                                                    }
                                                 }
                                                 dialog.cancel();
                                             }
                                         })
                                 .setNegativeButton(
-                                        context.getString(R.string.cancel),
+                                        activity.getString(R.string.cancel),
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
@@ -131,17 +136,17 @@ public class TimerAdapter extends BaseAdapter {
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        AlertDialog.Builder alert_builder = new AlertDialog.Builder(context);
+                        AlertDialog.Builder alert_builder = new AlertDialog.Builder(activity);
                         alert_builder
-                                .setMessage(context.getString(R.string.dialogueTitleDeleteTimer))
+                                .setMessage(activity.getString(R.string.dialogueTitleDeleteTimer))
                                 .setCancelable(true)
                                 .setPositiveButton(
-                                        context.getString(R.string.ok),
+                                        activity.getString(R.string.ok),
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                TimerReceiver.cancelAlarmTimer(context, timer.getId());
-                                                TimerReceiver.cancelNotifProgressTimer(context, timer);
+                                                TimerReceiver.cancelAlarmTimer(activity, timer.getId());
+                                                TimerReceiver.cancelNotifProgressTimer(activity, timer);
 
                                                 timersDAO.delete(timer);
                                                 timers.remove(timer);
@@ -156,13 +161,13 @@ public class TimerAdapter extends BaseAdapter {
                                                 );
                                                 notifyDataSetChanged();
                                                 MyGlobal.showToastShort(
-                                                        context,
-                                                        context.getString(R.string.timerDeleted));
+                                                        activity,
+                                                        activity.getString(R.string.timerDeleted));
                                                 dialog.cancel();
                                             }
                                         })
                                 .setNegativeButton(
-                                        context.getString(R.string.cancel),
+                                        activity.getString(R.string.cancel),
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
@@ -179,21 +184,21 @@ public class TimerAdapter extends BaseAdapter {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if(buttonView.isChecked()) {
-                            TimerReceiver.startAlarmTimer(context, timer);
-                            TimerReceiver.showNotifProgressTimer(context, timer);
+                            TimerReceiver.startAlarmTimer(activity, timer);
+                            TimerReceiver.showNotifProgressTimer(activity, timer);
 
                             timer.setState(Timer.ACTIVE_STATE);
                             timersDAO.edit(timer);
                             MyGlobal.showToastShort(
-                                    context,
-                                    context.getString(R.string.timerStarted, timer.getMinute())
+                                    activity,
+                                    activity.getString(R.string.timerStarted, timer.getMinute())
                             );
                         }
                         else {
                             timer.setState(Timer.NOT_ACTIVE_STATE);
                             timersDAO.edit(timer);
-                            TimerReceiver.cancelAlarmTimer(context, timer.getId());
-                            TimerReceiver.cancelNotifProgressTimer(context, timer);
+                            TimerReceiver.cancelAlarmTimer(activity, timer.getId());
+                            TimerReceiver.cancelNotifProgressTimer(activity, timer);
                         }
                     }
                 });
@@ -203,7 +208,7 @@ public class TimerAdapter extends BaseAdapter {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         textView_progress.setText(
-                                context.getString(R.string.timerProgress, progress));
+                                activity.getString(R.string.timerProgress, progress));
                     }
 
                     @Override
@@ -218,8 +223,8 @@ public class TimerAdapter extends BaseAdapter {
                         timersDAO.edit(timer);
 
                         if (timer.getState() == Timer.ACTIVE_STATE) {
-                            TimerReceiver.startAlarmTimer(context, timer);
-                            TimerReceiver.showNotifProgressTimer(context, timer);
+                            TimerReceiver.startAlarmTimer(activity, timer);
+                            TimerReceiver.showNotifProgressTimer(activity, timer);
                         }
                     }
                 });

@@ -59,6 +59,15 @@ public class TrashActivity extends Activity {
         initTrash();
     }
 
+    public void initTrash() {
+        trashAdapter = new TrashAdapter(
+                this,
+                trashDAO.getAll(),
+                db
+        );
+        listView_trash.setAdapter(trashAdapter);
+    }
+
     @Override
     public void onDestroy() {
         db.close();
@@ -106,14 +115,5 @@ public class TrashActivity extends Activity {
                 getApplicationContext(),
                 getString(R.string.emptyTrashYet)
         );
-    }
-
-    public void initTrash() {
-        trashAdapter = new TrashAdapter(
-                this,
-                trashDAO.getAll(),
-                db
-        );
-        listView_trash.setAdapter(trashAdapter);
     }
 }

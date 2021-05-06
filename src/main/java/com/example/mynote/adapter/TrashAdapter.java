@@ -1,5 +1,6 @@
 package com.example.mynote.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,7 +25,7 @@ import com.example.mynote.globalVar.MyGlobal;
 import java.util.List;
 
 public class TrashAdapter extends BaseAdapter {
-    Context context;
+    Activity activity;
     LayoutInflater inflater;
     List<TrashNote> trashNotes;
 
@@ -33,15 +34,15 @@ public class TrashAdapter extends BaseAdapter {
     NotesDAO notesDAO;
     TimersDAO timersDAO;
 
-    public TrashAdapter(Context context, List<TrashNote> trashNotes, SQLiteDatabase db) {
+    public TrashAdapter(Activity activity, List<TrashNote> trashNotes, SQLiteDatabase db) {
         trashDAO = new TrashDAO(db);
         idCountDAO = new IdCountDAO(db);
         notesDAO = new NotesDAO(db);
         timersDAO = new TimersDAO(db);
 
-        this.context = context;
+        this.activity = activity;
         this.trashNotes = trashNotes;
-        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -76,16 +77,16 @@ public class TrashAdapter extends BaseAdapter {
         switch (trashNote.getType()) {
             case MyGlobal.TYPE_NOTE:
                 textView_delay.setText(
-                        context.getString(R.string.noteBottom,
+                        activity.getString(R.string.noteBottom,
                                 MyGlobal.sdfDate.format(
                                         trashNote.getDelayCalendar().getTime()),
-                                trashNote.getRepeat().getString(context))
+                                trashNote.getRepeat().getString(activity))
                 );
                 break;
 
             case MyGlobal.TYPE_TIMER:
                 textView_delay.setText(
-                        context.getString(R.string.timerProgress, trashNote.getDelay())
+                        activity.getString(R.string.timerProgress, trashNote.getDelay())
                 );
                 break;
         }
@@ -94,11 +95,11 @@ public class TrashAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder alert_builder = new AlertDialog.Builder(context);
-                alert_builder.setMessage(context.getString(R.string.returnFromTrash))
+                AlertDialog.Builder alert_builder = new AlertDialog.Builder(activity);
+                alert_builder.setMessage(activity.getString(R.string.returnFromTrash))
                         .setCancelable(true)
                         .setPositiveButton(
-                                context.getString(R.string.ok),
+                                activity.getString(R.string.ok),
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -129,13 +130,13 @@ public class TrashAdapter extends BaseAdapter {
 
                                         notifyDataSetChanged();
                                         MyGlobal.showToastShort(
-                                                context,
-                                                context.getString(R.string.returned));
+                                                activity,
+                                                activity.getString(R.string.returned));
                                         dialog.cancel();
                                     }
                                 })
                         .setNegativeButton(
-                                context.getString(R.string.cancel),
+                                activity.getString(R.string.cancel),
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -150,12 +151,12 @@ public class TrashAdapter extends BaseAdapter {
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                AlertDialog.Builder alert_builder = new AlertDialog.Builder(context);
+                AlertDialog.Builder alert_builder = new AlertDialog.Builder(activity);
                 alert_builder
-                        .setMessage(context.getString(R.string.deleteFromTrash))
+                        .setMessage(activity.getString(R.string.deleteFromTrash))
                         .setCancelable(true)
                         .setPositiveButton(
-                                context.getString(R.string.ok),
+                                activity.getString(R.string.ok),
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -165,13 +166,13 @@ public class TrashAdapter extends BaseAdapter {
 
                                         notifyDataSetChanged();
                                         MyGlobal.showToastShort(
-                                                context,
-                                                context.getString(R.string.deleted));
+                                                activity,
+                                                activity.getString(R.string.deleted));
                                         dialog.cancel();
                                     }
                                 })
                         .setNegativeButton(
-                                context.getString(R.string.cancel),
+                                activity.getString(R.string.cancel),
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {

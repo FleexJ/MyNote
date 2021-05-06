@@ -1,5 +1,6 @@
 package com.example.mynote.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,20 +26,20 @@ import com.example.mynote.receiver.NoteReceiver;
 import java.util.List;
 
 public class NoteAdapter extends BaseAdapter {
-    Context context;
+    Activity activity;
     LayoutInflater inflater;
     List<Note> notes;
 
     NotesDAO notesDAO;
     TrashDAO trashDAO;
 
-    public NoteAdapter(Context context, List<Note> notes, SQLiteDatabase db) {
+    public NoteAdapter(Activity activity, List<Note> notes, SQLiteDatabase db) {
         notesDAO = new NotesDAO(db);
         trashDAO = new TrashDAO(db);
 
-        this.context = context;
+        this.activity = activity;
         this.notes = notes;
-        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -79,10 +80,10 @@ public class NoteAdapter extends BaseAdapter {
 
         final TextView textView_bottom = convertView.findViewById(R.id.textView_noteBottom);
         textView_bottom.setText(
-                context.getString(R.string.noteBottom,
+                activity.getString(R.string.noteBottom,
                         MyGlobal.sdfDate.format(
                                 note.getDelayCalendar().getTime()),
-                        note.getRepeat().getString(context))
+                        note.getRepeat().getString(activity))
         );
 
         // onClick - activity edit note
@@ -92,7 +93,7 @@ public class NoteAdapter extends BaseAdapter {
                 Intent intentEdit = new Intent(".EditActivity");
                 //Передаем в другое активити индекс нажатой записи
                 intentEdit.putExtra("idEdit", note.getId());
-                context.startActivity(intentEdit);
+                activity.startActivity(intentEdit);
                 //Удаление слушателя, чтобы не было двойного вызова при двойном клике
                 v.setOnClickListener(null);
             }
@@ -102,17 +103,17 @@ public class NoteAdapter extends BaseAdapter {
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                AlertDialog.Builder alert_builder = new AlertDialog.Builder(context);
+                AlertDialog.Builder alert_builder = new AlertDialog.Builder(activity);
                 alert_builder
-                        .setMessage(context.getString(R.string.dialogueTitleDeleteNote))
+                        .setMessage(activity.getString(R.string.dialogueTitleDeleteNote))
                         .setCancelable(true)
                         .setPositiveButton(
-                                context.getString(R.string.ok) ,
+                                activity.getString(R.string.ok) ,
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         //Удаление аларм менеджера, в случае удаления записи из бд
-                                        NoteReceiver.cancelAlarmNote(context, note.getId());
+                                        NoteReceiver.cancelAlarmNote(activity, note.getId());
 
                                         notesDAO.delete(note);
                                         trashDAO.insert(new TrashNote(
@@ -127,13 +128,13 @@ public class NoteAdapter extends BaseAdapter {
                                         notifyDataSetChanged();
 
                                         MyGlobal.showToastShort(
-                                                context,
-                                                context.getString(R.string.noteDeleted));
+                                                activity,
+                                                activity.getString(R.string.noteDeleted));
                                         dialog.cancel();
                                     }
                                 })
                         .setNegativeButton(
-                                context.getString(R.string.cancel),
+                                activity.getString(R.string.cancel),
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -153,23 +154,23 @@ public class NoteAdapter extends BaseAdapter {
                 if(buttonView.isChecked()) {
                     if(System.currentTimeMillis() >= note.getDelayCalendar().getTimeInMillis()) {
                         MyGlobal.showToastShort(
-                                context,
-                                context.getString(R.string.incorrectTimeForStart));
+                                activity,
+                                activity.getString(R.string.incorrectTimeForStart));
                         buttonView.setChecked(false);
                     } else {
                         //Запуск аларма для записи
-                        NoteReceiver.startAlarmNote(context, note);
+                        NoteReceiver.startAlarmNote(activity, note);
                         note.setState(Note.ACTIVE_STATE);
                         notesDAO.edit(note);
                         MyGlobal.showToastShort(
-                                context,
-                                context.getString(R.string.noteStarted));
+                                activity,
+                                activity.getString(R.string.noteStarted));
                     }
                 } else {
                     note.setState(Note.NOT_ACTIVE_STATE);
                     notesDAO.edit(note);
                     //Удаление аларма для записи
-                    NoteReceiver.cancelAlarmNote(context, note.getId());
+                    NoteReceiver.cancelAlarmNote(activity, note.getId());
                 }
             }
         });
