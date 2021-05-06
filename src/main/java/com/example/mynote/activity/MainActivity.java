@@ -5,13 +5,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.ScrollView;
 import android.widget.TabHost;
 
 import com.example.mynote.R;
@@ -26,10 +24,8 @@ import com.example.mynote.entity.Note;
 import com.example.mynote.entity.Timer;
 import com.example.mynote.globalVar.MyGlobal;
 import com.example.mynote.receiver.NoteReceiver;
-import com.example.mynote.receiver.TimerReceiver;
 import com.example.mynote.swipeListener.MainSwipeListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -151,7 +147,7 @@ public class MainActivity extends Activity {
     }
 
     public void clickPopupMenu(View view){
-        PopupMenu popup = new PopupMenu(getApplicationContext(), view);
+        PopupMenu popup = new PopupMenu(this, view);
         popup.getMenu().add(Menu.NONE, 0, Menu.NONE,
                 getString(R.string.trash)
         );
@@ -171,7 +167,7 @@ public class MainActivity extends Activity {
                         initNotes();
                         initTimers();
                         MyGlobal.showToastShort(
-                                getApplicationContext(),
+                                MainActivity.this,
                                 getString(R.string.updated)
                         );
                         break;

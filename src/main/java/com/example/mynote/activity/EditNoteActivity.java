@@ -77,7 +77,7 @@ public class EditNoteActivity extends Activity {
     }
 
     public void saveChanges(View view) {
-        NoteReceiver.cancelAlarmNote(this, id);
+        NoteReceiver.cancelAlarmNote(getApplicationContext(), id);
 
         String desc = editText_description.getText().toString();
         String name = editText_name.getText().toString();
@@ -87,7 +87,14 @@ public class EditNoteActivity extends Activity {
             TypeRepeat repeat = TypeRepeat.values()[
                                                     (int) spinner_repeat.getSelectedItemId()
                                                    ];
-            Note note = new Note(id, name, desc,0,calendar.getTimeInMillis(), repeat);
+            Note note = new Note(
+                    id,
+                    name,
+                    desc,
+                    0,
+                    calendar.getTimeInMillis(),
+                    repeat
+            );
             notesDAO.edit(note);
         }
         finish();

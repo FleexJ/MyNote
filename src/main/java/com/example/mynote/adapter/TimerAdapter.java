@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.mynote.R;
+import com.example.mynote.activity.MainActivity;
 import com.example.mynote.dao.TimersDAO;
 import com.example.mynote.dao.TrashDAO;
 import com.example.mynote.entity.Timer;
@@ -26,6 +27,8 @@ import com.example.mynote.globalVar.MyGlobal;
 import com.example.mynote.receiver.TimerReceiver;
 
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class TimerAdapter extends BaseAdapter {
     Context context;
@@ -89,8 +92,10 @@ public class TimerAdapter extends BaseAdapter {
                     public void onClick(View v) {
                         LayoutInflater li = LayoutInflater.from(context);
                         View promptsView = li.inflate(R.layout.prompt_timer_name, null);
+
                         AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(context);
                         mDialogBuilder.setView(promptsView);
+
                         final EditText userInput = promptsView.findViewById(R.id.editText_name);
                         userInput.setText(timer.getName());
 
@@ -105,6 +110,7 @@ public class TimerAdapter extends BaseAdapter {
                                                     timersDAO.edit(timer);
                                                     textView_name.setText(userInput.getText().toString());
                                                 }
+                                                dialog.cancel();
                                             }
                                         })
                                 .setNegativeButton(

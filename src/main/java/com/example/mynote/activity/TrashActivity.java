@@ -73,7 +73,7 @@ public class TrashActivity extends Activity {
     //Диалог удаления всех записей из корзины
     public void click_deleteAll(View view) {
         List<TrashNote> trashNoteList = trashDAO.getAll();
-        AlertDialog.Builder alert_builder = new AlertDialog.Builder(TrashActivity.this);
+        AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
 
         if(trashNoteList.size() != 0) {
             alert_builder
@@ -86,7 +86,7 @@ public class TrashActivity extends Activity {
                                 public void onClick(DialogInterface dialog, int which) {
                                     trashDAO.deleteAll();
                                     MyGlobal.showToastShort(
-                                            getApplicationContext(),
+                                            TrashActivity.this,
                                             getString(R.string.cleared));
                                     dialog.cancel();
                                     initTrash();

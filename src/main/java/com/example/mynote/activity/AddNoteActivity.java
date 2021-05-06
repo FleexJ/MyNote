@@ -85,7 +85,7 @@ public class AddNoteActivity extends Activity {
                 mYear = calendar.get(Calendar.YEAR),
                 mMonth = calendar.get(Calendar.MONTH),
                 mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        TimePickerDialog timePickerDialog = new TimePickerDialog(AddNoteActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -98,7 +98,7 @@ public class AddNoteActivity extends Activity {
                 }, mHour, mMinute, true);
         timePickerDialog.show();
         // инициализируем диалог выбора даты текущими значениями
-        DatePickerDialog datePickerDialog = new DatePickerDialog(AddNoteActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
