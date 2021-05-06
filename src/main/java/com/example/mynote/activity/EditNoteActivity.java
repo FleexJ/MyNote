@@ -17,21 +17,21 @@ import android.widget.TimePicker;
 
 import com.example.mynote.R;
 import com.example.mynote.dao.DatabaseHelper;
-import com.example.mynote.dao.IdCountDAO;
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.entity.Note;
 import com.example.mynote.entity.TypeRepeat;
 import com.example.mynote.globalVar.MyGlobal;
+import com.example.mynote.receiver.NoteReceiver;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class AddNoteActivity extends Activity {
+public class EditNoteActivity extends Activity {
 
-    private DatabaseHelper databaseHelper;
     private SQLiteDatabase db;
     private NotesDAO notesDAO;
-    private IdCountDAO idCountDAO;
+
+    int id;
 
     private EditText editText_name, editText_description;
     private TextView textView_delay;
@@ -41,20 +41,33 @@ public class AddNoteActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_note);
+        setContentView(R.layout.activity_edit_note);
 
-        databaseHelper = new DatabaseHelper(getApplicationContext());
+        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
         db = databaseHelper.getWritableDatabase();
         notesDAO = new NotesDAO(db);
-        idCountDAO = new IdCountDAO(db);
 
         editText_name = findViewById(R.id.editText_name);
         editText_description =  findViewById(R.id.editText_description);
         textView_delay =  findViewById(R.id.textView_delay);
+        spinner_repeat = findViewById(R.id.spinner_repeat);
+
+        id = getIntent().getIntExtra("idEdit",-1);
+        Note note = notesDAO.getNoteById(id);
+
+        editText_name.setText(note.getName());
+        editText_name.setSelection(editText_name.getText().length());
+
+        editText_description.setText(note.getDescription());
+
+        calendar.setTimeInMillis(note.getDelayCalendar().getTimeInMillis());
         textView_delay.setText(
                 MyGlobal.sdfDate.format(calendar.getTime())
         );
-        spinner_repeat = findViewById(R.id.spinner_repeat);
+
+        spinner_repeat.setSelection(
+                note.getRepeat().getId()
+        );
     }
 
     @Override
@@ -63,30 +76,31 @@ public class AddNoteActivity extends Activity {
         super.onDestroy();
     }
 
-    public void addNote(View view) {
-        String name = editText_name.getText().toString();
+    public void saveChanges(View view) {
+        NoteReceiver.cancelAlarmNote(this, id);
+
         String desc = editText_description.getText().toString();
+        String name = editText_name.getText().toString();
         if(!name.isEmpty() || !desc.isEmpty()) {
-            int newId = idCountDAO.getNewId();
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
             TypeRepeat repeat = TypeRepeat.values()[
-                    (int) spinner_repeat.getSelectedItemId()
-                    ];
-            Note note = new Note(newId, name, desc, 0, calendar.getTimeInMillis(), repeat);
-            notesDAO.insertNote(note);
-            idCountDAO.insertIdCount(newId);
+                                                    (int) spinner_repeat.getSelectedItemId()
+                                                   ];
+            Note note = new Note(id, name, desc,0,calendar.getTimeInMillis(), repeat);
+            notesDAO.editNote(note);
         }
         finish();
     }
 
+    //Вызов диалогов выбора даты и времени
     public void initDate(View view){
         final int mHour = calendar.get(Calendar.HOUR_OF_DAY),
                 mMinute = calendar.get(Calendar.MINUTE),
                 mYear = calendar.get(Calendar.YEAR),
                 mMonth = calendar.get(Calendar.MONTH),
                 mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        TimePickerDialog timePickerDialog = new TimePickerDialog(AddNoteActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -99,7 +113,7 @@ public class AddNoteActivity extends Activity {
                 }, mHour, mMinute, true);
         timePickerDialog.show();
         // инициализируем диалог выбора даты текущими значениями
-        DatePickerDialog datePickerDialog = new DatePickerDialog(AddNoteActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -114,3 +128,4 @@ public class AddNoteActivity extends Activity {
         datePickerDialog.show();
     }
 }
+
