@@ -29,16 +29,12 @@ public class TimerReceiver extends BroadcastReceiver {
     public static String CHANNEL_ID_PROGRESS_TIMER = "channel_id_mynote_progress";
     public static String CHANNEL_NAME_PROGRESS_TIMER = "channel_name_mynote_progress";
 
-    private DatabaseHelper databaseHelper;
-    private SQLiteDatabase db;
-    private TimersDAO timersDAO;
-
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        databaseHelper = new DatabaseHelper(context.getApplicationContext());
-        db = databaseHelper.getWritableDatabase();
-        timersDAO = new TimersDAO(db);
+        DatabaseHelper databaseHelper = new DatabaseHelper(context.getApplicationContext());
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        TimersDAO timersDAO = new TimersDAO(db);
 
         int id = intent.getIntExtra("id",0);
         Timer timer = timersDAO.getById(id);

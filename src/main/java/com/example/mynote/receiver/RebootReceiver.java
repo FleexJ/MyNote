@@ -15,18 +15,13 @@ import com.example.mynote.globalVar.MyGlobal;
 //Класс для активации напоминаний при перезагрузке устройства
 public class RebootReceiver extends BroadcastReceiver {
 
-    private DatabaseHelper databaseHelper;
-    private SQLiteDatabase db;
-    private TimersDAO timersDAO;
-    private NotesDAO notesDAO;
-
     @Override
     public void onReceive(Context context, Intent intent_rec) {
         if ("android.intent.action.BOOT_COMPLETED".equals(intent_rec.getAction())) {
-            databaseHelper = new DatabaseHelper(context.getApplicationContext());
-            db = databaseHelper.getWritableDatabase();
-            notesDAO = new NotesDAO(db);
-            timersDAO = new TimersDAO(db);
+            DatabaseHelper databaseHelper = new DatabaseHelper(context.getApplicationContext());
+            SQLiteDatabase db = databaseHelper.getWritableDatabase();
+            NotesDAO notesDAO = new NotesDAO(db);
+            TimersDAO timersDAO = new TimersDAO(db);
 
             //Переактивация всех активных записей
             for (Note note : notesDAO.getActiveAll())
