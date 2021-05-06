@@ -20,6 +20,7 @@ import com.example.mynote.globalVar.MyGlobal;
 public class NotifActivity extends Activity {
 
     private int id;
+    private int type;
 
     private SQLiteDatabase db;
     private NotesDAO notesDAO;
@@ -39,8 +40,10 @@ public class NotifActivity extends Activity {
         TextView textView_title = findViewById(R.id.textView_notifTitle);
         TextView textView_name = findViewById(R.id.textView_notifName);
         TextView textView_desc = findViewById(R.id.textView_notifDesc);
-        id = getIntent().getIntExtra("id", 0);
-        int type = getIntent().getIntExtra("type",0);
+
+        id = getIntent().getIntExtra("id", -1);
+        type = getIntent().getIntExtra("type",0);
+
         switch (type) {
             case MyGlobal.TYPE_NOTE:
                 Note note = notesDAO.getById(id);

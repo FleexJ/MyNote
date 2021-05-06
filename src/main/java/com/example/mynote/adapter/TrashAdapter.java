@@ -90,7 +90,7 @@ public class TrashAdapter extends BaseAdapter {
                 break;
         }
 
-
+        //onClick - dialogue return note from trash
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,6 +146,7 @@ public class TrashAdapter extends BaseAdapter {
             }
         });
 
+        // onLongClick - delete from trash permanently
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {

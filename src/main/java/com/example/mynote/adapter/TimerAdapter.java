@@ -83,6 +83,7 @@ public class TimerAdapter extends BaseAdapter {
         final SeekBar seekBar_progress = convertView.findViewById(R.id.seekBar_progress);
         seekBar_progress.setProgress(timer.getMinute());
 
+        // onClick - edit timer
         convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -120,6 +121,7 @@ public class TimerAdapter extends BaseAdapter {
                     }
                 });
 
+        // onLongClick - delete timer
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -166,6 +168,7 @@ public class TimerAdapter extends BaseAdapter {
                     }
                 });
 
+        // switch state - change state timer
         switch_state.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -189,6 +192,7 @@ public class TimerAdapter extends BaseAdapter {
                     }
                 });
 
+        // change seekBar progress - edit progress timer
         seekBar_progress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

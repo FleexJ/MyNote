@@ -85,16 +85,17 @@ public class MainActivity extends Activity {
         //Настройка tabHost
         TabHost tabHost = findViewById(R.id.tab_menu);
         tabHost.setup();
+
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tag1");
         tabSpec.setContent(R.id.tab1);
-        tabSpec.setIndicator(
-                getString(R.string.simpleNote));
+        tabSpec.setIndicator(getString(R.string.simpleNote));
         tabHost.addTab(tabSpec);
+
         tabSpec = tabHost.newTabSpec("tag2");
         tabSpec.setContent(R.id.tab2);
-        tabSpec.setIndicator(
-                getString(R.string.timer));
+        tabSpec.setIndicator(getString(R.string.timer));
         tabHost.addTab(tabSpec);
+
         tabHost.setCurrentTab(0);
     }
 
@@ -113,7 +114,6 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
-    //Главная процедура обычных записей
     public void initNotes(){
         noteAdapter = new NoteAdapter(
                 this,
@@ -123,7 +123,6 @@ public class MainActivity extends Activity {
         listView_note.setAdapter(noteAdapter);
     }
 
-    //Главная процедура записей по минутам
      public void initTimers(){
         timerAdapter = new TimerAdapter(
                 this,
@@ -133,8 +132,7 @@ public class MainActivity extends Activity {
         listView_timer.setAdapter(timerAdapter);
     }
 
-    //Добавление новых записей таймера
-    public void addMinute(View view){
+    public void addTimer(View view){
         int newId = idCountDAO.getNewId();
         Timer timer = new Timer(
                         newId,
@@ -147,13 +145,11 @@ public class MainActivity extends Activity {
         initTimers();
     }
 
-    //Добавление новых записей
     public void addNote(View view){
         Intent intentAdd = new Intent(".AddNoteActivity");
         startActivity(intentAdd);
     }
 
-    //Клик по значку меню
     public void clickPopupMenu(View view){
         PopupMenu popup = new PopupMenu(getApplicationContext(), view);
         popup.getMenu().add(Menu.NONE, 0, Menu.NONE,

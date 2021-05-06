@@ -85,6 +85,7 @@ public class NoteAdapter extends BaseAdapter {
                         note.getRepeat().getString(context))
         );
 
+        // onClick - activity edit note
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +98,7 @@ public class NoteAdapter extends BaseAdapter {
             }
         });
 
+        // onLongClick - dialogue delete note
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -144,6 +146,7 @@ public class NoteAdapter extends BaseAdapter {
             }
         });
 
+        // switch state - change state note
         switch_state.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

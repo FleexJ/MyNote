@@ -74,6 +74,7 @@ public class TrashActivity extends Activity {
     public void click_deleteAll(View view) {
         List<TrashNote> trashNoteList = trashDAO.getAll();
         AlertDialog.Builder alert_builder = new AlertDialog.Builder(TrashActivity.this);
+
         if(trashNoteList.size() != 0) {
             alert_builder
                     .setMessage(getString(R.string.dialogueClearTrash))
@@ -103,7 +104,8 @@ public class TrashActivity extends Activity {
         }
         else MyGlobal.showToastShort(
                 getApplicationContext(),
-                getString(R.string.emptyTrashYet));
+                getString(R.string.emptyTrashYet)
+        );
     }
 
     public void initTrash() {

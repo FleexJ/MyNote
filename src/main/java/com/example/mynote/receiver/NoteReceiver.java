@@ -17,18 +17,16 @@ import java.util.Calendar;
 
 public class NoteReceiver extends BroadcastReceiver {
 
-    private DatabaseHelper databaseHelper;
     private SQLiteDatabase db;
     private NotesDAO notesDAO;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        databaseHelper = new DatabaseHelper(context.getApplicationContext());
+        DatabaseHelper databaseHelper = new DatabaseHelper(context.getApplicationContext());
         db = databaseHelper.getWritableDatabase();
         notesDAO = new NotesDAO(db);
 
         int id = intent.getIntExtra("id",0);
-        //Данные для уведомления берутся из бд, в случае если пользователь их отредактирует
         Note note = notesDAO.getById(id);
 
         MyGlobal.showNotification(context, note);
@@ -40,26 +38,31 @@ public class NoteReceiver extends BroadcastReceiver {
                 note.setDelay(calendar.getTimeInMillis());
                 startAlarmNote(context, note);
                 break;
+
             case DAY :
                 calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
                 note.setDelay(calendar.getTimeInMillis());
                 startAlarmNote(context, note);
                 break;
+
             case WEEK :
                 calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 7);
                 note.setDelay(calendar.getTimeInMillis());
                 startAlarmNote(context, note);
                 break;
+
             case MONTH:
                 calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
                 note.setDelay(calendar.getTimeInMillis());
                 startAlarmNote(context, note);
                 break;
+
             case YEAR:
                 calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 1);
                 note.setDelay(calendar.getTimeInMillis());
                 startAlarmNote(context, note);
                 break;
+
             default:
                 note.setState(Note.NOT_ACTIVE_STATE);
                 break;
