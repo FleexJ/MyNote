@@ -97,8 +97,7 @@ public class NotesDAO {
     public List<Note> getActiveAll() {
         List<Note> noteList = new ArrayList<>();
         Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + DatabaseHelper.TABLE_NOTES +
-                        " WHERE " + DatabaseHelper.COLUMN_NOTES_STATE + "=" + Note.ACTIVE_STATE,
+                "SELECT * FROM " + DatabaseHelper.TABLE_NOTES + " WHERE " + DatabaseHelper.COLUMN_NOTES_STATE + "=" + Note.ACTIVE_STATE,
                 null);
         while (cursor.moveToNext())
             noteList.add(new Note(

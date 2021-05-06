@@ -83,8 +83,7 @@ public class TimersDAO {
     public List<Timer> getActiveAll() {
         List<Timer> timers = new ArrayList<>();
         Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + DatabaseHelper.TABLE_TIMERS +
-                        " WHERE " + DatabaseHelper.COLUMN_TIMERS_STATE + "=" + Timer.ACTIVE_STATE,
+                "SELECT * FROM " + DatabaseHelper.TABLE_TIMERS + " WHERE " + DatabaseHelper.COLUMN_TIMERS_STATE + "=" + Timer.ACTIVE_STATE,
                 null);
         while (cursor.moveToNext())
             timers.add(new Timer(

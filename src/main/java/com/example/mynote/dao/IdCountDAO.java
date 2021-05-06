@@ -14,15 +14,15 @@ public class IdCountDAO {
 
     public void insert(int id) {
         db.execSQL(
-                "INSERT INTO " + DatabaseHelper.TABLE_ID_COUNT +
-                        " VALUES(" + id + ")"
+                "INSERT INTO " + DatabaseHelper.TABLE_ID_COUNT + " VALUES(" +
+                        id +
+                        ")"
         );
     }
 
     public void delete(int id) {
         SQLiteStatement sqLiteStatement = db.compileStatement(
-                "DELETE FROM " + DatabaseHelper.TABLE_ID_COUNT +
-                        " WHERE " + DatabaseHelper.COLUMN_ID_COUNT_ID + "=?"
+                "DELETE FROM " + DatabaseHelper.TABLE_ID_COUNT + " WHERE " + DatabaseHelper.COLUMN_ID_COUNT_ID + "=?"
         );
         sqLiteStatement.bindLong(1, id);
         sqLiteStatement.executeUpdateDelete();

@@ -33,8 +33,7 @@ public class TrashDAO {
 
     public void delete(TrashNote trashNote) {
         db.execSQL(
-                "DELETE FROM " + DatabaseHelper.TABLE_TRASH +
-                        " WHERE " + DatabaseHelper.COLUMN_TRASH_ID + "=" + trashNote.getId()
+                "DELETE FROM " + DatabaseHelper.TABLE_TRASH + " WHERE " + DatabaseHelper.COLUMN_TRASH_ID + "=" + trashNote.getId()
         );
     }
 
