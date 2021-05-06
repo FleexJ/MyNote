@@ -67,6 +67,7 @@ public class NotifActivity extends Activity {
                 linearLayout.removeView(textView_desc);
                 break;
         }
+
         db.close();
     }
 

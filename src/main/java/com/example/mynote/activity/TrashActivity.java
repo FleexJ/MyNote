@@ -59,6 +59,12 @@ public class TrashActivity extends Activity {
         initTrash();
     }
 
+    @Override
+    public void onDestroy() {
+        db.close();
+        super.onDestroy();
+    }
+
     public void initTrash() {
         trashAdapter = new TrashAdapter(
                 this,
@@ -66,12 +72,6 @@ public class TrashActivity extends Activity {
                 db
         );
         listView_trash.setAdapter(trashAdapter);
-    }
-
-    @Override
-    public void onDestroy() {
-        db.close();
-        super.onDestroy();
     }
 
     //Закрытие активити корзины

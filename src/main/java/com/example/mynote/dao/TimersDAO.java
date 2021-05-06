@@ -17,22 +17,6 @@ public class TimersDAO {
         this.db = db;
     }
 
-    public List<Timer> getAll() {
-        List<Timer> timerList = new ArrayList<>();
-        Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + DatabaseHelper.TABLE_TIMERS + " ORDER BY " + DatabaseHelper.COLUMN_TIMERS_ID + " ASC",
-                null);
-        while (cursor.moveToNext())
-            timerList.add(new Timer(
-                    cursor.getInt(0),
-                    cursor.getString(1),
-                    cursor.getInt(2),
-                    cursor.getInt(3)
-            ));
-        cursor.close();
-        return timerList;
-    }
-
     public void edit(Timer timer) {
         SQLiteStatement sqLiteStatement = db.compileStatement("UPDATE " + DatabaseHelper.TABLE_TIMERS + " SET " +
                 DatabaseHelper.COLUMN_TIMERS_NAME + "=?, " +
@@ -78,6 +62,22 @@ public class TimersDAO {
             return timer;
         }
         return null;
+    }
+
+    public List<Timer> getAll() {
+        List<Timer> timerList = new ArrayList<>();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + DatabaseHelper.TABLE_TIMERS + " ORDER BY " + DatabaseHelper.COLUMN_TIMERS_ID + " ASC",
+                null);
+        while (cursor.moveToNext())
+            timerList.add(new Timer(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getInt(2),
+                    cursor.getInt(3)
+            ));
+        cursor.close();
+        return timerList;
     }
 
     public List<Timer> getActiveAll() {

@@ -19,6 +19,15 @@ public class IdCountDAO {
         );
     }
 
+    public void delete(int id) {
+        SQLiteStatement sqLiteStatement = db.compileStatement(
+                "DELETE FROM " + DatabaseHelper.TABLE_ID_COUNT +
+                        " WHERE " + DatabaseHelper.COLUMN_ID_COUNT_ID + "=?"
+        );
+        sqLiteStatement.bindLong(1, id);
+        sqLiteStatement.executeUpdateDelete();
+    }
+
     public int getNewId() {
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DatabaseHelper.TABLE_ID_COUNT + " ORDER BY " + DatabaseHelper.COLUMN_ID_COUNT_ID + " DESC",
@@ -34,14 +43,5 @@ public class IdCountDAO {
             cursor.close();
             return newId;
         }
-    }
-
-    public void delete(int id) {
-        SQLiteStatement sqLiteStatement = db.compileStatement(
-                "DELETE FROM " + DatabaseHelper.TABLE_ID_COUNT +
-                        " WHERE " + DatabaseHelper.COLUMN_ID_COUNT_ID + "=?"
-        );
-        sqLiteStatement.bindLong(1, id);
-        sqLiteStatement.executeUpdateDelete();
     }
 }

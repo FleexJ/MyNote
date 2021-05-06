@@ -62,23 +62,6 @@ public class AddNoteActivity extends Activity {
         super.onDestroy();
     }
 
-    public void addNote(View view) {
-        String name = editText_name.getText().toString();
-        String desc = editText_description.getText().toString();
-        if(!name.isEmpty() || !desc.isEmpty()) {
-            int newId = idCountDAO.getNewId();
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
-            TypeRepeat repeat = TypeRepeat.values()[
-                    (int) spinner_repeat.getSelectedItemId()
-                    ];
-            Note note = new Note(newId, name, desc, 0, calendar.getTimeInMillis(), repeat);
-            notesDAO.insert(note);
-            idCountDAO.insert(newId);
-        }
-        finish();
-    }
-
     public void initDate(View view){
         final int mHour = calendar.get(Calendar.HOUR_OF_DAY),
                 mMinute = calendar.get(Calendar.MINUTE),
@@ -111,5 +94,22 @@ public class AddNoteActivity extends Activity {
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
+    }
+
+    public void addNote(View view) {
+        String name = editText_name.getText().toString();
+        String desc = editText_description.getText().toString();
+        if(!name.isEmpty() || !desc.isEmpty()) {
+            int newId = idCountDAO.getNewId();
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            TypeRepeat repeat = TypeRepeat.values()[
+                    (int) spinner_repeat.getSelectedItemId()
+                    ];
+            Note note = new Note(newId, name, desc, 0, calendar.getTimeInMillis(), repeat);
+            notesDAO.insert(note);
+            idCountDAO.insert(newId);
+        }
+        finish();
     }
 }

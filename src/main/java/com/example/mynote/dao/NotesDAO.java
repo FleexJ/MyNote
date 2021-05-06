@@ -18,24 +18,6 @@ public class NotesDAO {
         this.db = db;
     }
 
-    public List<Note> getAll() {
-        List<Note> noteList = new ArrayList<>();
-        Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + DatabaseHelper.TABLE_NOTES,
-                null);
-        while (cursor.moveToNext())
-            noteList.add(new Note(
-                    cursor.getInt(0), //id
-                    cursor.getString(1),//name
-                    cursor.getString(2),//descr
-                    cursor.getInt(3),//state
-                    cursor.getLong(4),//delay
-                    TypeRepeat.valueOf(cursor.getString(5))//repeat
-            ));
-        cursor.close();
-        return noteList;
-    }
-
     public void edit(Note note) {
         SQLiteStatement sqLiteStatement = db.compileStatement("UPDATE " + DatabaseHelper.TABLE_NOTES + " SET " +
                 DatabaseHelper.COLUMN_NOTES_NAME +"=?, " +
@@ -60,25 +42,6 @@ public class NotesDAO {
                         " WHERE " + DatabaseHelper.COLUMN_NOTES_ID + "=?");
         sqLiteStatement.bindLong(1, note.getId());
         sqLiteStatement.executeUpdateDelete();
-    }
-
-    public List<Note> getActiveAll() {
-        List<Note> noteList = new ArrayList<>();
-        Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + DatabaseHelper.TABLE_NOTES +
-                        " WHERE " + DatabaseHelper.COLUMN_NOTES_STATE + "=" + Note.ACTIVE_STATE,
-                null);
-        while (cursor.moveToNext())
-            noteList.add(new Note(
-                    cursor.getInt(0),
-                    cursor.getString(1),
-                    cursor.getString(2),
-                    cursor.getInt(3),
-                    cursor.getLong(4),
-                    TypeRepeat.valueOf(cursor.getString(5))
-            ));
-        cursor.close();
-        return noteList;
     }
 
     public void insert(Note note) {
@@ -111,5 +74,42 @@ public class NotesDAO {
             return note;
         }
         return null;
+    }
+
+    public List<Note> getAll() {
+        List<Note> noteList = new ArrayList<>();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + DatabaseHelper.TABLE_NOTES,
+                null);
+        while (cursor.moveToNext())
+            noteList.add(new Note(
+                    cursor.getInt(0), //id
+                    cursor.getString(1),//name
+                    cursor.getString(2),//descr
+                    cursor.getInt(3),//state
+                    cursor.getLong(4),//delay
+                    TypeRepeat.valueOf(cursor.getString(5))//repeat
+            ));
+        cursor.close();
+        return noteList;
+    }
+
+    public List<Note> getActiveAll() {
+        List<Note> noteList = new ArrayList<>();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + DatabaseHelper.TABLE_NOTES +
+                        " WHERE " + DatabaseHelper.COLUMN_NOTES_STATE + "=" + Note.ACTIVE_STATE,
+                null);
+        while (cursor.moveToNext())
+            noteList.add(new Note(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getInt(3),
+                    cursor.getLong(4),
+                    TypeRepeat.valueOf(cursor.getString(5))
+            ));
+        cursor.close();
+        return noteList;
     }
  }
