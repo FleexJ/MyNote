@@ -14,10 +14,13 @@
 - Android SDK
 - Java
   
-#### Экран главной активности приложения, все записи:  
-<img src="https://github.com/FleexJ/resource/blob/main/MyNote/mynote.PNG" width="350px"/>   
+#### Главный экран приложения, все записи:  
+<img src="https://github.com/FleexJ/resource/blob/main/MyNote/mynote_note.PNG" width="300px"/>   
 
-#### Экран главной активности приложения, таймеры:
-<img src="https://github.com/FleexJ/resource/blob/main/MyNote/mynoteTimer.PNG" width="350px"/>  
+#### Главный экран приложения, таймеры:
+<img src="https://github.com/FleexJ/resource/blob/main/MyNote/mynote_timer.PNG" width="300px"/>  
+
+#### Экран корзины приложения:
+<img src="https://github.com/FleexJ/resource/blob/main/MyNote/mynote_trash.PNG" width="300px"/>  
  
 Это мое первое приложение под Android, потому могут быть огрехи.
