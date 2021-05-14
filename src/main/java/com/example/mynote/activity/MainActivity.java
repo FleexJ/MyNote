@@ -83,12 +83,12 @@ public class MainActivity extends Activity {
         tabHost.setup();
 
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tag1");
-        tabSpec.setContent(R.id.tab1);
+        tabSpec.setContent(R.id.TabNote);
         tabSpec.setIndicator(getString(R.string.simpleNote));
         tabHost.addTab(tabSpec);
 
         tabSpec = tabHost.newTabSpec("tag2");
-        tabSpec.setContent(R.id.tab2);
+        tabSpec.setContent(R.id.TabTimer);
         tabSpec.setIndicator(getString(R.string.timer));
         tabHost.addTab(tabSpec);
 

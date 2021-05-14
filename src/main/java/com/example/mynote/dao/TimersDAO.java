@@ -18,7 +18,8 @@ public class TimersDAO {
     }
 
     public void edit(Timer timer) {
-        SQLiteStatement sqLiteStatement = db.compileStatement("UPDATE " + DatabaseHelper.TABLE_TIMERS + " SET " +
+        SQLiteStatement sqLiteStatement = db.compileStatement("UPDATE " + DatabaseHelper.TABLE_TIMERS +
+                " SET " +
                 DatabaseHelper.COLUMN_TIMERS_NAME + "=?, " +
                 DatabaseHelper.COLUMN_TIMERS_STATE + "=?, " +
                 DatabaseHelper.COLUMN_TIMERS_MINUTE + "=? " +

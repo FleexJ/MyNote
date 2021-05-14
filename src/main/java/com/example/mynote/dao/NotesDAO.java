@@ -19,7 +19,8 @@ public class NotesDAO {
     }
 
     public void edit(Note note) {
-        SQLiteStatement sqLiteStatement = db.compileStatement("UPDATE " + DatabaseHelper.TABLE_NOTES + " SET " +
+        SQLiteStatement sqLiteStatement = db.compileStatement("UPDATE " + DatabaseHelper.TABLE_NOTES +
+                " SET " +
                 DatabaseHelper.COLUMN_NOTES_NAME +"=?, " +
                 DatabaseHelper.COLUMN_NOTES_DESCRIPTION + "=?, " +
                 DatabaseHelper.COLUMN_NOTES_STATE + "=?, " +
@@ -38,8 +39,7 @@ public class NotesDAO {
 
     public void delete(Note note) {
         SQLiteStatement sqLiteStatement = db.compileStatement(
-                "DELETE FROM " + DatabaseHelper.TABLE_NOTES +
-                        " WHERE " + DatabaseHelper.COLUMN_NOTES_ID + "=?");
+                "DELETE FROM " + DatabaseHelper.TABLE_NOTES + " WHERE " + DatabaseHelper.COLUMN_NOTES_ID + "=?");
         sqLiteStatement.bindLong(1, note.getId());
         sqLiteStatement.executeUpdateDelete();
     }

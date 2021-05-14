@@ -78,7 +78,7 @@
                 android:layout_height="match_parent">
 
                 <LinearLayout
-                    android:id="@+id/tab1"
+                    android:id="@+id/TabNote"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -112,6 +112,7 @@
                             android:id="@+id/listView_notes"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_marginBottom="55dp"
                             android:divider="@color/colorGrey"
                             android:dividerHeight="20dp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -150,7 +151,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/tab2"
+                    android:id="@+id/TabTimer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -181,8 +182,9 @@
                             android:id="@+id/listView_timers"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_marginBottom="55dp"
                             android:divider="@color/colorGrey"
-                            android:dividerHeight="50dp"
+                            android:dividerHeight="30dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
