@@ -42,7 +42,7 @@ public class NotifActivity extends Activity {
         TextView textView_desc = findViewById(R.id.textView_notifDesc);
 
         id = getIntent().getIntExtra("id", -1);
-        type = getIntent().getIntExtra("type",0);
+        type = getIntent().getIntExtra("type", 0);
 
         switch (type) {
             case MyGlobal.TYPE_NOTE:

@@ -25,14 +25,15 @@ import com.example.mynote.globalVar.MyGlobal;
 import java.util.List;
 
 public class TrashAdapter extends BaseAdapter {
-    Activity activity;
-    LayoutInflater inflater;
-    List<TrashNote> trashNotes;
 
-    TrashDAO trashDAO;
-    IdCountDAO idCountDAO;
-    NotesDAO notesDAO;
-    TimersDAO timersDAO;
+    private final Activity activity;
+    private final LayoutInflater inflater;
+    private final List<TrashNote> trashNotes;
+
+    private final TrashDAO trashDAO;
+    private final IdCountDAO idCountDAO;
+    private final NotesDAO notesDAO;
+    private final TimersDAO timersDAO;
 
     public TrashAdapter(Activity activity, List<TrashNote> trashNotes, SQLiteDatabase db) {
         trashDAO = new TrashDAO(db);

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.mynote.R;
-import com.example.mynote.activity.MainActivity;
 import com.example.mynote.dao.TimersDAO;
 import com.example.mynote.dao.TrashDAO;
 import com.example.mynote.entity.Timer;
@@ -29,15 +27,14 @@ import com.example.mynote.receiver.TimerReceiver;
 
 import java.util.List;
 
-import static android.content.Context.MODE_PRIVATE;
-
 public class TimerAdapter extends BaseAdapter {
-    Activity activity;
-    LayoutInflater inflater;
-    List<Timer> timers;
 
-    TimersDAO timersDAO;
-    TrashDAO trashDAO;
+    private final Activity activity;
+    private final LayoutInflater inflater;
+    private final List<Timer> timers;
+
+    private final TimersDAO timersDAO;
+    private final TrashDAO trashDAO;
 
     public TimerAdapter(Activity activity, List<Timer> timers, SQLiteDatabase db) {
         timersDAO = new TimersDAO(db);
@@ -74,10 +71,9 @@ public class TimerAdapter extends BaseAdapter {
         textView_name.setText(timer.getName());
 
         final Switch switch_state = convertView.findViewById(R.id.switch_timerState);
-        if (timer.getState() == Timer.ACTIVE_STATE)
-            switch_state.setChecked(true);
-        else
-            switch_state.setChecked(false);
+        switch_state.setChecked(
+                timer.getState() == Timer.ACTIVE_STATE
+        );
 
         final TextView textView_progress = convertView.findViewById(R.id.textView_progress);
         textView_progress.setText(
@@ -146,7 +142,7 @@ public class TimerAdapter extends BaseAdapter {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 TimerReceiver.cancelAlarmTimer(activity, timer.getId());
-                                                TimerReceiver.cancelNotifProgressTimer(activity, timer);
+                                                MyGlobal.cancelNotificaton(activity, timer.getId());
 
                                                 timersDAO.delete(timer);
                                                 timers.remove(timer);
@@ -198,7 +194,7 @@ public class TimerAdapter extends BaseAdapter {
                             timer.setState(Timer.NOT_ACTIVE_STATE);
                             timersDAO.edit(timer);
                             TimerReceiver.cancelAlarmTimer(activity, timer.getId());
-                            TimerReceiver.cancelNotifProgressTimer(activity, timer);
+                            MyGlobal.cancelNotificaton(activity, timer.getId());
                         }
                     }
                 });

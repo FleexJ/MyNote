@@ -81,9 +81,10 @@ public class MyGlobal {
                 context.getApplicationContext(),
                 id,
                 intent_new,
-                PendingIntent.FLAG_CANCEL_CURRENT);
+                PendingIntent.FLAG_CANCEL_CURRENT
+        );
 
-        if(Build.VERSION.SDK_INT >= 26 ){
+        if(Build.VERSION.SDK_INT >= 26){
             NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             Notification.Builder builder = new Notification.Builder(
                     context.getApplicationContext(),
@@ -100,16 +101,14 @@ public class MyGlobal {
                     .setSmallIcon(R.drawable.icon_notif)
                     .setContentTitle(title)
                     .setContentText(content)
-//                    .setPriority(Notification.PRIORITY_MAX)
                     .setShowWhen(true)
                     .setAutoCancel(true);
             Notification notification = builder.build();
-//            notification.defaults = NotificationCompat.DEFAULT_ALL;
             nm.createNotificationChannel(notificationChannel);
             nm.cancel(id);
             nm.notify(id, notification);
         }
-        else if(Build.VERSION.SDK_INT >=21 ){
+        else if(Build.VERSION.SDK_INT >= 21){
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context.getApplicationContext(), CHANNEL_ID)
                             .setContentTitle(title)
                             .setContentText(content)
@@ -124,6 +123,10 @@ public class MyGlobal {
         }
     }
 
+    public static void cancelNotificaton(Context context, int id) {
+        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.cancel(id);
+    }
 
     //Проверяет, запущено ли окно приложения
     private static boolean isForeground(Context context) {

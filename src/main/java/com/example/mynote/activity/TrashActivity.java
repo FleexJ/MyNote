@@ -84,36 +84,38 @@ public class TrashActivity extends Activity {
         List<TrashNote> trashNoteList = trashDAO.getAll();
         AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
 
-        if(trashNoteList.size() != 0) {
-            alert_builder
-                    .setMessage(getString(R.string.dialogueClearTrash))
-                    .setCancelable(true)
-                    .setPositiveButton(
-                            getString(R.string.clear),
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    trashDAO.deleteAll();
-                                    MyGlobal.showToastShort(
-                                            TrashActivity.this,
-                                            getString(R.string.cleared));
-                                    dialog.cancel();
-                                    initTrash();
-                                }
-                            })
-                    .setNegativeButton(
-                            getString(R.string.cancel),
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-            alert_builder.show();
+        if (trashNoteList.size() == 0) {
+            MyGlobal.showToastShort(
+                    getApplicationContext(),
+                    getString(R.string.emptyTrashYet)
+            );
+            return;
         }
-        else MyGlobal.showToastShort(
-                getApplicationContext(),
-                getString(R.string.emptyTrashYet)
-        );
+
+        alert_builder
+                .setMessage(getString(R.string.dialogueClearTrash))
+                .setCancelable(true)
+                .setPositiveButton(
+                        getString(R.string.clear),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                trashDAO.deleteAll();
+                                MyGlobal.showToastShort(
+                                        TrashActivity.this,
+                                        getString(R.string.cleared));
+                                dialog.cancel();
+                                initTrash();
+                            }
+                        })
+                .setNegativeButton(
+                        getString(R.string.cancel),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+        alert_builder.show();
     }
 }

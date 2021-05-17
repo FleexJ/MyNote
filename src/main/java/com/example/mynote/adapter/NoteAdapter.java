@@ -22,16 +22,18 @@ import com.example.mynote.entity.Note;
 import com.example.mynote.entity.TrashNote;
 import com.example.mynote.globalVar.MyGlobal;
 import com.example.mynote.receiver.NoteReceiver;
+import com.example.mynote.receiver.TimerReceiver;
 
 import java.util.List;
 
 public class NoteAdapter extends BaseAdapter {
-    Activity activity;
-    LayoutInflater inflater;
-    List<Note> notes;
 
-    NotesDAO notesDAO;
-    TrashDAO trashDAO;
+    private final Activity activity;
+    private final LayoutInflater inflater;
+    private final List<Note> notes;
+
+    private final NotesDAO notesDAO;
+    private final TrashDAO trashDAO;
 
     public NoteAdapter(Activity activity, List<Note> notes, SQLiteDatabase db) {
         notesDAO = new NotesDAO(db);
@@ -73,10 +75,9 @@ public class NoteAdapter extends BaseAdapter {
         }
 
         final Switch switch_state = convertView.findViewById(R.id.switch_noteState);
-        if (note.getState() == Note.ACTIVE_STATE)
-            switch_state.setChecked(true);
-        else
-            switch_state.setChecked(false);
+        switch_state.setChecked(
+                note.getState() == Note.ACTIVE_STATE
+        );
 
         final TextView textView_bottom = convertView.findViewById(R.id.textView_noteBottom);
         textView_bottom.setText(
@@ -126,6 +127,7 @@ public class NoteAdapter extends BaseAdapter {
                                         );
                                         notes.remove(note);
                                         notifyDataSetChanged();
+                                        MyGlobal.cancelNotificaton(activity, note.getId());
 
                                         MyGlobal.showToastShort(
                                                 activity,

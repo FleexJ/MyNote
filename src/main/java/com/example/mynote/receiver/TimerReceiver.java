@@ -23,6 +23,8 @@ import com.example.mynote.globalVar.MyGlobal;
 
 import java.util.Calendar;
 
+import static android.content.Context.ALARM_SERVICE;
+
 
 public class TimerReceiver extends BroadcastReceiver {
 
@@ -58,7 +60,7 @@ public class TimerReceiver extends BroadcastReceiver {
 
     //функция старта аларма для таймеров
     public static void startAlarmTimer(Context context, Timer timer) {
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         //Заготовки для уведомлений
         Intent intent = new Intent(context, TimerReceiver.class);
         intent.putExtra("id", timer.getId());
@@ -77,7 +79,7 @@ public class TimerReceiver extends BroadcastReceiver {
 
     //функция остановки аларма по id
     public static void cancelAlarmTimer(Context context, int id) {
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(context, TimerReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 context,
@@ -125,16 +127,12 @@ public class TimerReceiver extends BroadcastReceiver {
                                     context.getString(R.string.timerProgress, timer.getMinute()))
                             .setContentIntent(pendingIntent)
                             .setPriority(NotificationCompat.PRIORITY_MIN)
-                            .setAutoCancel(true)
+                            .setAutoCancel(false)
                             .setSmallIcon(R.drawable.icon_notif);
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             notificationManager.cancel(timer.getId());
             notificationManager.notify(timer.getId(), builder.build());
         }
-    }
-    public static void cancelNotifProgressTimer(Context context, Timer timer) {
-        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.cancel(timer.getId());
     }
 }

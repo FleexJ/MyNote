@@ -106,7 +106,14 @@ public class AddNoteActivity extends Activity {
             TypeRepeat repeat = TypeRepeat.values()[
                     (int) spinner_repeat.getSelectedItemId()
                     ];
-            Note note = new Note(newId, name, desc, 0, calendar.getTimeInMillis(), repeat);
+            Note note = new Note(
+                    newId,
+                    name,
+                    desc,
+                    0,
+                    calendar.getTimeInMillis(),
+                    repeat
+            );
             notesDAO.insert(note);
             idCountDAO.insert(newId);
         }

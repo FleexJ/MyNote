@@ -48,14 +48,16 @@ public class TrashDAO {
                 null
         );
         while (cursor.moveToNext())
-            trashNoteList.add(new TrashNote(
-                    cursor.getInt(0), //id
-                    cursor.getString(1), //name
-                    cursor.getString(2), //descr
-                    cursor.getLong(3), //delay
-                    TypeRepeat.valueOf(cursor.getString(4)), //repeat
-                    cursor.getInt(5) //type
-            ));
+            trashNoteList.add(
+                    new TrashNote(
+                        cursor.getInt(0), //id
+                        cursor.getString(1), //name
+                        cursor.getString(2), //descr
+                        cursor.getLong(3), //delay
+                        TypeRepeat.valueOf(cursor.getString(4)), //repeat
+                        cursor.getInt(5) //type
+                    )
+            );
         cursor.close();
         return trashNoteList;
     }
