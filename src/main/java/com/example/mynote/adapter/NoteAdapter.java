@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.example.mynote.entity.Note;
 import com.example.mynote.entity.TrashNote;
 import com.example.mynote.globalVar.MyGlobal;
 import com.example.mynote.receiver.NoteReceiver;
-import com.example.mynote.receiver.TimerReceiver;
 
 import java.util.List;
 

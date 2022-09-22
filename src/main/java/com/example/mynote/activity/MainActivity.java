@@ -3,7 +3,6 @@ package com.example.mynote.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +14,6 @@ import android.widget.TabHost;
 import com.example.mynote.R;
 import com.example.mynote.adapter.NoteAdapter;
 import com.example.mynote.adapter.TimerAdapter;
-import com.example.mynote.dao.DatabaseHelper;
 import com.example.mynote.dao.IdCountDAO;
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.dao.TimersDAO;
@@ -27,7 +25,6 @@ import com.example.mynote.receiver.NoteReceiver;
 import com.example.mynote.swipeListener.MainSwipeListener;
 
 import java.util.List;
-
 
 public class MainActivity extends Activity {
 
@@ -92,8 +89,6 @@ public class MainActivity extends Activity {
 
     @Override
     public void onResume(){
-//        setCountDownTimer_timers();
-//        setCountDownTimer_notes();
         initNotes();
         initTimers();
         super.onResume();

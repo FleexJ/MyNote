@@ -4,20 +4,12 @@ package com.example.mynote.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.ScrollView;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.mynote.R;
 import com.example.mynote.adapter.TrashAdapter;
-import com.example.mynote.dao.DatabaseHelper;
-import com.example.mynote.dao.IdCountDAO;
-import com.example.mynote.dao.NotesDAO;
-import com.example.mynote.dao.TimersDAO;
 import com.example.mynote.dao.TrashDAO;
 import com.example.mynote.entity.TrashNote;
 import com.example.mynote.globalVar.MyGlobal;
@@ -28,11 +20,7 @@ import java.util.List;
 public class TrashActivity extends Activity {
 
     private TrashDAO trashDAO;
-    private NotesDAO notesDAO;
-    private TimersDAO timersDAO;
-    private IdCountDAO idCountDAO;
 
-    private List<TrashNote> trashNotes;
     private TrashAdapter trashAdapter;
     private ListView listView_trash;
 
@@ -42,9 +30,6 @@ public class TrashActivity extends Activity {
         setContentView(R.layout.activity_trash);
 
         trashDAO = new TrashDAO(getApplicationContext());
-        notesDAO = new NotesDAO(getApplicationContext());
-        timersDAO = new TimersDAO(getApplicationContext());
-        idCountDAO = new IdCountDAO(getApplicationContext());
 
         listView_trash = findViewById(R.id.listView_trash);
         View emptyTrash = findViewById(R.id.layout_emptyTrash);

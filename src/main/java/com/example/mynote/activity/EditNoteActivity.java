@@ -8,7 +8,6 @@ import android.app.TimePickerDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.mynote.R;
-import com.example.mynote.dao.DatabaseHelper;
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.entity.Note;
 import com.example.mynote.entity.TypeRepeat;

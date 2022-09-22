@@ -3,14 +3,12 @@ package com.example.mynote.activity;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.mynote.R;
-import com.example.mynote.dao.DatabaseHelper;
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.dao.TimersDAO;
 import com.example.mynote.entity.Note;

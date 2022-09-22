@@ -9,7 +9,6 @@ public class Timer implements GetInfoForNotifInterface {
     public static final int NOT_ACTIVE_STATE = 0;
     public static final int ACTIVE_STATE = 1;
 
-    public static final int MAX_PROGRESS = 60;
 
     private int id;
     private String name;

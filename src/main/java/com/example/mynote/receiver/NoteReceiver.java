@@ -5,9 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 
-import com.example.mynote.dao.DatabaseHelper;
 import com.example.mynote.dao.NotesDAO;
 import com.example.mynote.entity.Note;
 import com.example.mynote.globalVar.MyGlobal;

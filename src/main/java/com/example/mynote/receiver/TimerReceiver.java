@@ -8,7 +8,6 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
@@ -16,7 +15,6 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.example.mynote.R;
 import com.example.mynote.activity.MainActivity;
-import com.example.mynote.dao.DatabaseHelper;
 import com.example.mynote.dao.TimersDAO;
 import com.example.mynote.entity.Timer;
 import com.example.mynote.globalVar.MyGlobal;
