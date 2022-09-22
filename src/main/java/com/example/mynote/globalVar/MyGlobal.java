@@ -17,6 +17,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.mynote.R;
 import com.example.mynote.activity.MainActivity;
 import com.example.mynote.activity.NotifActivity;
+import com.example.mynote.entity.GetInfoForNotifInterface;
 import com.example.mynote.entity.Note;
 import com.example.mynote.entity.Timer;
 import com.example.mynote.receiver.TimerReceiver;
@@ -33,12 +34,12 @@ public class MyGlobal {
     public static final int TYPE_TIMER = 2;
 
     //ОБъекты для работы с форматом даты
-    public static Locale locale = Locale.getDefault();
-    public static SimpleDateFormat sdfCal = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", locale);
-    public static SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy  HH:mm", locale);
+    public static final Locale locale = Locale.getDefault();
+    public static final SimpleDateFormat sdfCal = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", locale);
+    public static final SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy  HH:mm", locale);
 
-    public static String CHANNEL_ID = "channel_id_mynote";
-    public static String CHANNEL_NAME = "channel_name_mynote";
+    public static final String CHANNEL_ID = "channel_id_mynote";
+    public static final String CHANNEL_NAME = "channel_name_mynote";
 
 
     public static void showToastShort(Context context, String message) {
@@ -51,27 +52,11 @@ public class MyGlobal {
 
 
     //Показ уведомления
-    public static void showNotification(Context context, Object objectToNotif) {
-        String title;
-        String content;
-        int type;
-        int id;
-
-        if (objectToNotif instanceof Note) {
-            Note note = (Note) objectToNotif;
-            title =context.getString(R.string.notifNoteTitle);
-            content = note.getName() + ": " + note.getDescription();
-            type = TYPE_NOTE;
-            id = note.getId();
-        }
-        else if (objectToNotif instanceof Timer) {
-            Timer timer = (Timer) objectToNotif;
-            title = context.getString(R.string.notifTimerDoneTitle);
-            content = timer.getName();
-            type = TYPE_TIMER;
-            id = timer.getId();
-        } else
-            return;
+    public static void showNotification(Context context, GetInfoForNotifInterface infoForNotif) {
+        String title = infoForNotif.getTitle(context);
+        String content = infoForNotif.getContent();
+        int type = infoForNotif.getType();
+        int id = infoForNotif.getId();
 
         //Показ уведомления
         Intent intent_new = new Intent(context, NotifActivity.class);
@@ -127,21 +112,4 @@ public class MyGlobal {
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(id);
     }
-
-    //Проверяет, запущено ли окно приложения
-    private static boolean isForeground(Context context) {
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
-        if (appProcesses == null) {
-            return false;
-        }
-        final String packageName = context.getPackageName();
-        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
-            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName.equals(packageName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 }

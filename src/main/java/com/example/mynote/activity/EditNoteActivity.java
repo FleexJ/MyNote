@@ -31,7 +31,7 @@ public class EditNoteActivity extends Activity {
     private SQLiteDatabase db;
     private NotesDAO notesDAO;
 
-    int id;
+    private int id;
 
     private EditText editText_name, editText_description;
     private TextView textView_delay;

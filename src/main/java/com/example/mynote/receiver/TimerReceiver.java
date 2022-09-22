@@ -28,9 +28,8 @@ import static android.content.Context.ALARM_SERVICE;
 
 public class TimerReceiver extends BroadcastReceiver {
 
-    public static String CHANNEL_ID_PROGRESS_TIMER = "channel_id_mynote_progress";
-    public static String CHANNEL_NAME_PROGRESS_TIMER = "channel_name_mynote_progress";
-
+    private static final String CHANNEL_ID_PROGRESS_TIMER = "channel_id_mynote_progress";
+    private static final String CHANNEL_NAME_PROGRESS_TIMER = "channel_name_mynote_progress";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -74,7 +73,9 @@ public class TimerReceiver extends BroadcastReceiver {
                 intent,
                 PendingIntent.FLAG_CANCEL_CURRENT);
         am.cancel(pendingIntent);
-        am.setExact(AlarmManager.RTC_WAKEUP, delay_minute.getTimeInMillis(), pendingIntent);
+        am.setExact(AlarmManager.RTC_WAKEUP,
+                delay_minute.getTimeInMillis(),
+                pendingIntent);
     }
 
     //функция остановки аларма по id

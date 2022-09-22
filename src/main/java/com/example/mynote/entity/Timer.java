@@ -1,6 +1,11 @@
 package com.example.mynote.entity;
 
-public class Timer {
+import android.content.Context;
+
+import com.example.mynote.R;
+import com.example.mynote.globalVar.MyGlobal;
+
+public class Timer implements GetInfoForNotifInterface {
     public static final int NOT_ACTIVE_STATE = 0;
     public static final int ACTIVE_STATE = 1;
 
@@ -20,6 +25,21 @@ public class Timer {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public String getTitle(Context context) {
+        return context.getString(R.string.notifTimerDoneTitle);
+    }
+
+    @Override
+    public String getContent() {
+        return name;
+    }
+
+    @Override
+    public int getType() {
+        return MyGlobal.TYPE_TIMER;
     }
 
     public void setId(int id) {

@@ -110,7 +110,7 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
-    public void initNotes(){
+    private void initNotes(){
         noteAdapter = new NoteAdapter(
                 this,
                 notesDAO.getAll(),
@@ -119,7 +119,7 @@ public class MainActivity extends Activity {
         listView_note.setAdapter(noteAdapter);
     }
 
-     public void initTimers(){
+     private void initTimers(){
         timerAdapter = new TimerAdapter(
                 this,
                 timersDAO.getAll(),

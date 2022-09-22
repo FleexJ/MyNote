@@ -115,6 +115,7 @@ public class NoteAdapter extends BaseAdapter {
                                     public void onClick(DialogInterface dialog, int which) {
                                         //Удаление аларм менеджера, в случае удаления записи из бд
                                         NoteReceiver.cancelAlarmNote(activity, note.getId());
+                                        MyGlobal.cancelNotificaton(activity, note.getId());
 
                                         notesDAO.delete(note);
                                         trashDAO.insert(new TrashNote(
@@ -127,7 +128,6 @@ public class NoteAdapter extends BaseAdapter {
                                         );
                                         notes.remove(note);
                                         notifyDataSetChanged();
-                                        MyGlobal.cancelNotificaton(activity, note.getId());
 
                                         MyGlobal.showToastShort(
                                                 activity,

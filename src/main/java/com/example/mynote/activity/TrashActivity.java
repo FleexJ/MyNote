@@ -65,7 +65,7 @@ public class TrashActivity extends Activity {
         super.onDestroy();
     }
 
-    public void initTrash() {
+    private void initTrash() {
         trashAdapter = new TrashAdapter(
                 this,
                 trashDAO.getAll(),
