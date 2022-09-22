@@ -35,11 +35,11 @@ public class TrashAdapter extends BaseAdapter {
     private final NotesDAO notesDAO;
     private final TimersDAO timersDAO;
 
-    public TrashAdapter(Activity activity, List<TrashNote> trashNotes, SQLiteDatabase db) {
-        trashDAO = new TrashDAO(db);
-        idCountDAO = new IdCountDAO(db);
-        notesDAO = new NotesDAO(db);
-        timersDAO = new TimersDAO(db);
+    public TrashAdapter(Activity activity, List<TrashNote> trashNotes) {
+        trashDAO = new TrashDAO(activity.getApplicationContext());
+        idCountDAO = new IdCountDAO(activity.getApplicationContext());
+        notesDAO = new NotesDAO(activity.getApplicationContext());
+        timersDAO = new TimersDAO(activity.getApplicationContext());
 
         this.activity = activity;
         this.trashNotes = trashNotes;

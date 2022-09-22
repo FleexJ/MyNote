@@ -36,9 +36,9 @@ public class TimerAdapter extends BaseAdapter {
     private final TimersDAO timersDAO;
     private final TrashDAO trashDAO;
 
-    public TimerAdapter(Activity activity, List<Timer> timers, SQLiteDatabase db) {
-        timersDAO = new TimersDAO(db);
-        trashDAO = new TrashDAO(db);
+    public TimerAdapter(Activity activity, List<Timer> timers) {
+        timersDAO = new TimersDAO(activity.getApplicationContext());
+        trashDAO = new TrashDAO(activity.getApplicationContext());
 
         this.activity = activity;
         this.timers = timers;

@@ -35,9 +35,9 @@ public class NoteAdapter extends BaseAdapter {
     private final NotesDAO notesDAO;
     private final TrashDAO trashDAO;
 
-    public NoteAdapter(Activity activity, List<Note> notes, SQLiteDatabase db) {
-        notesDAO = new NotesDAO(db);
-        trashDAO = new TrashDAO(db);
+    public NoteAdapter(Activity activity, List<Note> notes) {
+        notesDAO = new NotesDAO(activity.getApplicationContext());
+        trashDAO = new TrashDAO(activity.getApplicationContext());
 
         this.activity = activity;
         this.notes = notes;

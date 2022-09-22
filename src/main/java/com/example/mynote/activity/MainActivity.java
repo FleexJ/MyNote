@@ -31,10 +31,7 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
-//    private long time = 3600000;
-//    private CountDownTimer countDownTimer_timers, countDownTimer_notes;
     //Объект работы с бд
-    private SQLiteDatabase db;
     private NotesDAO notesDAO;
     private TimersDAO timersDAO;
     private TrashDAO trashDAO;
@@ -54,12 +51,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
-        db = databaseHelper.getWritableDatabase();
-        notesDAO = new NotesDAO(db);
-        timersDAO = new TimersDAO(db);
-        trashDAO = new TrashDAO(db);
-        idCountDAO = new IdCountDAO(db);
+        notesDAO = new NotesDAO(getApplicationContext());
+        timersDAO = new TimersDAO(getApplicationContext());
+        trashDAO = new TrashDAO(getApplicationContext());
+        idCountDAO = new IdCountDAO(getApplicationContext());
 
         listView_note = findViewById(R.id.listView_notes);
         View emptyNotes = findViewById(R.id.layout_emptyNotes);
@@ -104,27 +99,13 @@ public class MainActivity extends Activity {
         super.onResume();
     }
 
-    @Override
-    public void onDestroy() {
-        db.close();
-        super.onDestroy();
-    }
-
     private void initNotes(){
-        noteAdapter = new NoteAdapter(
-                this,
-                notesDAO.getAll(),
-                db
-        );
+        noteAdapter = new NoteAdapter(this, notesDAO.getAll());
         listView_note.setAdapter(noteAdapter);
     }
 
      private void initTimers(){
-        timerAdapter = new TimerAdapter(
-                this,
-                timersDAO.getAll(),
-                db
-        );
+        timerAdapter = new TimerAdapter(this, timersDAO.getAll());
         listView_timer.setAdapter(timerAdapter);
     }
 
@@ -176,48 +157,6 @@ public class MainActivity extends Activity {
             }
         });
     }
-
-//    //запускает таймер обратного отсчета, который обновляет экран таймеров
-//    public void setCountDownTimer_timers() {
-//        if (countDownTimer_timers != null)
-//            countDownTimer_timers.cancel();
-//        countDownTimer_timers = new CountDownTimer(time, 1000) {
-//            @Override
-//            public void onTick(long millisUntilFinished) {
-//                doMinute();
-//            }
-//            @Override
-//            public void onFinish() {
-//                setCountDownTimer_timers();
-//            }
-//        };
-//        countDownTimer_timers.start();
-//    }
-//    public void cancelCountDownTimer_timers() {
-//        if (countDownTimer_timers != null)
-//            countDownTimer_timers.cancel();
-//    }
-//
-//    //запускает таймер обратного отсчета, который обновляет экран записей
-//    public void setCountDownTimer_notes() {
-//        if (countDownTimer_notes != null)
-//            countDownTimer_notes.cancel();
-//        countDownTimer_notes = new CountDownTimer(time, 3000) {
-//            @Override
-//            public void onTick(long millisUntilFinished) {
-//                doSomething();
-//            }
-//            @Override
-//            public void onFinish() {
-//                setCountDownTimer_notes();
-//            }
-//        };
-//        countDownTimer_notes.start();
-//    }
-//    public void cancelCountDownTimer_notes() {
-//        if (countDownTimer_notes != null)
-//            countDownTimer_notes.cancel();
-//    }
 }
 
 

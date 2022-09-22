@@ -28,7 +28,6 @@ import java.util.GregorianCalendar;
 
 public class AddNoteActivity extends Activity {
 
-    private SQLiteDatabase db;
     private NotesDAO notesDAO;
     private IdCountDAO idCountDAO;
 
@@ -42,10 +41,8 @@ public class AddNoteActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
 
-        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
-        db = databaseHelper.getWritableDatabase();
-        notesDAO = new NotesDAO(db);
-        idCountDAO = new IdCountDAO(db);
+        notesDAO = new NotesDAO(getApplicationContext());
+        idCountDAO = new IdCountDAO(getApplicationContext());
 
         editText_name = findViewById(R.id.editText_name);
         editText_description =  findViewById(R.id.editText_description);
@@ -54,12 +51,6 @@ public class AddNoteActivity extends Activity {
                 MyGlobal.sdfDate.format(calendar.getTime())
         );
         spinner_repeat = findViewById(R.id.spinner_repeat);
-    }
-
-    @Override
-    protected void onDestroy() {
-        db.close();
-        super.onDestroy();
     }
 
     public void initDate(View view){

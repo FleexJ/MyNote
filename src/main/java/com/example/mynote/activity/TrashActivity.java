@@ -27,7 +27,6 @@ import java.util.List;
 
 public class TrashActivity extends Activity {
 
-    private SQLiteDatabase db;
     private TrashDAO trashDAO;
     private NotesDAO notesDAO;
     private TimersDAO timersDAO;
@@ -42,12 +41,10 @@ public class TrashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trash);
 
-        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
-        db = databaseHelper.getWritableDatabase();
-        trashDAO = new TrashDAO(db);
-        notesDAO = new NotesDAO(db);
-        timersDAO = new TimersDAO(db);
-        idCountDAO = new IdCountDAO(db);
+        trashDAO = new TrashDAO(getApplicationContext());
+        notesDAO = new NotesDAO(getApplicationContext());
+        timersDAO = new TimersDAO(getApplicationContext());
+        idCountDAO = new IdCountDAO(getApplicationContext());
 
         listView_trash = findViewById(R.id.listView_trash);
         View emptyTrash = findViewById(R.id.layout_emptyTrash);
@@ -59,18 +56,8 @@ public class TrashActivity extends Activity {
         initTrash();
     }
 
-    @Override
-    public void onDestroy() {
-        db.close();
-        super.onDestroy();
-    }
-
     private void initTrash() {
-        trashAdapter = new TrashAdapter(
-                this,
-                trashDAO.getAll(),
-                db
-        );
+        trashAdapter = new TrashAdapter(this, trashDAO.getAll());
         listView_trash.setAdapter(trashAdapter);
     }
 

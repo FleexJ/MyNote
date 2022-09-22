@@ -33,9 +33,7 @@ public class TimerReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        DatabaseHelper databaseHelper = new DatabaseHelper(context.getApplicationContext());
-        SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        TimersDAO timersDAO = new TimersDAO(db);
+        TimersDAO timersDAO = new TimersDAO(context);
 
         int id = intent.getIntExtra("id",0);
         Timer timer = timersDAO.getById(id);
@@ -53,8 +51,6 @@ public class TimerReceiver extends BroadcastReceiver {
 
             MyGlobal.showNotification(context, timer);
         }
-
-        db.close();
     }
 
     //функция старта аларма для таймеров

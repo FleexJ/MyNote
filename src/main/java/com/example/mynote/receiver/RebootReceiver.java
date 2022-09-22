@@ -18,18 +18,14 @@ public class RebootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent_rec) {
         if ("android.intent.action.BOOT_COMPLETED".equals(intent_rec.getAction())) {
-            DatabaseHelper databaseHelper = new DatabaseHelper(context.getApplicationContext());
-            SQLiteDatabase db = databaseHelper.getWritableDatabase();
-            NotesDAO notesDAO = new NotesDAO(db);
-            TimersDAO timersDAO = new TimersDAO(db);
+            NotesDAO notesDAO = new NotesDAO(context);
+            TimersDAO timersDAO = new TimersDAO(context);
 
             //Переактивация всех активных записей
             for (Note note : notesDAO.getActiveAll())
                 NoteReceiver.startAlarmNote(context, note);
             for (Timer timer : timersDAO.getActiveAll())
                 TimerReceiver.startAlarmTimer(context, timer);
-
-            db.close();
         }
     }
 }

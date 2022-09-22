@@ -22,7 +22,6 @@ public class NotifActivity extends Activity {
     private int id;
     private int type;
 
-    private SQLiteDatabase db;
     private NotesDAO notesDAO;
     private TimersDAO timersDAO;
 
@@ -31,10 +30,8 @@ public class NotifActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notif);
 
-        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
-        db = databaseHelper.getWritableDatabase();
-        notesDAO = new NotesDAO(db);
-        timersDAO = new TimersDAO(db);
+        notesDAO = new NotesDAO(getApplicationContext());
+        timersDAO = new TimersDAO(getApplicationContext());
 
         LinearLayout linearLayout = findViewById(R.id.linearLayout_notif);
         TextView textView_title = findViewById(R.id.textView_notifTitle);
@@ -67,8 +64,6 @@ public class NotifActivity extends Activity {
                 linearLayout.removeView(textView_desc);
                 break;
         }
-
-        db.close();
     }
 
     public void clickApply(View view) {

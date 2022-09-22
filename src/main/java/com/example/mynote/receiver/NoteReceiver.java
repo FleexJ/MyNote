@@ -17,14 +17,11 @@ import java.util.Calendar;
 
 public class NoteReceiver extends BroadcastReceiver {
 
-    private SQLiteDatabase db;
     private NotesDAO notesDAO;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        DatabaseHelper databaseHelper = new DatabaseHelper(context.getApplicationContext());
-        db = databaseHelper.getWritableDatabase();
-        notesDAO = new NotesDAO(db);
+        notesDAO = new NotesDAO(context);
 
         int id = intent.getIntExtra("id",0);
         Note note = notesDAO.getById(id);
@@ -68,7 +65,6 @@ public class NoteReceiver extends BroadcastReceiver {
                 break;
         }
         notesDAO.edit(note);
-        db.close();
     }
 
     //функция старта аларма для записей

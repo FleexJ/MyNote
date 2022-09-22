@@ -42,10 +42,7 @@ public class EditNoteActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_note);
-
-        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
-        db = databaseHelper.getWritableDatabase();
-        notesDAO = new NotesDAO(db);
+        notesDAO = new NotesDAO(getApplicationContext());
 
         editText_name = findViewById(R.id.editText_name);
         editText_description =  findViewById(R.id.editText_description);
@@ -68,12 +65,6 @@ public class EditNoteActivity extends Activity {
         spinner_repeat.setSelection(
                 note.getRepeat().getId()
         );
-    }
-
-    @Override
-    protected void onDestroy() {
-        db.close();
-        super.onDestroy();
     }
 
     //Вызов диалогов выбора даты и времени

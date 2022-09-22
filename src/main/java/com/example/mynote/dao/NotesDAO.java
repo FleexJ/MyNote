@@ -1,5 +1,6 @@
 package com.example.mynote.dao;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -12,13 +13,14 @@ import java.util.List;
 
 public class NotesDAO {
 
-    private final SQLiteDatabase db;
+    private final Context context;
 
-    public NotesDAO(SQLiteDatabase db) {
-        this.db = db;
+    public NotesDAO(Context context) {
+        this.context = context;
     }
 
     public void edit(Note note) {
+        SQLiteDatabase db = new DatabaseHelper(context).getWritableDatabase();
         SQLiteStatement sqLiteStatement = db.compileStatement("UPDATE " + DatabaseHelper.TABLE_NOTES +
                 " SET " +
                 DatabaseHelper.COLUMN_NOTES_NAME +"=?, " +
@@ -35,16 +37,20 @@ public class NotesDAO {
         sqLiteStatement.bindString(5, note.getRepeat().name());
         sqLiteStatement.bindLong(6, note.getId());
         sqLiteStatement.executeUpdateDelete();
+        db.close();
     }
 
     public void delete(Note note) {
+        SQLiteDatabase db = new DatabaseHelper(context).getWritableDatabase();
         SQLiteStatement sqLiteStatement = db.compileStatement(
                 "DELETE FROM " + DatabaseHelper.TABLE_NOTES + " WHERE " + DatabaseHelper.COLUMN_NOTES_ID + "=?");
         sqLiteStatement.bindLong(1, note.getId());
         sqLiteStatement.executeUpdateDelete();
+        db.close();
     }
 
     public void insert(Note note) {
+        SQLiteDatabase db = new DatabaseHelper(context).getWritableDatabase();
         SQLiteStatement sqLiteStatement = db.compileStatement(
                 "INSERT INTO " + DatabaseHelper.TABLE_NOTES + " VALUES(?, ?, ?, " + Note.NOT_ACTIVE_STATE + ", ?, ?)"
         );
@@ -54,15 +60,18 @@ public class NotesDAO {
         sqLiteStatement.bindLong(4, note.getDelay());
         sqLiteStatement.bindString(5, note.getRepeat().name());
         sqLiteStatement.executeInsert();
+        db.close();
     }
 
     public Note getById(int id) {
+        SQLiteDatabase db = new DatabaseHelper(context).getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DatabaseHelper.TABLE_NOTES + " WHERE " + DatabaseHelper.COLUMN_NOTES_ID + "=" + id,
                 null);
+        Note note = null;
         if (!(cursor == null)) {
             cursor.moveToFirst();
-            Note note = new Note(
+            note = new Note(
                     cursor.getInt(0),
                     cursor.getString(1),
                     cursor.getString(2),
@@ -71,12 +80,13 @@ public class NotesDAO {
                     TypeRepeat.valueOf(cursor.getString(5))
             );
             cursor.close();
-            return note;
         }
-        return null;
+        db.close();
+        return note;
     }
 
     public List<Note> getAll() {
+        SQLiteDatabase db = new DatabaseHelper(context).getWritableDatabase();
         List<Note> noteList = new ArrayList<>();
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DatabaseHelper.TABLE_NOTES,
@@ -93,10 +103,12 @@ public class NotesDAO {
                     )
             );
         cursor.close();
+        db.close();
         return noteList;
     }
 
     public List<Note> getActiveAll() {
+        SQLiteDatabase db = new DatabaseHelper(context).getWritableDatabase();
         List<Note> noteList = new ArrayList<>();
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DatabaseHelper.TABLE_NOTES + " WHERE " + DatabaseHelper.COLUMN_NOTES_STATE + "=" + Note.ACTIVE_STATE,
@@ -113,6 +125,7 @@ public class NotesDAO {
                     )
             );
         cursor.close();
+        db.close();
         return noteList;
     }
  }
